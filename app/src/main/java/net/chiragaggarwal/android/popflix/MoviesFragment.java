@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.chiragaggarwal.android.popflix.models.Callback;
+import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movies;
 
 public class MoviesFragment extends Fragment {
@@ -40,15 +41,17 @@ public class MoviesFragment extends Fragment {
     }
 
     private void fetchMovies() {
-        new FetchMoviesTask(getContext(), new Callback<Movies>() {
+        new FetchMoviesTask(getContext(), new Callback<Movies, Error>() {
             @Override
             public void onSuccess(Movies movies) {
-
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(Error error) {
+            }
 
+            @Override
+            public void onUnexpectedFailure() {
             }
         }).execute();
     }

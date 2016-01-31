@@ -3,8 +3,10 @@ package net.chiragaggarwal.android.popflix;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
 import net.chiragaggarwal.android.popflix.models.Callback;
+import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movies;
 
 import org.json.JSONException;
@@ -18,39 +20,46 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class FetchMoviesTask extends AsyncTask<Void, Void, Movies> {
-    private final Callback<Movies> callback;
+public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
+    private final Callback<Movies, Error> callback;
     private final Context context;
 
-    public FetchMoviesTask(Context context, Callback<Movies> callback) {
+    public FetchMoviesTask(Context context, Callback<Movies, Error> callback) {
         this.context = context;
         this.callback = callback;
     }
 
     @Override
-    protected Movies doInBackground(Void... params) {
-        Movies movies = null;
+    protected Object doInBackground(Void... params) {
         try {
             URL url = buildFetchMoviesUrl();
             HttpURLConnection connection = ((HttpURLConnection) url.openConnection());
             Integer responseCode = connection.getResponseCode();
             if (isAcceptable(responseCode)) {
-                movies = buildMoviesFromResponse(connection);
+                Movies movies = buildMoviesFromResponse(connection);
+                return movies;
+            } else {
+                Error error = buildErrorFromResponse(connection);
+                return error;
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return movies;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(Movies movies) {
-        if (movies != null) {
+    protected void onPostExecute(Object result) {
+        if (result == null)
+            this.callback.onUnexpectedFailure();
+        else if (result instanceof Movies) {
+            Movies movies = ((Movies) result);
             this.callback.onSuccess(movies);
         } else {
-            this.callback.onFailure();
+            Error error = ((Error) result);
+            this.callback.onFailure(error);
         }
     }
 
@@ -62,7 +71,8 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Movies> {
                 .appendPath(context.getString(R.string.discover))
                 .appendPath(context.getString(R.string.movie))
                 .appendQueryParameter(context.getString(R.string.tmdb_api_key_key),
-                        BuildConfig.TMBDB_API_KEY).build();
+                        BuildConfig.TMBDB_API_KEY)
+                .build();
         URL url = new URL(uri.toString());
         return url;
     }
@@ -76,21 +86,40 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Movies> {
     }
 
     private Movies buildMoviesFromResponse(HttpURLConnection connection) throws IOException, JSONException {
-        InputStream moviesStream = connection.getInputStream();
-        BufferedReader moviesReader = new BufferedReader(new InputStreamReader(moviesStream));
-        String moviesJsonString = buildMoviesJsonString(moviesReader);
+        BufferedReader moviesReader = getResponseReader(connection);
+        String moviesJsonString = buildResponseJsonString(moviesReader);
         JSONObject moviesJson = new JSONObject(moviesJsonString);
         Movies movies = Movies.fromJson(moviesJson);
         return movies;
     }
 
-    private String buildMoviesJsonString(BufferedReader moviesReader) throws IOException {
-        String moviesResponseLine;
-        StringBuilder moviesJsonString = new StringBuilder();
+    @NonNull
+    private BufferedReader getResponseReader(HttpURLConnection connection) throws IOException {
+        InputStream errorStream = connection.getInputStream();
+        return new BufferedReader(new InputStreamReader(errorStream));
+    }
 
-        while ((moviesResponseLine = moviesReader.readLine()) != null)
-            moviesJsonString.append(moviesResponseLine);
+    private Error buildErrorFromResponse(HttpURLConnection connection) throws IOException, JSONException {
+        BufferedReader errorReader = getErrorReader(connection);
+        String errorJsonString = buildResponseJsonString(errorReader);
+        JSONObject errorJson = new JSONObject(errorJsonString);
+        Error error = Error.fromJSON(errorJson);
+        return error;
+    }
 
-        return moviesJsonString.toString();
+    @NonNull
+    private BufferedReader getErrorReader(HttpURLConnection connection) throws IOException {
+        InputStream errorStream = connection.getErrorStream();
+        return new BufferedReader(new InputStreamReader(errorStream));
+    }
+
+    private String buildResponseJsonString(BufferedReader bufferedReader) throws IOException {
+        String responseLine;
+        StringBuilder responseJsonString = new StringBuilder();
+
+        while ((responseLine = bufferedReader.readLine()) != null)
+            responseJsonString.append(responseLine);
+
+        return responseJsonString.toString();
     }
 }
