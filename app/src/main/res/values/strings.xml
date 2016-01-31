@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">PopFlix</string>
     <string name="refresh">refresh</string>
+    <string name="scheme">http</string>
+    <string name="base_url">api.themoviedb.org</string>
+    <string name="three">3</string>
+    <string name="discover">discover</string>
+    <string name="movie">movie</string>
+    <string name="tmdb_api_key_key">api_key</string>
 </resources>

@@ -3,8 +3,6 @@ package net.chiragaggarwal.android.popflix;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 public class MoviesActivity extends AppCompatActivity {
 
@@ -15,18 +13,15 @@ public class MoviesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
         initializeToolbar();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.movies_placeholder, new MoviesFragment())
+                .commit();
     }
 
     private void initializeToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(POP_FLIX);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.movies, menu);
-        return true;
     }
 }
