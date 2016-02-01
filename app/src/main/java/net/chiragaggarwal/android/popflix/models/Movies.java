@@ -43,7 +43,7 @@ public class Movies {
 
     public Movie get(Integer movieIndex) {
         if (isMovieIndexInvalid(movieIndex)) return null;
-        return new Movie(null, null);
+        return this.movies.get(movieIndex);
     }
 
     private boolean isMovieIndexInvalid(Integer movieIndex) {

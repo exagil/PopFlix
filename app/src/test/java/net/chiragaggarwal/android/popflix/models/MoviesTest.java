@@ -22,4 +22,14 @@ public class MoviesTest {
         Movies movies = new Movies(new Movie(null, null), new Movie(null, null));
         assertEquals(null, movies.get(2));
     }
+
+    @Test
+    public void shouldBeAbleToFetchMovieWithValidMovieIndex() {
+        Movie firstMovie = new Movie("first_movie_title", "example_one.jpg");
+        Movie expectedMovie = new Movie("expected_movie_title", "example_expected.jpg");
+        Movie thirdMovie = new Movie("third_movie_title", "example_third.jpg");
+        Movies movies = new Movies(firstMovie, expectedMovie, thirdMovie);
+
+        assertEquals(expectedMovie, movies.get(1));
+    }
 }
