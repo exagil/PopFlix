@@ -36,7 +36,7 @@ public class Movie {
     public boolean equals(Object that) {
         if (that == null) return false;
         if (this.hashCode() == that.hashCode()) return true;
-        return true;
+        return false;
     }
 
     private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
