@@ -36,4 +36,8 @@ public class Movies {
     private void add(Movie movie) {
         this.movies.add(movie);
     }
+
+    public int count() {
+        return 0;
+    }
 }
