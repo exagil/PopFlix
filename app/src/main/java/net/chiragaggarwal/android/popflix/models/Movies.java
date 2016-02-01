@@ -38,6 +38,6 @@ public class Movies {
     }
 
     public int count() {
-        return 0;
+        return this.movies.size();
     }
 }
