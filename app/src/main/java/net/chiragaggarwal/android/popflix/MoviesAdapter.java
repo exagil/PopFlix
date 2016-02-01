@@ -46,10 +46,14 @@ public class MoviesAdapter extends BaseAdapter {
             view = convertView;
         }
         ImageView moviePoster = (ImageView) view.findViewById(R.id.grid_item_movie_poster);
+        setImageOnMoviePoster(movie, moviePoster);
+        return view;
+    }
+
+    private void setImageOnMoviePoster(Movie movie, ImageView moviePoster) {
         Picasso.with(this.context)
                 .load(movie.imageUrlString(this.context))
                 .into(moviePoster);
         moviePoster.setAdjustViewBounds(true);
-        return view;
     }
 }

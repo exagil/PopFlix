@@ -8,4 +8,22 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="movies_placeholder">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">?attr/actionBarSize</item>
+    </style>
+    <style name="grid_item_movie_poster">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="movies_grid">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/app_dark_grey</item>
+        <item name="android:numColumns">2</item>
+        <item name="android:smoothScrollbar">true</item>
+        <item name="android:stretchMode">columnWidth</item>
+    </style>
+
 </resources>

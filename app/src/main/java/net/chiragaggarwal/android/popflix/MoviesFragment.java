@@ -1,8 +1,10 @@
 package net.chiragaggarwal.android.popflix;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +18,7 @@ import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movies;
 
 public class MoviesFragment extends Fragment {
+    private static final String LOG_TAG = "popflix.movies_fragment";
     private GridView moviesGrid;
 
     @Nullable
@@ -58,11 +61,21 @@ public class MoviesFragment extends Fragment {
 
             @Override
             public void onFailure(Error error) {
+                showErrorDialog(error);
             }
 
             @Override
             public void onUnexpectedFailure() {
+                Log.e(LOG_TAG, "Fetching Movies - Unexpected Failure");
             }
         }).execute();
+    }
+
+    private void showErrorDialog(Error error) {
+        new AlertDialog.Builder(getContext())
+                .setTitle(error.statusCode.toString())
+                .setMessage(error.statusMessage)
+                .create()
+                .show();
     }
 }

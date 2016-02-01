@@ -7,8 +7,8 @@ public class Error {
     private static final String STATUS_CODE = "status_code";
     private static final String STATUS_MESSAGE = "status_message";
 
-    private Integer statusCode;
-    private String statusMessage;
+    public Integer statusCode;
+    public String statusMessage;
 
     public Error(Integer statusCode, String statusMessage) {
         this.statusCode = statusCode;

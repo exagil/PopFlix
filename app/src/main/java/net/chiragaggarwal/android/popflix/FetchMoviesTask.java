@@ -31,6 +31,8 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
 
     @Override
     protected Object doInBackground(Void... params) {
+        if (isInternetConnectionNotPresent())
+            return new Error(500, "No Internet Connection Present");
         try {
             URL url = buildFetchMoviesUrl();
             HttpURLConnection connection = ((HttpURLConnection) url.openConnection());
@@ -121,5 +123,10 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
             responseJsonString.append(responseLine);
 
         return responseJsonString.toString();
+    }
+
+    public boolean isInternetConnectionNotPresent() {
+        Utilities utilities = new Utilities(this.context);
+        return !utilities.isInternetConnectionPresent();
     }
 }
