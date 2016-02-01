@@ -44,4 +44,11 @@ public class MovieTest {
         Movie thatMovie = new Movie("example_title_two", "example_poster_path_two");
         assertFalse(thisMovie.equals(thatMovie));
     }
+
+    @Test
+    public void shouldBEqualToAnotherMovieWithSameAttributes() {
+        Movie thisMovie = new Movie("example_title", "example_poster_path");
+        Movie thatMovie = new Movie("example_title", "example_poster_path");
+        assertTrue(thisMovie.equals(thatMovie));
+    }
 }
