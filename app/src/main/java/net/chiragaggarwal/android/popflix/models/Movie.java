@@ -32,6 +32,11 @@ public class Movie {
         return buildImageUrlString(baseImageUrl, defaultImageSize, this.posterPath);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
     private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
         return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
     }
