@@ -33,8 +33,10 @@ public class Movie {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
+    public boolean equals(Object that) {
+        if (that == null) return false;
+        if (this.hashCode() == that.hashCode()) return true;
+        return true;
     }
 
     private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {

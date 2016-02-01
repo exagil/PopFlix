@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,5 +30,11 @@ public class MovieTest {
     public void shouldNotBeEqualToNull() {
         Movie movie = new Movie("example_title", "example_poster_path");
         assertFalse(movie.equals(null));
+    }
+
+    @Test
+    public void shouldBeEqualToItself() {
+        Movie movie = new Movie("example_title", "example_poster_path");
+        assertTrue(movie.equals(movie));
     }
 }
