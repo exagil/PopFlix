@@ -7,4 +7,7 @@
     <string name="discover">discover</string>
     <string name="movie">movie</string>
     <string name="tmdb_api_key_key">api_key</string>
+
+    <string name="base_image_url">http://image.tmdb.org/t/p</string>
+    <string name="default_image_size">w185</string>
 </resources>
