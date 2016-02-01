@@ -40,6 +40,13 @@ public class Movie {
         return (this.originalTitle.equals(thatMovie.originalTitle)) || (this.posterPath.equals(thatMovie.posterPath));
     }
 
+    @Override
+    public int hashCode() {
+        int result = posterPath != null ? posterPath.hashCode() : 0;
+        result = 31 * result + (originalTitle != null ? originalTitle.hashCode() : 0);
+        return result;
+    }
+
     private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
         return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
     }

@@ -64,4 +64,11 @@ public class MovieTest {
         Movie thatMovie = new Movie("example_title", "example_poster_path");
         assertEquals(thatMovie, thisMovie);
     }
+
+    @Test
+    public void shouldHaveHashcodeSameAsThatOfOtherMovieIfBothAreEqual() {
+        Movie thisMovie = new Movie("example_title", "example_poster_path");
+        Movie thatMovie = new Movie("example_title", "example_poster_path");
+        assertEquals(thisMovie.hashCode(), thatMovie.hashCode());
+    }
 }
