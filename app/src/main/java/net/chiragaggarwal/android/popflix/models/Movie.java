@@ -34,7 +34,7 @@ public class Movie {
 
     @Override
     public boolean equals(Object that) {
-        if (that == null) return false;
+        if (that == null || !(that instanceof Movie)) return false;
         if (this.hashCode() == that.hashCode()) return true;
         Movie thatMovie = ((Movie) that);
         return (this.originalTitle.equals(thatMovie.originalTitle)) || (this.posterPath.equals(thatMovie.posterPath));
