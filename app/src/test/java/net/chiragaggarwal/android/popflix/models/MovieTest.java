@@ -57,4 +57,11 @@ public class MovieTest {
         Movie thisMovie = new Movie("example_title", "example_poster_path");
         assertEquals(false, thisMovie.equals(new Object()));
     }
+
+    @Test
+    public void isEqualToMovieCommutatively() {
+        Movie thisMovie = new Movie("example_title", "example_poster_path");
+        Movie thatMovie = new Movie("example_title", "example_poster_path");
+        assertEquals(thatMovie, thisMovie);
+    }
 }
