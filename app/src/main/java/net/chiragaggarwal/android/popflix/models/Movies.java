@@ -40,4 +40,13 @@ public class Movies {
     public int count() {
         return this.movies.size();
     }
+
+    public Movie get(Integer movieIndex) {
+        if (isMovieIndexInvalid(movieIndex)) return null;
+        return new Movie(null, null);
+    }
+
+    private boolean isMovieIndexInvalid(Integer movieIndex) {
+        return (this.movies.size() - 1) < movieIndex;
+    }
 }

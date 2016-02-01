@@ -16,4 +16,10 @@ public class MoviesTest {
         Movies movies = new Movies(new Movie(null, null), new Movie(null, null), new Movie(null, null));
         assertEquals(3, movies.count());
     }
+
+    @Test
+    public void shouldNotBeAbleToFetchMovieWithInvalidMovieIndex() {
+        Movies movies = new Movies(new Movie(null, null), new Movie(null, null));
+        assertEquals(null, movies.get(2));
+    }
 }
