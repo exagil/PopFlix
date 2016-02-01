@@ -47,6 +47,15 @@ public class Movies {
     }
 
     private boolean isMovieIndexInvalid(Integer movieIndex) {
+        return isMovieIndexMoreThanAvailableIndices(movieIndex) ||
+                isMovieIndexNegative(movieIndex);
+    }
+
+    private boolean isMovieIndexMoreThanAvailableIndices(Integer movieIndex) {
         return (this.movies.size() - 1) < movieIndex;
+    }
+
+    private boolean isMovieIndexNegative(Integer movieIndex) {
+        return movieIndex < 0;
     }
 }
