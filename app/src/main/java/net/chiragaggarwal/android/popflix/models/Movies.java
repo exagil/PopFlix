@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Movies {
@@ -22,7 +23,7 @@ public class Movies {
         }
     }
 
-    public static Movies fromJson(JSONObject moviesJson) throws JSONException {
+    public static Movies fromJson(JSONObject moviesJson) throws JSONException, ParseException {
         JSONArray moviesResults = moviesJson.getJSONArray(RESULTS);
         Movies movies = new Movies();
         for (Integer movieIndex = 0; movieIndex < moviesResults.length(); movieIndex++) {

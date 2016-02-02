@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 
 public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
     private final Callback<Movies, Error> callback;
@@ -47,6 +48,8 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
@@ -87,7 +90,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
         return (responseCode / 100) == 2;
     }
 
-    private Movies buildMoviesFromResponse(HttpURLConnection connection) throws IOException, JSONException {
+    private Movies buildMoviesFromResponse(HttpURLConnection connection) throws IOException, JSONException, ParseException {
         BufferedReader moviesReader = getResponseReader(connection);
         String moviesJsonString = buildResponseJsonString(moviesReader);
         JSONObject moviesJson = new JSONObject(moviesJsonString);
