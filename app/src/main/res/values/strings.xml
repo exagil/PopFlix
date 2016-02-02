@@ -10,4 +10,9 @@
 
     <string name="base_image_url">http://image.tmdb.org/t/p</string>
     <string name="default_image_size">w185</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+        in reprehenderit in voluptate
+    </string>
 </resources>

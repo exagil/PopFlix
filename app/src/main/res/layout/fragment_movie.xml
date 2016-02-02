@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/movie_name"
-        style="@style/movie_name"
-        tools:text="Example Movie"/>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/movie_name"
+            style="@style/movie_name"
+            tools:text="Interstellar"/>
+
+        <ImageView
+            android:id="@+id/movie_poster"
+            style="@style/movie_poster"
+            tools:src="@drawable/interstellar_poster"/>
+
+        <TextView
+            android:id="@+id/movie_year"
+            style="@style/movie_year"
+            tools:text="2015"/>
+
+        <TextView
+            android:id="@+id/movie_overview"
+            style="@style/movie_overview"
+            tools:text="@string/lorem"/>
+
+        <TextView
+            android:id="@+id/movie_vote_average"
+            style="@style/movie_vote_average"
+            tools:text="7.36 / 10"/>
+
+    </RelativeLayout>
+</ScrollView>

@@ -75,6 +75,16 @@ public class Movie implements Parcelable {
         return result;
     }
 
+    public String yearString() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this.releaseDate);
+        return String.valueOf(calendar.get(Calendar.YEAR));
+    }
+
+    private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
+        return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -82,8 +92,20 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.posterPath);
         dest.writeString(this.originalTitle);
+        dest.writeString(this.posterPath);
+        dest.writeLong(releaseDate != null ? releaseDate.getTime() : -1);
+        dest.writeString(this.overview);
+        dest.writeValue(this.voteAverage);
+    }
+
+    protected Movie(Parcel in) {
+        this.originalTitle = in.readString();
+        this.posterPath = in.readString();
+        long tmpReleaseDate = in.readLong();
+        this.releaseDate = tmpReleaseDate == -1 ? null : new Date(tmpReleaseDate);
+        this.overview = in.readString();
+        this.voteAverage = (Double) in.readValue(Double.class.getClassLoader());
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -95,19 +117,4 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
-
-    public int year() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(this.releaseDate);
-        return calendar.get(Calendar.YEAR);
-    }
-
-    protected Movie(Parcel in) {
-        this.posterPath = in.readString();
-        this.originalTitle = in.readString();
-    }
-
-    private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
-        return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
-    }
 }

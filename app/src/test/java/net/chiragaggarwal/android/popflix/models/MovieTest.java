@@ -80,6 +80,6 @@ public class MovieTest {
     public void shouldHaveYearAsItsDateYear() throws ParseException {
         Date date = new SimpleDateFormat("dd/MM/yyyy").parse("24/03/2015");
         Movie thisMovie = new Movie("example_title", date, "example_poster_path", 10.10, "example_overview");
-        assertEquals(2015, thisMovie.year());
+        assertEquals(2015, thisMovie.yearString());
     }
 }
