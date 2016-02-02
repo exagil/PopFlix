@@ -6,6 +6,8 @@ import net.chiragaggarwal.android.popflix.R;
 
 import org.junit.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;
@@ -72,5 +74,12 @@ public class MovieTest {
         Movie thisMovie = new Movie("example_title", new Date(), "example_poster_path", 10.10, "example_overview");
         Movie thatMovie = new Movie("example_title", new Date(), "example_poster_path", 10.10, "example_overview");
         assertEquals(thisMovie.hashCode(), thatMovie.hashCode());
+    }
+
+    @Test
+    public void shouldHaveYearAsItsDateYear() throws ParseException {
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse("24/03/2015");
+        Movie thisMovie = new Movie("example_title", date, "example_poster_path", 10.10, "example_overview");
+        assertEquals(2015, thisMovie.year());
     }
 }

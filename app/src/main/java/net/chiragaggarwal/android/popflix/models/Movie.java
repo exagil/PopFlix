@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Movie implements Parcelable {
@@ -74,10 +75,6 @@ public class Movie implements Parcelable {
         return result;
     }
 
-    private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
-        return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -99,8 +96,18 @@ public class Movie implements Parcelable {
         }
     };
 
+    public int year() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this.releaseDate);
+        return calendar.get(Calendar.YEAR);
+    }
+
     protected Movie(Parcel in) {
         this.posterPath = in.readString();
         this.originalTitle = in.readString();
+    }
+
+    private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
+        return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
     }
 }
