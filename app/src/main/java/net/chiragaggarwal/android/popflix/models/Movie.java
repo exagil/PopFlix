@@ -17,7 +17,7 @@ public class Movie implements Parcelable {
     private static final String SLASH = "/";
 
     private final String posterPath;
-    private final String originalTitle;
+    public final String originalTitle;
 
     public Movie(String originalTitle, String posterPath) {
         this.originalTitle = originalTitle;
