@@ -1,4 +1,4 @@
-package net.chiragaggarwal.android.popflix;
+package net.chiragaggarwal.android.popflix.presentation;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Movie;
 import net.chiragaggarwal.android.popflix.models.Movies;
 

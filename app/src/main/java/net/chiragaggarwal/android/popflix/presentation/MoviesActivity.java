@@ -1,8 +1,10 @@
-package net.chiragaggarwal.android.popflix;
+package net.chiragaggarwal.android.popflix.presentation;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import net.chiragaggarwal.android.popflix.R;
 
 public class MoviesActivity extends AppCompatActivity {
 

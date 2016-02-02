@@ -1,4 +1,4 @@
-package net.chiragaggarwal.android.popflix;
+package net.chiragaggarwal.android.popflix.presentation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Movie;
 
 public class DetailsFragment extends Fragment {
     private static final String DIVIDED_BY_TEN = " / 10";
-    
+
     private TextView movieName;
     private ImageView moviePoster;
     private TextView movieYear;

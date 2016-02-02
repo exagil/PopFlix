@@ -1,10 +1,13 @@
-package net.chiragaggarwal.android.popflix;
+package net.chiragaggarwal.android.popflix.network;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import net.chiragaggarwal.android.popflix.BuildConfig;
+import net.chiragaggarwal.android.popflix.R;
+import net.chiragaggarwal.android.popflix.Utilities;
 import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movies;

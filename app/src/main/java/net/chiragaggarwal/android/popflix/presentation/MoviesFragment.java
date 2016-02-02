@@ -1,4 +1,4 @@
-package net.chiragaggarwal.android.popflix;
+package net.chiragaggarwal.android.popflix.presentation;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import net.chiragaggarwal.android.popflix.network.FetchMoviesTask;
+import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movie;
