@@ -22,6 +22,8 @@ public class DetailsActivity extends AppCompatActivity {
     private void initializeToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left_white_24dp);
     }
 
     private Movie getMovieFromIntentExtras() {
