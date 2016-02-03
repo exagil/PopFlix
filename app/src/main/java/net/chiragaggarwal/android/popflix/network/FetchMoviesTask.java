@@ -25,10 +25,12 @@ import java.net.URL;
 import java.text.ParseException;
 
 public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
-    private final Callback<Movies, Error> callback;
-    private final Context context;
+    private Callback<Movies, Error> callback;
+    private Context context;
+    private String sortOrder;
 
-    public FetchMoviesTask(Context context, Callback<Movies, Error> callback) {
+    public FetchMoviesTask(String sortOrder, Context context, Callback<Movies, Error> callback) {
+        this.sortOrder = sortOrder;
         this.context = context;
         this.callback = callback;
     }
@@ -78,6 +80,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
                 .path(context.getString(R.string.three))
                 .appendPath(context.getString(R.string.discover))
                 .appendPath(context.getString(R.string.movie))
+                .appendQueryParameter(context.getString(R.string.sort_by), this.sortOrder)
                 .appendQueryParameter(context.getString(R.string.tmdb_api_key_key),
                         BuildConfig.TMBDB_API_KEY)
                 .build();

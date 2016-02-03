@@ -2,7 +2,9 @@ package net.chiragaggarwal.android.popflix.presentation;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,6 +28,13 @@ public class MoviesFragment extends Fragment {
     private static final String LOG_TAG = "popflix.movies_fragment";
     private GridView moviesGrid;
     private MoviesAdapter moviesAdapter;
+    private SharedPreferences sharedPreferences;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+    }
 
     @Nullable
     @Override
@@ -74,28 +83,36 @@ public class MoviesFragment extends Fragment {
     }
 
     private void fetchMovies() {
-        new FetchMoviesTask(getContext(), new Callback<Movies, Error>() {
-            @Override
-            public void onSuccess(Movies movies) {
-                moviesAdapter = new MoviesAdapter(getContext(), movies);
-                moviesGrid.setAdapter(moviesAdapter);
-            }
+        new FetchMoviesTask(
+                sortOrder(),
+                getContext(),
+                new Callback<Movies, Error>() {
+                    @Override
+                    public void onSuccess(Movies movies) {
+                        moviesAdapter = new MoviesAdapter(getContext(), movies);
+                        moviesGrid.setAdapter(moviesAdapter);
+                    }
 
-            @Override
-            public void onFailure(Error error) {
-                showErrorDialog(error);
-            }
+                    @Override
+                    public void onFailure(Error error) {
+                        showErrorDialog(error);
+                    }
 
-            @Override
-            public void onUnexpectedFailure() {
-                Log.e(LOG_TAG, "Fetching Movies - Unexpected Failure");
-            }
-        }).execute();
+                    @Override
+                    public void onUnexpectedFailure() {
+                        Log.e(LOG_TAG, "Fetching Movies - Unexpected Failure");
+                    }
+                }).execute();
     }
 
     private void launchSettings() {
         Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
         startActivity(settingsIntent);
+    }
+
+    private String sortOrder() {
+        String sortOrderPreferenceKey = getString(R.string.preference_sort_order_key);
+        return this.sharedPreferences.getString(sortOrderPreferenceKey, "");
     }
 
     private void showErrorDialog(Error error) {

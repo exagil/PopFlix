@@ -42,8 +42,7 @@ public class Movie implements Parcelable {
     public static Movie fromJson(JSONObject movieJsonObject) throws JSONException, ParseException {
         String originalTitle = movieJsonObject.getString(ORIGINAL_TITLE);
         String posterPath = movieJsonObject.getString(POSTER_PATH);
-        Date releaseDate = new SimpleDateFormat(RELEASE_DATE_PATTERN).
-                parse(movieJsonObject.getString(RELEASE_DATE));
+        Date releaseDate = parseReleaseDate(movieJsonObject);
         String overview = movieJsonObject.getString(OVERVIEW);
         Double voteAverage = movieJsonObject.getDouble(VOTE_AVERAGE);
         return new Movie(originalTitle, releaseDate, posterPath, voteAverage, overview);
@@ -76,9 +75,16 @@ public class Movie implements Parcelable {
     }
 
     public String yearString() {
+        if (this.releaseDate == null) return null;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(this.releaseDate);
         return String.valueOf(calendar.get(Calendar.YEAR));
+    }
+
+    private static Date parseReleaseDate(JSONObject movieJsonObject) throws ParseException, JSONException {
+        String releaseDateString = movieJsonObject.getString(RELEASE_DATE);
+        if (releaseDateString.isEmpty()) return null;
+        return new SimpleDateFormat(RELEASE_DATE_PATTERN).parse(releaseDateString);
     }
 
     private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
