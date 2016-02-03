@@ -66,11 +66,18 @@
     <style name="movie_poster" parent="@style/movie_detail_widget_common">
         <item name="android:layout_below">@id/movie_name</item>
     </style>
+
     <style name="movie_overview" parent="@style/movie_detail_widget_common">
         <item name="android:layout_below">@id/movie_poster</item>
     </style>
+
     <style name="movie_vote_average" parent="@style/movie_detail_widget_common_small">
         <item name="android:layout_below">@id/movie_year</item>
         <item name="android:layout_toRightOf">@id/movie_poster</item>
+    </style>
+
+    <style name="PreferenceTheme">
+        <item name="android:background">@color/app_dark_grey</item>
+        <item name="android:textColorSecondary">@color/white</item>
     </style>
 </resources>

@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".presentation.DetailsActivity">
         </activity>
-        <activity android:name=".presentation.SettingsActivity">
+        <activity android:name=".presentation.SettingsActivity"
+                  android:theme="@style/PreferenceTheme">
         </activity>
     </application>
 
