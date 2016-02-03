@@ -9,4 +9,7 @@ Build Instructions (Mac OS X)
   - SDK Tools with support for API 23
 - Install Genymotion by following this tutorial
 - Start Genymotion Emulator
+- In the root directory of the project, create a `build.properties` file with your API key
+  `TMBDB_API_KEY=YOUR_API_KEY`
 - Run the App
+
