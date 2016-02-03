@@ -1,6 +1,7 @@
 package net.chiragaggarwal.android.popflix.presentation;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -15,6 +16,7 @@ public class MoviesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
         initializeToolbar();
+        initializePreferences();
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.movies_placeholder, new MoviesFragment())
@@ -25,5 +27,9 @@ public class MoviesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.default_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(POP_FLIX);
+    }
+
+    private void initializePreferences() {
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
     }
 }

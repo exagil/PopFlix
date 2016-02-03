@@ -15,12 +15,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import net.chiragaggarwal.android.popflix.network.FetchMoviesTask;
 import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movie;
 import net.chiragaggarwal.android.popflix.models.Movies;
+import net.chiragaggarwal.android.popflix.network.FetchMoviesTask;
 
 public class MoviesFragment extends Fragment {
     private static final String LOG_TAG = "popflix.movies_fragment";
@@ -49,6 +49,9 @@ public class MoviesFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.movies_action_refresh:
                 fetchMovies();
+                break;
+            case R.id.movies_action_settings:
+                launchSettings();
                 break;
         }
         return false;
@@ -88,6 +91,11 @@ public class MoviesFragment extends Fragment {
                 Log.e(LOG_TAG, "Fetching Movies - Unexpected Failure");
             }
         }).execute();
+    }
+
+    private void launchSettings() {
+        Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 
     private void showErrorDialog(Error error) {

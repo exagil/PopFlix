@@ -16,4 +16,11 @@
         exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
         in reprehenderit in voluptate
     </string>
+
+    <string name="preference_sort_order_most_popular_entry">Most Popular</string>
+    <string name="preference_sort_order_most_popular_entry_value">popularity.desc</string>
+    <string name="preference_sort_order_highest_rated_entry">Highest Rated</string>
+    <string name="preference_sort_order_highest_rated_entry_value">vote_average.desc</string>
+    <string name="preference_sort_order_title">Sort Order</string>
+    <string name="preference_sort_order_key">preference_sort_order</string>
 </resources>
