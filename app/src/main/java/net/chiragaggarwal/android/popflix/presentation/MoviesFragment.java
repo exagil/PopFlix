@@ -34,6 +34,7 @@ public class MoviesFragment extends Fragment {
     public void onStart() {
         super.onStart();
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        fetchMovies();
     }
 
     @Nullable
@@ -56,9 +57,6 @@ public class MoviesFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.movies_action_refresh:
-                fetchMovies();
-                break;
             case R.id.movies_action_settings:
                 launchSettings();
                 break;
