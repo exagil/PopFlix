@@ -1,6 +1,7 @@
 package net.chiragaggarwal.android.popflix.presentation;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,6 +30,21 @@ public class MoviesFragment extends Fragment {
     private GridView moviesGrid;
     private MoviesAdapter moviesAdapter;
     private SharedPreferences sharedPreferences;
+    private OnMovieSelectedListener onMovieSelectedListener;
+
+    public interface OnMovieSelectedListener {
+        void onMovieSelected(Movie movie);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            onMovieSelectedListener = ((OnMovieSelectedListener) getActivity());
+        } catch (ClassCastException exception) {
+            throw new ClassCastException(getActivity().toString() + " must implement OnMovieSelectedListener");
+        }
+    }
 
     @Override
     public void onStart() {
@@ -41,6 +57,7 @@ public class MoviesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
+        onMovieSelectedListener = ((OnMovieSelectedListener) getActivity());
         setHasOptionsMenu(true);
         initializeViews(view);
         setOnItemClickListenerForMovieGrid();
@@ -73,9 +90,7 @@ public class MoviesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie movie = moviesAdapter.getItem(position);
-                Intent movieIntent = new Intent(getActivity(), DetailsActivity.class);
-                movieIntent.putExtra(Movie.TAG, movie);
-                startActivity(movieIntent);
+                onMovieSelectedListener.onMovieSelected(movie);
             }
         });
     }

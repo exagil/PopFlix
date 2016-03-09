@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
+        style="@style/container_land"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:weightSum="2"
+        tools:context=".presentation.MoviesActivity">
+
+        <FrameLayout
+            android:id="@+id/movies_placeholder"
+            style="@style/movies_placeholder_land"/>
+
+        <FrameLayout
+            android:id="@+id/movie_placeholder"
+            style="@style/movie_placeholder_land"/>
+
+    </LinearLayout>
+
+</FrameLayout>
