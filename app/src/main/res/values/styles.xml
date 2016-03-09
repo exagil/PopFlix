@@ -30,6 +30,10 @@
         <item name="android:stretchMode">columnWidth</item>
     </style>
 
+    <style name="movies_grid_tablet" parent="movies_grid">
+        <item name="android:numColumns">3</item>
+    </style>
+
     <style name="movie_name">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -79,5 +83,21 @@
     <style name="PreferenceTheme">
         <item name="android:background">@color/app_dark_grey</item>
         <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+    <style name="movies_placeholder_land">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/background_grey</item>
+    </style>
+
+    <style name="movie_placeholder_land" parent="movies_placeholder_land">
+    </style>
+
+    <style name="container_land">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">?attr/actionBarSize</item>
     </style>
 </resources>

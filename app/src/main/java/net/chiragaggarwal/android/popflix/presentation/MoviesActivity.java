@@ -18,9 +18,7 @@ public class MoviesActivity extends AppCompatActivity {
         initializeToolbar();
         initializePreferences();
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.movies_placeholder, new MoviesFragment())
-                .commit();
+        showMovies();
     }
 
     private void initializeToolbar() {
@@ -31,5 +29,11 @@ public class MoviesActivity extends AppCompatActivity {
 
     private void initializePreferences() {
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+    }
+
+    private void showMovies() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.movies_placeholder, new MoviesFragment())
+                .commit();
     }
 }
