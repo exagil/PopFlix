@@ -24,14 +24,17 @@ public class Movie implements Parcelable {
     private static final String RELEASE_DATE = "release_date";
     private static final String OVERVIEW = "overview";
     private static final String VOTE_AVERAGE = "vote_average";
+    private static final String ID = "id";
 
+    private Integer id;
     public String originalTitle;
     public String posterPath;
     public Date releaseDate;
     public String overview;
     public Double voteAverage;
 
-    public Movie(String originalTitle, Date releaseDate, String posterPath, Double voteAverage, String overview) {
+    public Movie(Integer id, String originalTitle, Date releaseDate, String posterPath, Double voteAverage, String overview) {
+        this.id = id;
         this.originalTitle = originalTitle;
         this.posterPath = posterPath;
         this.releaseDate = releaseDate;
@@ -40,12 +43,13 @@ public class Movie implements Parcelable {
     }
 
     public static Movie fromJson(JSONObject movieJsonObject) throws JSONException, ParseException {
+        Integer id = movieJsonObject.getInt(ID);
         String originalTitle = movieJsonObject.getString(ORIGINAL_TITLE);
         String posterPath = movieJsonObject.getString(POSTER_PATH);
         Date releaseDate = parseReleaseDate(movieJsonObject);
         String overview = movieJsonObject.getString(OVERVIEW);
         Double voteAverage = movieJsonObject.getDouble(VOTE_AVERAGE);
-        return new Movie(originalTitle, releaseDate, posterPath, voteAverage, overview);
+        return new Movie(id, originalTitle, releaseDate, posterPath, voteAverage, overview);
     }
 
     public String imageUrlString(Context context) {
@@ -55,22 +59,33 @@ public class Movie implements Parcelable {
     }
 
     @Override
-    public boolean equals(Object that) {
-        if (that == null || !(that instanceof Movie)) return false;
-        if (this.hashCode() == that.hashCode()) return true;
-        Movie thatMovie = ((Movie) that);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        return (this.originalTitle.equals(thatMovie.originalTitle)) &&
-                (this.posterPath.equals(thatMovie.posterPath)) &&
-                ((this.releaseDate.compareTo(thatMovie.releaseDate)) == 0) &&
-                (this.voteAverage == thatMovie.voteAverage) &&
-                (this.overview.equals(thatMovie.overview));
+        Movie movie = (Movie) o;
+
+        if (id != null ? !id.equals(movie.id) : movie.id != null) return false;
+        if (originalTitle != null ? !originalTitle.equals(movie.originalTitle) : movie.originalTitle != null)
+            return false;
+        if (posterPath != null ? !posterPath.equals(movie.posterPath) : movie.posterPath != null)
+            return false;
+        if (releaseDate != null ? !releaseDate.equals(movie.releaseDate) : movie.releaseDate != null)
+            return false;
+        if (overview != null ? !overview.equals(movie.overview) : movie.overview != null)
+            return false;
+        return !(voteAverage != null ? !voteAverage.equals(movie.voteAverage) : movie.voteAverage != null);
+
     }
 
     @Override
     public int hashCode() {
-        int result = posterPath != null ? posterPath.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (originalTitle != null ? originalTitle.hashCode() : 0);
+        result = 31 * result + (posterPath != null ? posterPath.hashCode() : 0);
+        result = 31 * result + (releaseDate != null ? releaseDate.hashCode() : 0);
+        result = 31 * result + (overview != null ? overview.hashCode() : 0);
+        result = 31 * result + (voteAverage != null ? voteAverage.hashCode() : 0);
         return result;
     }
 
@@ -98,6 +113,7 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
         dest.writeString(this.originalTitle);
         dest.writeString(this.posterPath);
         dest.writeLong(releaseDate != null ? releaseDate.getTime() : -1);
@@ -106,6 +122,7 @@ public class Movie implements Parcelable {
     }
 
     protected Movie(Parcel in) {
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.originalTitle = in.readString();
         this.posterPath = in.readString();
         long tmpReleaseDate = in.readLong();
