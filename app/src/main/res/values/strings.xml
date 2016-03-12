@@ -27,4 +27,21 @@
     <string name="error_no_internet_connection">No Internet Connection Present</string>
     <string name="videos">videos</string>
     <string name="trailers_heading">Trailers:</string>
+    <string name="reviews">reviews</string>
+    <string name="sample_review">Another grandiloquent movie from Christoper Nolan.\nThe cast is
+        good, and McConaughey performs a role made for himself. The photography is very nice but the
+        movie commits all the same mistakes than previous Nolan\'s movies. I think mistakes but it
+        may be that they are the points Nolan fans enjoy the most ...\nThe story makes you believe
+        it is a realy deeply thought plot but, in the end, it has so basic mistakes and stupidities
+        that make it nonsensical.There is a general ambience of every moment being epic; deep,
+        solemn and smart dialogues but, at some point our highly trained engineer and pilot behaves
+        really stupidly.To keep the mentioned constant feeling of being in an epic moment, Nolan
+        uses a thumping and insistent soundtrack. As it is not a moment, but a 3h movie, it is
+        really tiresome.\n\nAll in all, the movie is OK but you can only think this is a great movie
+        if you are a real Nolan fan.
+    </string>
+    <string name="sample_author">Andres Gomez says...</string>
+    <string name="error_cannot_load_videos">Oops! unable to load videos</string>
+    <string name="error_cannot_load_reviews">Oops! unable to load reviews</string>
+    <string name="text_reviews_heading">Reviews:</string>
 </resources>

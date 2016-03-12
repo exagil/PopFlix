@@ -61,6 +61,11 @@
         <item name="android:layout_marginRight">20dp</item>
     </style>
 
+    <style name="movie_detail_widget_common_minimal" parent="movie_detail_widget_common_small">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
     <style name="movie_year" parent="@style/movie_detail_widget_common">
         <item name="android:layout_below">@id/movie_name</item>
         <item name="android:layout_toRightOf">@id/movie_poster</item>
@@ -104,27 +109,74 @@
     <style name="movie_trailer_heading" parent="movie_detail_widget_common">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_below">@id/movie_overview</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/background_grey</item>
+        <item name="android:layout_below">@id/movie_overview</item>
     </style>
 
     <style name="movie_videos_list" parent="movie_detail_widget_common_small">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_below">@id/trailers_heading</item>
+        <item name="android:layout_below">@id/text_trailers_heading</item>
         <item name="android:visibility">gone</item>
     </style>
 
     <style name="progressbar_videos" parent="movie_detail_widget_common_small">
-        <item name="android:layout_below">@id/trailers_heading</item>
+        <item name="android:layout_below">@id/text_trailers_heading</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:visibility">gone</item>
     </style>
+
     <style name="text_video_error_message" parent="movie_detail_widget_common_small">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_below">@id/trailers_heading</item>
+        <item name="android:layout_below">@id/text_trailers_heading</item>
         <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="text_review_author" parent="movie_detail_widget_common_minimal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/background_grey</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_below">@id/layout_content_trailers</item>
+    </style>
+
+    <style name="text_review_content" parent="movie_detail_widget_common_small">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:layout_below">@id/text_review_author</item>
+    </style>
+
+    <style name="layout_content_trailers" parent="movie_detail_widget_common_minimal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/text_trailers_heading</item>
+    </style>
+
+    <style name="layout_content_reviews" parent="layout_content_trailers">
+        <item name="android:layout_below">@id/text_reviews_heading</item>
+    </style>
+
+    <style name="list_reviews" parent="movie_videos_list">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_below">@id/text_reviews_heading</item>
+    </style>
+
+    <style name="progressbar_reviews" parent="progressbar_videos">
+        <item name="android:layout_below">@id/text_reviews_heading</item>
+    </style>
+
+    <style name="text_reviews_error_message" parent="text_video_error_message">
+        <item name="android:layout_below">@id/text_reviews_heading</item>
+    </style>
+
+    <style name="movie_reviews_heading" parent="movie_trailer_heading">
+        <item name="android:layout_below">@id/layout_content_trailers</item>
     </style>
 </resources>

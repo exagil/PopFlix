@@ -27,8 +27,10 @@ import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movie;
+import net.chiragaggarwal.android.popflix.models.Reviews;
 import net.chiragaggarwal.android.popflix.models.Video;
 import net.chiragaggarwal.android.popflix.models.Videos;
+import net.chiragaggarwal.android.popflix.network.FetchReviewsTask;
 import net.chiragaggarwal.android.popflix.network.FetchVideosTask;
 
 import static android.widget.AdapterView.OnItemClickListener;
@@ -46,6 +48,10 @@ public class DetailsFragment extends Fragment {
     private ProgressBar videoLoadingProgressBar;
     private TextView textVideoErrorMessage;
     private MovieVideosAdapter movieVideosAdapter;
+    private ProgressBar progressbarReviews;
+    private ListView listReviews;
+    private TextView textReviewsErrorMessage;
+    private MovieReviewsAdapter movieReviewsAdapter;
 
     @Nullable
     @Override
@@ -56,6 +62,7 @@ public class DetailsFragment extends Fragment {
         initializeViews(view);
         showDetailsFor(movie);
         loadVideosFor(movie);
+        loadReviewsFor(movie);
         return view;
     }
 
@@ -88,6 +95,9 @@ public class DetailsFragment extends Fragment {
         this.listVideos = (ListView) view.findViewById(R.id.list_videos);
         this.videoLoadingProgressBar = (ProgressBar) view.findViewById(R.id.progressbar_videos);
         this.textVideoErrorMessage = ((TextView) view.findViewById(R.id.text_video_error_message));
+        this.listReviews = ((ListView) view.findViewById(R.id.list_reviews));
+        this.progressbarReviews = ((ProgressBar) view.findViewById(R.id.progressbar_reviews));
+        this.textReviewsErrorMessage = ((TextView) view.findViewById(R.id.text_reviews_error_message));
     }
 
     private void showDetailsFor(Movie movie) {
@@ -117,12 +127,39 @@ public class DetailsFragment extends Fragment {
                     @Override
                     public void onFailure(Error error) {
                         stopVideoLoadingProgressBar();
-                        showVideoLoadingFailureError(error.statusMessage);
+                        showVideoLoadingFailureError();
                     }
 
                     @Override
                     public void onUnexpectedFailure() {
                         Log.e(LOG_TAG, "Fetching Videos - Unexpected Failure");
+                    }
+                }).execute();
+    }
+
+    private void loadReviewsFor(Movie movie) {
+        startReviewsLoadingProgressBar();
+        Context context = getContext();
+        new FetchReviewsTask(movie.idString(),
+                context,
+                new NetworkUtilities(context),
+                new Callback<Reviews, Error>() {
+
+                    @Override
+                    public void onSuccess(Reviews reviews) {
+                        stopReviewsLoadingProgressBar();
+                        showReviews(reviews);
+                    }
+
+                    @Override
+                    public void onFailure(Error error) {
+                        stopReviewsLoadingProgressBar();
+                        showReviewsLoadingFailureError();
+                    }
+
+                    @Override
+                    public void onUnexpectedFailure() {
+                        Log.e(LOG_TAG, "Fetching Reviews - Unexpected Failure");
                     }
                 }).execute();
     }
@@ -167,8 +204,29 @@ public class DetailsFragment extends Fragment {
         };
     }
 
-    private void showVideoLoadingFailureError(String message) {
+    private void showVideoLoadingFailureError() {
         this.textVideoErrorMessage.setVisibility(TextView.VISIBLE);
-        this.textVideoErrorMessage.setText(message);
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private void startReviewsLoadingProgressBar() {
+        this.progressbarReviews.setVisibility(ProgressBar.VISIBLE);
+        this.progressbarReviews.animate().start();
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private void stopReviewsLoadingProgressBar() {
+        this.progressbarReviews.animate().cancel();
+        this.progressbarReviews.setVisibility(ProgressBar.INVISIBLE);
+    }
+
+    private void showReviews(Reviews reviews) {
+        this.movieReviewsAdapter = new MovieReviewsAdapter(reviews, getContext());
+        this.listReviews.setVisibility(ListView.VISIBLE);
+        this.listReviews.setAdapter(movieReviewsAdapter);
+    }
+
+    private void showReviewsLoadingFailureError() {
+        this.textReviewsErrorMessage.setVisibility(TextView.VISIBLE);
     }
 }
