@@ -19,10 +19,10 @@ public class Video {
     private String name;
     private String website;
     private String type;
-    private Integer videoIndex;
+    private Integer videoPosition;
 
     public Video(String id, String languageCode, String countryCode, String key, String name,
-                 String website, String type, Integer videoIndex) {
+                 String website, String type, Integer videoPosition) {
 
         this.id = id;
         this.languageCode = languageCode;
@@ -31,7 +31,7 @@ public class Video {
         this.name = name;
         this.website = website;
         this.type = type;
-        this.videoIndex = videoIndex;
+        this.videoPosition = videoPosition;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Video {
                 this.name.equals(thatVideo.name) &&
                 this.website.equals(thatVideo.website) &&
                 this.type.equals(thatVideo.type) &&
-                this.videoIndex.equals(thatVideo.videoIndex);
+                this.videoPosition.equals(thatVideo.videoPosition);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Video {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (website != null ? website.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (videoIndex != null ? videoIndex.hashCode() : 0);
+        result = 31 * result + (videoPosition != null ? videoPosition.hashCode() : 0);
         return result;
     }
 
@@ -75,8 +75,8 @@ public class Video {
 
     public String formattedName() {
         String formattedName;
-        if (isNamePresent()) formattedName = this.name + SPACE + this.videoIndex;
-        else formattedName = this.videoIndex.toString();
+        if (isNamePresent()) formattedName = this.name + SPACE + this.videoPosition;
+        else formattedName = this.videoPosition.toString();
         return formattedName;
     }
 

@@ -100,4 +100,31 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginTop">?attr/actionBarSize</item>
     </style>
+
+    <style name="movie_trailer_heading" parent="movie_detail_widget_common">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/movie_overview</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="movie_videos_list" parent="movie_detail_widget_common_small">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/trailers_heading</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="progressbar_videos" parent="movie_detail_widget_common_small">
+        <item name="android:layout_below">@id/trailers_heading</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="text_video_error_message" parent="movie_detail_widget_common_small">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_below">@id/trailers_heading</item>
+        <item name="android:visibility">gone</item>
+    </style>
 </resources>
