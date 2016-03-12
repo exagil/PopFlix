@@ -3,7 +3,6 @@ package net.chiragaggarwal.android.popflix.network;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 
 import net.chiragaggarwal.android.popflix.BuildConfig;
 import net.chiragaggarwal.android.popflix.NetworkUtilities;
@@ -15,10 +14,7 @@ import net.chiragaggarwal.android.popflix.models.Movies;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -92,40 +88,14 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
     }
 
     private Movies buildMoviesFromResponse(HttpURLConnection connection) throws IOException, JSONException, ParseException {
-        BufferedReader moviesReader = getResponseReader(connection);
-        String moviesJsonString = buildResponseJsonString(moviesReader);
-        JSONObject moviesJson = new JSONObject(moviesJsonString);
+        JSONObject moviesJson = new JsonResponseDeserializer(connection).buildSuccessfulResponseJsonObject();
         Movies movies = Movies.fromJson(moviesJson);
         return movies;
     }
 
-    @NonNull
-    private BufferedReader getResponseReader(HttpURLConnection connection) throws IOException {
-        InputStream errorStream = connection.getInputStream();
-        return new BufferedReader(new InputStreamReader(errorStream));
-    }
-
     private Error buildErrorFromResponse(HttpURLConnection connection) throws IOException, JSONException {
-        BufferedReader errorReader = getErrorReader(connection);
-        String errorJsonString = buildResponseJsonString(errorReader);
-        JSONObject errorJson = new JSONObject(errorJsonString);
+        JSONObject errorJson = new JsonResponseDeserializer(connection).buildErrorJsonObject();
         Error error = Error.fromJSON(errorJson);
         return error;
-    }
-
-    @NonNull
-    private BufferedReader getErrorReader(HttpURLConnection connection) throws IOException {
-        InputStream errorStream = connection.getErrorStream();
-        return new BufferedReader(new InputStreamReader(errorStream));
-    }
-
-    private String buildResponseJsonString(BufferedReader bufferedReader) throws IOException {
-        String responseLine;
-        StringBuilder responseJsonString = new StringBuilder();
-
-        while ((responseLine = bufferedReader.readLine()) != null)
-            responseJsonString.append(responseLine);
-
-        return responseJsonString.toString();
     }
 }
