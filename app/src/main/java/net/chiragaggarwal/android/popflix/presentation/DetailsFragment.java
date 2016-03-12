@@ -2,6 +2,7 @@ package net.chiragaggarwal.android.popflix.presentation;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,8 +27,11 @@ import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movie;
+import net.chiragaggarwal.android.popflix.models.Video;
 import net.chiragaggarwal.android.popflix.models.Videos;
 import net.chiragaggarwal.android.popflix.network.FetchVideosTask;
+
+import static android.widget.AdapterView.OnItemClickListener;
 
 public class DetailsFragment extends Fragment {
     private static final String DIVIDED_BY_TEN = " / 10";
@@ -40,6 +45,7 @@ public class DetailsFragment extends Fragment {
     private ListView listVideos;
     private ProgressBar videoLoadingProgressBar;
     private TextView textVideoErrorMessage;
+    private MovieVideosAdapter movieVideosAdapter;
 
     @Nullable
     @Override
@@ -104,6 +110,8 @@ public class DetailsFragment extends Fragment {
                     public void onSuccess(Videos videos) {
                         stopVideoLoadingProgressBar();
                         showVideos(videos);
+                        OnItemClickListener videoListOnItemClickListener = buildOnItemClickListenerForVideosList();
+                        setOnItemClickListenerForVideosList(videoListOnItemClickListener);
                     }
 
                     @Override
@@ -138,9 +146,25 @@ public class DetailsFragment extends Fragment {
     }
 
     private void showVideos(Videos videos) {
-        MovieVideosAdapter movieVideosAdapter = new MovieVideosAdapter(videos, getContext());
+        this.movieVideosAdapter = new MovieVideosAdapter(videos, getContext());
         this.listVideos.setVisibility(ListView.VISIBLE);
         this.listVideos.setAdapter(movieVideosAdapter);
+    }
+
+    private void setOnItemClickListenerForVideosList(OnItemClickListener onItemClickListenerForVideosList) {
+        this.listVideos.setOnItemClickListener(onItemClickListenerForVideosList);
+    }
+
+    private OnItemClickListener buildOnItemClickListenerForVideosList() {
+        return new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Video video = movieVideosAdapter.getItem(position);
+                Intent viewVideoIntent = new Intent(Intent.ACTION_VIEW, video.getYouTubeUri());
+                if (viewVideoIntent.resolveActivity(getContext().getPackageManager()) != null)
+                    startActivity(viewVideoIntent);
+            }
+        };
     }
 
     private void showVideoLoadingFailureError(String message) {
