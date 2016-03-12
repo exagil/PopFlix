@@ -19,7 +19,7 @@ public class Videos {
         Videos videos = new Videos();
         for (Integer videoIndex = 0; videoIndex < videosResults.length(); videoIndex++) {
             JSONObject videoJsonObject = videosResults.getJSONObject(videoIndex);
-            Video video = Video.fromJson(videoJsonObject);
+            Video video = Video.fromJson(videoJsonObject, videoIndex);
             videos.add(video);
         }
         return videos;

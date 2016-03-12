@@ -11,6 +11,7 @@ public class Video {
     private static final String VIDEO_NAME = "name";
     private static final String VIDEO_HOST_WEBSITE = "site";
     private static final String TYPE = "type";
+    private static final String SPACE = " ";
     private String id;
     private String languageCode;
     private String countryCode;
@@ -18,9 +19,10 @@ public class Video {
     private String name;
     private String website;
     private String type;
+    private Integer videoIndex;
 
     public Video(String id, String languageCode, String countryCode, String key, String name,
-                 String website, String type) {
+                 String website, String type, Integer videoIndex) {
 
         this.id = id;
         this.languageCode = languageCode;
@@ -29,6 +31,7 @@ public class Video {
         this.name = name;
         this.website = website;
         this.type = type;
+        this.videoIndex = videoIndex;
     }
 
     @Override
@@ -41,7 +44,8 @@ public class Video {
                 this.key.equals(thatVideo.key) &&
                 this.name.equals(thatVideo.name) &&
                 this.website.equals(thatVideo.website) &&
-                this.type.equals(thatVideo.type);
+                this.type.equals(thatVideo.type) &&
+                this.videoIndex.equals(thatVideo.videoIndex);
     }
 
     @Override
@@ -53,10 +57,11 @@ public class Video {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (website != null ? website.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (videoIndex != null ? videoIndex.hashCode() : 0);
         return result;
     }
 
-    public static Video fromJson(JSONObject videoJsonObject) throws JSONException {
+    public static Video fromJson(JSONObject videoJsonObject, Integer videoIndex) throws JSONException {
         String id = videoJsonObject.getString(ID);
         String languageCode = videoJsonObject.getString(LANGUAGE_CODE);
         String countryCode = videoJsonObject.getString(COUNTRY_CODE);
@@ -65,6 +70,17 @@ public class Video {
         String website = videoJsonObject.getString(VIDEO_HOST_WEBSITE);
         String type = videoJsonObject.getString(TYPE);
 
-        return new Video(id, languageCode, countryCode, key, name, website, type);
+        return new Video(id, languageCode, countryCode, key, name, website, type, videoIndex);
+    }
+
+    public String formattedName() {
+        String formattedName;
+        if (isNamePresent()) formattedName = this.name + SPACE + this.videoIndex;
+        else formattedName = this.videoIndex.toString();
+        return formattedName;
+    }
+
+    private boolean isNamePresent() {
+        return this.name != null;
     }
 }
