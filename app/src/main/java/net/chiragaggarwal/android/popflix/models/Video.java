@@ -26,7 +26,14 @@ public class Video {
     @Override
     public boolean equals(Object thatVideoObject) {
         if (thatVideoObject == null || !(thatVideoObject instanceof Video)) return false;
-        return true;
+        Video thatVideo = (Video) thatVideoObject;
+        return this.id.equals(thatVideo.id) &&
+                this.languageCode.equals(thatVideo.languageCode) &&
+                this.countryCode.equals(thatVideo.countryCode) &&
+                this.youtubeKey.equals(thatVideo.youtubeKey) &&
+                this.name.equals(thatVideo.name) &&
+                this.website.equals(thatVideo.website) &&
+                this.type.equals(thatVideo.type);
     }
 
     public static Video fromJson(JSONObject videoJsonObject) {
