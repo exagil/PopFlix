@@ -24,7 +24,8 @@ public class Video {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object thatVideoObject) {
+        if (thatVideoObject == null) return false;
         return true;
     }
 
