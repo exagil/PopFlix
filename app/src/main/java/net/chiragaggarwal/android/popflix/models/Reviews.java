@@ -41,4 +41,22 @@ public class Reviews {
     public int count() {
         return this.reviews.size();
     }
+
+    public Review get(int reviewIndex) {
+        if (isReviewIndexValid(reviewIndex))
+            return null;
+        return this.reviews.get(reviewIndex);
+    }
+
+    private boolean isReviewIndexValid(int reviewIndex) {
+        return isReviewIndexNegative(reviewIndex) || isReviewIndexGreaterThanAvailableIndices(reviewIndex);
+    }
+
+    private boolean isReviewIndexNegative(int reviewIndex) {
+        return reviewIndex < 0;
+    }
+
+    private boolean isReviewIndexGreaterThanAvailableIndices(int reviewIndex) {
+        return reviewIndex >= this.reviews.size();
+    }
 }

@@ -11,8 +11,8 @@ public class Review {
     private static final String URL = "url";
 
     private String id;
-    private String author;
-    private String content;
+    public String author;
+    public String content;
     private String urlString;
 
     public Review(String id, String author, String content, String urlString) {
