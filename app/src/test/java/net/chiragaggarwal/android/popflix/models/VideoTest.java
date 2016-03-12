@@ -17,4 +17,10 @@ public class VideoTest {
         Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
         assertFalse(thisVideo.equals(null));
     }
+
+    @Test
+    public void shouldNotBeEqualToAnythingOtherThanAVideo() {
+        Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
+        assertFalse(thisVideo.equals(new Object()));
+    }
 }
