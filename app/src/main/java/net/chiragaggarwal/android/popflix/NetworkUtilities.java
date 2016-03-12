@@ -4,10 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class Utilities {
+public class NetworkUtilities {
     private final Context context;
 
-    public Utilities(Context context) {
+    public NetworkUtilities(Context context) {
         this.context = context;
     }
 
@@ -18,4 +18,15 @@ public class Utilities {
         return isConnected;
     }
 
+    public boolean isInternetConnectionNotPresent() {
+        return !isInternetConnectionPresent();
+    }
+
+    public boolean isResponseSuccessful(Integer responseCode) {
+        return isStartingWithTwo(responseCode);
+    }
+
+    private boolean isStartingWithTwo(Integer responseCode) {
+        return (responseCode / 100) == 2;
+    }
 }

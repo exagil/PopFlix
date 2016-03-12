@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import net.chiragaggarwal.android.popflix.NetworkUtilities;
 import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
@@ -99,6 +100,7 @@ public class MoviesFragment extends Fragment {
         new FetchMoviesTask(
                 sortOrder(),
                 getContext(),
+                new NetworkUtilities(getContext()),
                 new Callback<Movies, Error>() {
                     @Override
                     public void onSuccess(Movies movies) {

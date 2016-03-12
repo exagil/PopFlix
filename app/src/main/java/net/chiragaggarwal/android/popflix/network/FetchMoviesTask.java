@@ -6,8 +6,8 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import net.chiragaggarwal.android.popflix.BuildConfig;
+import net.chiragaggarwal.android.popflix.NetworkUtilities;
 import net.chiragaggarwal.android.popflix.R;
-import net.chiragaggarwal.android.popflix.Utilities;
 import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movies;
@@ -25,25 +25,28 @@ import java.net.URL;
 import java.text.ParseException;
 
 public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
+    private final NetworkUtilities networkUtilities;
     private Callback<Movies, Error> callback;
     private Context context;
     private String sortOrder;
 
-    public FetchMoviesTask(String sortOrder, Context context, Callback<Movies, Error> callback) {
+    public FetchMoviesTask(String sortOrder, Context context, NetworkUtilities networkUtilities,
+                           Callback<Movies, Error> callback) {
         this.sortOrder = sortOrder;
         this.context = context;
+        this.networkUtilities = networkUtilities;
         this.callback = callback;
     }
 
     @Override
     protected Object doInBackground(Void... params) {
-        if (isInternetConnectionNotPresent())
-            return new Error(500, "No Internet Connection Present");
+        if (networkUtilities.isInternetConnectionNotPresent())
+            return new Error(500, context.getString(R.string.error_no_internet_connection));
         try {
             URL url = buildFetchMoviesUrl();
             HttpURLConnection connection = ((HttpURLConnection) url.openConnection());
             Integer responseCode = connection.getResponseCode();
-            if (isAcceptable(responseCode)) {
+            if (networkUtilities.isResponseSuccessful(responseCode)) {
                 Movies movies = buildMoviesFromResponse(connection);
                 return movies;
             } else {
@@ -88,14 +91,6 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
         return url;
     }
 
-    private boolean isAcceptable(Integer responseCode) {
-        return isStartingWithTwo(responseCode);
-    }
-
-    private boolean isStartingWithTwo(Integer responseCode) {
-        return (responseCode / 100) == 2;
-    }
-
     private Movies buildMoviesFromResponse(HttpURLConnection connection) throws IOException, JSONException, ParseException {
         BufferedReader moviesReader = getResponseReader(connection);
         String moviesJsonString = buildResponseJsonString(moviesReader);
@@ -132,10 +127,5 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
             responseJsonString.append(responseLine);
 
         return responseJsonString.toString();
-    }
-
-    public boolean isInternetConnectionNotPresent() {
-        Utilities utilities = new Utilities(this.context);
-        return !utilities.isInternetConnectionPresent();
     }
 }
