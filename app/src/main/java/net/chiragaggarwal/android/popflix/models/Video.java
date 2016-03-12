@@ -1,5 +1,7 @@
 package net.chiragaggarwal.android.popflix.models;
 
+import android.net.Uri;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +14,9 @@ public class Video {
     private static final String VIDEO_HOST_WEBSITE = "site";
     private static final String TYPE = "type";
     private static final String SPACE = " ";
+    private static final String BLANK_STRING_REGEX = "^\\s+$";
+    private static final String YOUTUBE_WEBSITE = "YouTube";
+    private static final String YOUTUBE_URL_BASE = "https://www.youtube.com/watch?v=";
     private String id;
     private String languageCode;
     private String countryCode;
@@ -35,17 +40,23 @@ public class Video {
     }
 
     @Override
-    public boolean equals(Object thatVideoObject) {
-        if (thatVideoObject == null || !(thatVideoObject instanceof Video)) return false;
-        Video thatVideo = (Video) thatVideoObject;
-        return this.id.equals(thatVideo.id) &&
-                this.languageCode.equals(thatVideo.languageCode) &&
-                this.countryCode.equals(thatVideo.countryCode) &&
-                this.key.equals(thatVideo.key) &&
-                this.name.equals(thatVideo.name) &&
-                this.website.equals(thatVideo.website) &&
-                this.type.equals(thatVideo.type) &&
-                this.videoPosition.equals(thatVideo.videoPosition);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Video video = (Video) o;
+
+        if (id != null ? !id.equals(video.id) : video.id != null) return false;
+        if (languageCode != null ? !languageCode.equals(video.languageCode) : video.languageCode != null)
+            return false;
+        if (countryCode != null ? !countryCode.equals(video.countryCode) : video.countryCode != null)
+            return false;
+        if (key != null ? !key.equals(video.key) : video.key != null) return false;
+        if (name != null ? !name.equals(video.name) : video.name != null) return false;
+        if (website != null ? !website.equals(video.website) : video.website != null) return false;
+        if (type != null ? !type.equals(video.type) : video.type != null) return false;
+        return !(videoPosition != null ? !videoPosition.equals(video.videoPosition) : video.videoPosition != null);
+
     }
 
     @Override
@@ -78,6 +89,28 @@ public class Video {
         if (isNamePresent()) formattedName = this.name + SPACE + this.videoPosition;
         else formattedName = this.videoPosition.toString();
         return formattedName;
+    }
+
+    public Uri getYouTubeUri() {
+        if (isVideoKeyInvalid() || isWebsiteNotYoutube()) return null;
+        Uri youTubeUri = Uri.parse(YOUTUBE_URL_BASE + this.key);
+        return youTubeUri;
+    }
+
+    private boolean isVideoKeyInvalid() {
+        return isVideoKeyNotPresent() || isVideoKeyBlank();
+    }
+
+    private boolean isWebsiteNotYoutube() {
+        return !this.website.equals(YOUTUBE_WEBSITE);
+    }
+
+    private boolean isVideoKeyNotPresent() {
+        return this.key == null;
+    }
+
+    private boolean isVideoKeyBlank() {
+        return this.key.matches(BLANK_STRING_REGEX);
     }
 
     private boolean isNamePresent() {
