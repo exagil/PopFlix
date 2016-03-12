@@ -82,4 +82,16 @@ public class MovieTest {
         Movie thisMovie = new Movie(1, "example_title", date, "example_poster_path", 10.10, "example_overview");
         assertEquals("2015", thisMovie.yearString());
     }
+
+    @Test
+    public void shouldHaveAnIDString() {
+        Movie movie = new Movie(123, "example_title", null, "example_poster_path", 10.10, "example_overview");;
+        assertEquals("123", movie.idString());
+    }
+
+    @Test
+    public void shouldHaveNoIdStringIfDoesNotHaveId() {
+        Movie movie = new Movie(null, "example_title", null, "example_poster_path", 10.10, "example_overview");;
+        assertEquals(null, movie.idString());
+    }
 }

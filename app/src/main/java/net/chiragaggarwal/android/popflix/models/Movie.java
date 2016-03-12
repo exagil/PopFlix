@@ -3,6 +3,7 @@ package net.chiragaggarwal.android.popflix.models;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import net.chiragaggarwal.android.popflix.R;
 
@@ -33,7 +34,7 @@ public class Movie implements Parcelable {
     public String overview;
     public Double voteAverage;
 
-    public Movie(Integer id, String originalTitle, Date releaseDate, String posterPath, Double voteAverage, String overview) {
+    public Movie(@NonNull Integer id, String originalTitle, Date releaseDate, String posterPath, Double voteAverage, String overview) {
         this.id = id;
         this.originalTitle = originalTitle;
         this.posterPath = posterPath;
@@ -140,4 +141,9 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    public String idString() {
+        if (this.id == null) return null;
+        return this.id.toString();
+    }
 }
