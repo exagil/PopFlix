@@ -41,7 +41,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Object> {
     @Override
     protected Object doInBackground(Void... params) {
         if (networkUtilities.isInternetConnectionNotPresent())
-            return new Error(500, context.getString(R.string.error_no_internet_connection));
+            return new Error(Error.INTERNAL_SERVER_ERROR, context.getString(R.string.error_no_internet_connection));
         try {
             URL url = buildFetchMoviesUrl();
             HttpURLConnection connection = ((HttpURLConnection) url.openConnection());

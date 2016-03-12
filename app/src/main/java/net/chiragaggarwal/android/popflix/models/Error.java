@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Error {
+    public static final Integer INTERNAL_SERVER_ERROR = 500;
+
     private static final String STATUS_CODE = "status_code";
     private static final String STATUS_MESSAGE = "status_message";
 
