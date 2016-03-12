@@ -2,6 +2,7 @@ package net.chiragaggarwal.android.popflix.models;
 
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 
 public class VideoTest {
@@ -42,5 +43,12 @@ public class VideoTest {
         Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
         Video thatVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
         assert (thatVideo.equals(thisVideo));
+    }
+
+    @Test
+    public void shouldHaveSameHashCodeIfBothVideoAreSame() {
+        Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
+        Video thatVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
+        assertEquals(thisVideo.hashCode(), thatVideo.hashCode());
     }
 }
