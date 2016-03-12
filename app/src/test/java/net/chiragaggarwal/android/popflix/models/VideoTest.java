@@ -9,7 +9,7 @@ public class VideoTest {
     public void shouldBeEqualToOtherIfHasSameAttributesAsOther() {
         Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
         Video thatVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
-        assert(thisVideo.equals(thatVideo));
+        assert (thisVideo.equals(thatVideo));
     }
 
     @Test
@@ -29,5 +29,18 @@ public class VideoTest {
         Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
         Video thatVideo = new Video("2", "fr", "US", "748sjd246r5", "second example movie", "Youtube", "Trailer");
         assertFalse(thisVideo.equals(thatVideo));
+    }
+
+    @Test
+    public void shouldBeEqualToItself() {
+        Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
+        assert (thisVideo.equals(thisVideo));
+    }
+
+    @Test
+    public void shouldBeEqualCommutatively() {
+        Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
+        Video thatVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "Youtube", "Trailer");
+        assert (thatVideo.equals(thisVideo));
     }
 }
