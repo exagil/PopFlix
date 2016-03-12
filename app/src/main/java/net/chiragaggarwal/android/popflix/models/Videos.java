@@ -25,12 +25,13 @@ public class Videos {
         return videos;
     }
 
-    private void add(Video video) {
-        this.videos.add(video);
-    }
-
     public int count() {
         return this.videos.size();
+    }
+
+    public Video get(int position) {
+        if (isMovieIndexInvalid(position)) return null;
+        return this.videos.get(position);
     }
 
     private void initializeVideos(Video[] videos) {
@@ -39,5 +40,21 @@ public class Videos {
             Video video = videos[videoIndex];
             this.videos.add(video);
         }
+    }
+
+    private void add(Video video) {
+        this.videos.add(video);
+    }
+
+    private boolean isMovieIndexInvalid(int position) {
+        return isMovieIndexGreaterThanAvailableIndices(position) || isMovieIndexNegative(position);
+    }
+
+    private boolean isMovieIndexGreaterThanAvailableIndices(int position) {
+        return position > videos.size() - 1;
+    }
+
+    private boolean isMovieIndexNegative(int position) {
+        return position < 0;
     }
 }
