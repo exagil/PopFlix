@@ -26,12 +26,16 @@ public class Videos {
     }
 
     public int count() {
-        return this.videos.size();
+        return getNumberOfVideos();
     }
 
     public Video get(int position) {
         if (isMovieIndexInvalid(position)) return null;
         return this.videos.get(position);
+    }
+
+    public boolean any() {
+        return getNumberOfVideos() > 0;
     }
 
     private void initializeVideos(Video[] videos) {
@@ -51,10 +55,14 @@ public class Videos {
     }
 
     private boolean isMovieIndexGreaterThanAvailableIndices(int position) {
-        return position > videos.size() - 1;
+        return position > getNumberOfVideos() - 1;
     }
 
     private boolean isMovieIndexNegative(int position) {
         return position < 0;
+    }
+
+    private int getNumberOfVideos() {
+        return this.videos.size();
     }
 }

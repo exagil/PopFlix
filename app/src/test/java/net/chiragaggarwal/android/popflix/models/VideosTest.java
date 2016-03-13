@@ -2,6 +2,8 @@ package net.chiragaggarwal.android.popflix.models;
 
 import org.junit.Test;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
 public class VideosTest {
@@ -39,5 +41,19 @@ public class VideosTest {
         Video secondVideo = new Video("2", "en", "US", "74ddj3g1j3", "Trailer", "YouTube", "Trailer", 2);
         Videos videos = new Videos(firstVideo, secondVideo);
         assertEquals(null, videos.get(1000));
+    }
+
+    @Test
+    public void shouldKnowIfVideoElementsArePresent() {
+        Video firstVideo = new Video("1", "en", "US", "73dfj391jn", "Trailer", "YouTube", "Trailer", 1);
+        Video secondVideo = new Video("2", "en", "US", "74ddj3g1j3", "Trailer", "YouTube", "Trailer", 2);
+        Videos videos = new Videos(firstVideo, secondVideo);
+        assertTrue(videos.any());
+    }
+
+    @Test
+    public void shouldKnowWhenVideoElementsAreNotPresent() {
+        Videos videos = new Videos();
+        assertFalse(videos.any());
     }
 }
