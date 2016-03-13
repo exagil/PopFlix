@@ -11,7 +11,8 @@ public class DatabaseHelperTest extends AndroidTestCase {
 
     @After
     public void afterEach() {
-        getContext().deleteDatabase(DatabaseHelper.DATABASE_NAME);
+        PopFlixContract popFlixContract = PopFlixContract.getInstance(getContext());
+        getContext().deleteDatabase(popFlixContract.getDatabaseName());
     }
 
     @Test
