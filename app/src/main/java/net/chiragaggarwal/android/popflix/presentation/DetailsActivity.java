@@ -16,7 +16,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         initializeToolbar();
         Movie movie = getMovieFromIntentExtras();
-        showDetailsFragmentFor(movie);
+        if (savedInstanceState == null) showDetailsFragmentFor(movie);
     }
 
     private void initializeToolbar() {
