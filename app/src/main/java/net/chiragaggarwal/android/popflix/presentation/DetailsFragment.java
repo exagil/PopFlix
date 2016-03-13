@@ -186,6 +186,7 @@ public class DetailsFragment extends Fragment {
         this.movieVideosAdapter = new MovieVideosAdapter(videos, getContext());
         this.listVideos.setVisibility(ListView.VISIBLE);
         this.listVideos.setAdapter(movieVideosAdapter);
+        new ListUtilities(listVideos).setHeightToSumOfHeightsOfElements();
     }
 
     private void setOnItemClickListenerForVideosList(OnItemClickListener onItemClickListenerForVideosList) {
