@@ -20,8 +20,8 @@ public class ReviewViewHolder {
         this.textReviewContent = (TextView) listItemReview.findViewById(R.id.text_review_content);
     }
 
-    public void bind(String author, String content) {
+    public void bind(String author, String truncatedContent) {
         this.textReviewAuthor.setText(author);
-        this.textReviewContent.setText(content);
+        this.textReviewContent.setText(truncatedContent);
     }
 }

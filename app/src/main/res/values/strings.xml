@@ -40,7 +40,7 @@
         really tiresome.\n\nAll in all, the movie is OK but you can only think this is a great movie
         if you are a real Nolan fan.
     </string>
-    <string name="sample_author">Andres Gomez says...</string>
+    <string name="sample_author">Andres Gomez</string>
     <string name="error_cannot_load_videos">Oops! unable to load videos</string>
     <string name="error_cannot_load_reviews">Oops! unable to load reviews</string>
     <string name="text_reviews_heading">Reviews:</string>

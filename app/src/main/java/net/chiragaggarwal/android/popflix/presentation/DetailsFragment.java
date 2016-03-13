@@ -225,6 +225,7 @@ public class DetailsFragment extends Fragment {
         this.movieReviewsAdapter = new MovieReviewsAdapter(reviews, getContext());
         this.listReviews.setVisibility(ListView.VISIBLE);
         this.listReviews.setAdapter(movieReviewsAdapter);
+        new ListUtilities(this.listReviews).setHeightToSumOfHeightsOfElements();
     }
 
     private void showReviewsLoadingFailureError() {

@@ -19,7 +19,7 @@ public class Review {
 
     private String id;
     public String author;
-    public String content;
+    private String content;
     private String urlString;
 
     public Review(String id, String author, String content, String urlString) {

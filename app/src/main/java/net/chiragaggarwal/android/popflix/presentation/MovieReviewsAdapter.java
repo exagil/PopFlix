@@ -49,7 +49,7 @@ public class MovieReviewsAdapter extends BaseAdapter {
             reviewViewHolder = ((ReviewViewHolder) listItemReview.getTag());
         }
 
-        reviewViewHolder.bind(review.author, review.content);
+        reviewViewHolder.bind(review.author, review.truncatedContent());
         return listItemReview;
     }
 }
