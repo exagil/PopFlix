@@ -30,9 +30,11 @@
         <item name="android:stretchMode">columnWidth</item>
     </style>
 
-    <style name="movies_grid_tablet" parent="movies_grid">
+    <style name="movies_grid_landscape" parent="movies_grid">
         <item name="android:numColumns">3</item>
     </style>
+
+    <style name="movies_grid_tablet" parent="movies_grid_landscape"></style>
 
     <style name="movie_name">
         <item name="android:layout_width">match_parent</item>
