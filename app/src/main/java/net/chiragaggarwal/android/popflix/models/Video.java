@@ -97,6 +97,12 @@ public class Video {
         return youTubeUri;
     }
 
+    public String getYouTubeUriString() {
+        if (isVideoKeyInvalid() || isWebsiteNotYoutube()) return null;
+        String youTubeUriString = YOUTUBE_URL_BASE + this.key;
+        return youTubeUriString;
+    }
+
     private boolean isVideoKeyInvalid() {
         return isVideoKeyNotPresent() || isVideoKeyBlank();
     }

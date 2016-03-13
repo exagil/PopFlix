@@ -84,4 +84,32 @@ public class VideoTest {
         Video video = new Video("1", "en", "US", youtubeUriKey, null, "SomeRandomTube", "Trailer", 1);
         assertEquals(null, video.getYouTubeUri());
     }
+
+    @Test
+    public void shouldNotBuildYouTubeUriStringWhenUriKeyIsEmpty() {
+        String youtubeUriKey = "  ";
+        Video video = new Video("1", "en", "US", youtubeUriKey, null, "YouTube", "Trailer", 1);
+        assertEquals(null, video.getYouTubeUriString());
+    }
+
+    @Test
+    public void shouldNotBuildYouTubeUriStringWhenUriKeyIsNotPresent() {
+        String youtubeUriKey = null;
+        Video video = new Video("1", "en", "US", youtubeUriKey, null, "YouTube", "Trailer", 1);
+        assertEquals(null, video.getYouTubeUriString());
+    }
+
+    @Test
+    public void shouldNotBuildYouTubeUriStringWhenWebsiteIsNotYouTube() {
+        String youtubeUriKey = "7jIBCiYg58k";
+        Video video = new Video("1", "en", "US", youtubeUriKey, null, "SomeRandomTube", "Trailer", 1);
+        assertEquals(null, video.getYouTubeUriString());
+    }
+
+    @Test
+    public void shouldKnowHowToBuildYouTubeUriString() {
+        String youtubeUriKey = "7jIBCiYg58k";
+        Video video = new Video("1", "en", "US", youtubeUriKey, null, "YouTube", "Trailer", 1);
+        assertEquals("https://www.youtube.com/watch?v=7jIBCiYg58k", video.getYouTubeUriString());
+    }
 }
