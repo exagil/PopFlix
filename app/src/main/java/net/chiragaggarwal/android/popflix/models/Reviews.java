@@ -39,13 +39,17 @@ public class Reviews {
     }
 
     public int count() {
-        return this.reviews.size();
+        return getNumberOfReviews();
     }
 
     public Review get(int reviewIndex) {
         if (isReviewIndexValid(reviewIndex))
             return null;
         return this.reviews.get(reviewIndex);
+    }
+
+    public boolean any() {
+        return getNumberOfReviews() > 0;
     }
 
     private boolean isReviewIndexValid(int reviewIndex) {
@@ -57,6 +61,10 @@ public class Reviews {
     }
 
     private boolean isReviewIndexGreaterThanAvailableIndices(int reviewIndex) {
-        return reviewIndex >= this.reviews.size();
+        return reviewIndex >= getNumberOfReviews();
+    }
+
+    private int getNumberOfReviews() {
+        return this.reviews.size();
     }
 }

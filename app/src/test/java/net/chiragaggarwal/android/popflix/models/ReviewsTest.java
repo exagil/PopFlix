@@ -2,7 +2,9 @@ package net.chiragaggarwal.android.popflix.models;
 
 import org.junit.Test;
 
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
 
 public class ReviewsTest {
 
@@ -43,5 +45,18 @@ public class ReviewsTest {
         Review thirdReview = new Review("3", "Author Three", "Random Content Three", "http://example/com/reviews/3");
         Reviews reviews = new Reviews(firstReview, secondReview, thirdReview);
         assertEquals(null, reviews.get(10));
+    }
+
+    @Test
+    public void shouldKnowIfReviewsArePresent() {
+        Review firstReview = new Review("1", "Author One", "Random Content One", "http://example/com/reviews/1");
+        Reviews reviews = new Reviews(firstReview);
+        assertTrue(reviews.any());
+    }
+
+    @Test
+    public void shouldKnowIfNoReviewsArePresent() {
+        Reviews reviews = new Reviews();
+        assertFalse(reviews.any());
     }
 }
