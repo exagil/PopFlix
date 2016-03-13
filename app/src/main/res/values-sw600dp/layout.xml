@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fragment_movies" type="layout">@layout/fragment_movies_three_element_grid</item>
+</resources>
