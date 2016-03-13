@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +40,7 @@ import static android.widget.AdapterView.OnItemClickListener;
 public class DetailsFragment extends Fragment {
     private static final String DIVIDED_BY_TEN = " / 10";
     private static final String LOG_TAG = "popflix.detailsfragment";
+    private static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
 
     private TextView movieName;
     private ImageView moviePoster;
@@ -52,17 +55,19 @@ public class DetailsFragment extends Fragment {
     private ListView listReviews;
     private TextView textReviewsErrorMessage;
     private MovieReviewsAdapter movieReviewsAdapter;
+    private ShareActionProvider shareActionProvider;
+    private Movie movie;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
         setHasOptionsMenu(true);
-        Movie movie = fetchMovieFromArguments();
+        this.movie = fetchMovieFromArguments();
         initializeViews(view);
-        showDetailsFor(movie);
-        loadVideosFor(movie);
-        loadReviewsFor(movie);
+        showDetailsFor(this.movie);
+        loadVideosFor(this.movie);
+        loadReviewsFor(this.movie);
         return view;
     }
 
@@ -70,6 +75,9 @@ public class DetailsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_details, menu);
+        MenuItem shareActionItem = menu.findItem(R.id.action_share);
+        this.shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareActionItem);
+        setDefaultShareAction();
     }
 
     @Override
@@ -168,6 +176,19 @@ public class DetailsFragment extends Fragment {
                 }).execute();
     }
 
+    private void setDefaultShareAction() {
+        if (this.shareActionProvider == null) return;
+        Intent intent = buildDefaultShareIntent();
+        if (this.shareActionProvider != null) this.shareActionProvider.setShareIntent(intent);
+    }
+
+    private Intent buildDefaultShareIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, this.movie.originalTitle);
+        intent.setType(MIME_TYPE_TEXT_PLAIN);
+        return intent;
+    }
+
     private void showPoster(Movie movie) {
         Picasso.with(getContext()).
                 load(movie.imageUrlString(getContext()))
@@ -191,6 +212,7 @@ public class DetailsFragment extends Fragment {
         this.listVideos.setVisibility(ListView.VISIBLE);
         this.listVideos.setAdapter(movieVideosAdapter);
         new ListUtilities(listVideos).setHeightToSumOfHeightsOfElements();
+        setFirstVideoUrlStringShareAction(videos);
     }
 
     private void setOnItemClickListenerForVideosList(OnItemClickListener onItemClickListenerForVideosList) {
@@ -244,5 +266,18 @@ public class DetailsFragment extends Fragment {
 
     private void showReviewsLoadingFailureError() {
         this.textReviewsErrorMessage.setVisibility(TextView.VISIBLE);
+    }
+
+    private void setFirstVideoUrlStringShareAction(Videos videos) {
+        String firstVideoUrlString = videos.getYouTubeUrlStringForFirstVideo();
+        Intent intent = buildFirstVideoUrlStringShareIntent(firstVideoUrlString);
+        if (this.shareActionProvider != null) this.shareActionProvider.setShareIntent(intent);
+    }
+
+    private Intent buildFirstVideoUrlStringShareIntent(String firstVideoUrlString) {
+        Intent firstVideoUrlStringShareIntent = new Intent(Intent.ACTION_SEND);
+        firstVideoUrlStringShareIntent.putExtra(Intent.EXTRA_TEXT, firstVideoUrlString);
+        firstVideoUrlStringShareIntent.setType(MIME_TYPE_TEXT_PLAIN);
+        return firstVideoUrlStringShareIntent;
     }
 }
