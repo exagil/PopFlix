@@ -26,18 +26,6 @@ public class Reviews {
         return reviews;
     }
 
-    private void initializeReviews(Review[] reviews) {
-        this.reviews = new ArrayList<>();
-        for (Integer reviewIndex = 0; reviewIndex < reviews.length; reviewIndex++) {
-            Review review = reviews[reviewIndex];
-            this.reviews.add(review);
-        }
-    }
-
-    private void add(Review review) {
-        this.reviews.add(review);
-    }
-
     public int count() {
         return getNumberOfReviews();
     }
@@ -52,6 +40,22 @@ public class Reviews {
         return getNumberOfReviews() > 0;
     }
 
+    private void initializeReviews(Review[] reviews) {
+        this.reviews = new ArrayList<>();
+        for (Integer reviewIndex = 0; reviewIndex < reviews.length; reviewIndex++) {
+            Review review = reviews[reviewIndex];
+            this.reviews.add(review);
+        }
+    }
+
+    private void add(Review review) {
+        this.reviews.add(review);
+    }
+
+    private int getNumberOfReviews() {
+        return this.reviews.size();
+    }
+
     private boolean isReviewIndexValid(int reviewIndex) {
         return isReviewIndexNegative(reviewIndex) || isReviewIndexGreaterThanAvailableIndices(reviewIndex);
     }
@@ -62,9 +66,5 @@ public class Reviews {
 
     private boolean isReviewIndexGreaterThanAvailableIndices(int reviewIndex) {
         return reviewIndex >= getNumberOfReviews();
-    }
-
-    private int getNumberOfReviews() {
-        return this.reviews.size();
     }
 }
