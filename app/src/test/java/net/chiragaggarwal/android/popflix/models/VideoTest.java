@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class VideoTest {
     @Test
@@ -30,6 +31,13 @@ public class VideoTest {
         Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "YouTube", "Trailer", 1);
         Video thatVideo = new Video("2", "fr", "US", "748sjd246r5", "second example movie", "YouTube", "Trailer", 2);
         assertFalse(thisVideo.equals(thatVideo));
+    }
+
+    @Test
+    public void shouldBeEqualIfHasSameAttributesExceptVideoPosition() {
+        Video thisVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "YouTube", "Trailer", 1);
+        Video thatVideo = new Video("1", "en", "US", "7jIBCiYg58k", "example movie", "YouTube", "Trailer", 2);
+        assertTrue(thisVideo.equals(thatVideo));
     }
 
     @Test

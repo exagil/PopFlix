@@ -40,23 +40,18 @@ public class Video {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object that) {
+        if (this == that) return true;
+        if (that == null || getClass() != that.getClass()) return false;
 
-        Video video = (Video) o;
-
-        if (id != null ? !id.equals(video.id) : video.id != null) return false;
-        if (languageCode != null ? !languageCode.equals(video.languageCode) : video.languageCode != null)
-            return false;
-        if (countryCode != null ? !countryCode.equals(video.countryCode) : video.countryCode != null)
-            return false;
-        if (key != null ? !key.equals(video.key) : video.key != null) return false;
-        if (name != null ? !name.equals(video.name) : video.name != null) return false;
-        if (website != null ? !website.equals(video.website) : video.website != null) return false;
-        if (type != null ? !type.equals(video.type) : video.type != null) return false;
-        return !(videoPosition != null ? !videoPosition.equals(video.videoPosition) : video.videoPosition != null);
-
+        Video thatVideo = (Video) that;
+        return this.id.equals(thatVideo.id) &&
+                this.languageCode.equals(thatVideo.languageCode) &&
+                this.countryCode.equals(thatVideo.countryCode) &&
+                this.key.equals(thatVideo.key) &&
+                this.name.equals(thatVideo.name) &&
+                this.website.equals(thatVideo.website) &&
+                this.type.equals(thatVideo.type);
     }
 
     @Override
