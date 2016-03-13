@@ -58,15 +58,16 @@ public class VideosTest {
     }
 
     @Test
-    public void shouldBeAbleToFetchFirstVideoInCollection() {
+    public void shouldFetchTheYouTubeUrlStringForFirstVideo() {
         Video firstVideo = new Video("1", "en", "US", "73dfj391jn", "Trailer", "YouTube", "Trailer", 1);
-        Videos videos = new Videos(firstVideo);
-        assertEquals(firstVideo, videos.first());
+        Video secondVideo = new Video("2", "en", "US", "74ddj3g1j3", "Trailer", "YouTube", "Trailer", 2);
+        Videos videos = new Videos(firstVideo, secondVideo);
+        assertEquals("https://www.youtube.com/watch?v=73dfj391jn", videos.getYouTubeUrlStringForFirstVideo());
     }
 
     @Test
-    public void shouldNotNoVideoWhenTriedToFetchFirstVideoFromEmptyCollection() {
+    public void shouldNotFetchYouTubeUrlStringIfNoVideosPresent() {
         Videos videos = new Videos();
-        assertEquals(null, videos.first());
+        assertEquals(null, videos.getYouTubeUrlStringForFirstVideo());
     }
 }

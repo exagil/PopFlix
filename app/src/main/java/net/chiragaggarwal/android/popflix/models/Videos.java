@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Videos {
     private static final String RESULTS = "results";
+    private static final int FIRST_POSITION_INDEX = 0;
     private ArrayList<Video> videos;
 
     public Videos(Video... videos) {
@@ -30,7 +31,7 @@ public class Videos {
     }
 
     public Video get(int position) {
-        if (isMovieIndexInvalid(position)) return null;
+        if (isVideosIndexInvalid(position)) return null;
         return this.videos.get(position);
     }
 
@@ -38,9 +39,9 @@ public class Videos {
         return getNumberOfVideos() > 0;
     }
 
-    public Video first() {
-        if (getNumberOfVideos() == 0) return null;
-        return this.videos.get(0);
+    public String getYouTubeUrlStringForFirstVideo() {
+        if (isVideosIndexInvalid(FIRST_POSITION_INDEX)) return null;
+        return this.videos.get(FIRST_POSITION_INDEX).getYouTubeUriString();
     }
 
     private void initializeVideos(Video[] videos) {
@@ -55,15 +56,15 @@ public class Videos {
         this.videos.add(video);
     }
 
-    private boolean isMovieIndexInvalid(int position) {
-        return isMovieIndexGreaterThanAvailableIndices(position) || isMovieIndexNegative(position);
+    private boolean isVideosIndexInvalid(int position) {
+        return isVideoIndexGreaterThanAvailableIndices(position) || isVideoIndexNegative(position);
     }
 
-    private boolean isMovieIndexGreaterThanAvailableIndices(int position) {
+    private boolean isVideoIndexGreaterThanAvailableIndices(int position) {
         return position > getNumberOfVideos() - 1;
     }
 
-    private boolean isMovieIndexNegative(int position) {
+    private boolean isVideoIndexNegative(int position) {
         return position < 0;
     }
 
