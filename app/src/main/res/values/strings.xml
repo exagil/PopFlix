@@ -44,4 +44,6 @@
     <string name="error_cannot_load_videos">Oops! unable to load videos</string>
     <string name="error_cannot_load_reviews">Oops! unable to load reviews</string>
     <string name="text_reviews_heading">Reviews:</string>
+    <string name="error_videos_not_available">No videos available</string>
+    <string name="error_reviews_not_available">No reviews available</string>
 </resources>

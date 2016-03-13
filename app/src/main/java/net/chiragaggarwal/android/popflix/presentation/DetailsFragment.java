@@ -119,9 +119,12 @@ public class DetailsFragment extends Fragment {
                     @Override
                     public void onSuccess(Videos videos) {
                         stopVideoLoadingProgressBar();
-                        showVideos(videos);
-                        OnItemClickListener videoListOnItemClickListener = buildOnItemClickListenerForVideosList();
-                        setOnItemClickListenerForVideosList(videoListOnItemClickListener);
+                        if (videos.any()) {
+                            showVideos(videos);
+                            OnItemClickListener videoListOnItemClickListener = buildOnItemClickListenerForVideosList();
+                            setOnItemClickListenerForVideosList(videoListOnItemClickListener);
+                        } else
+                            showNoVideosError();
                     }
 
                     @Override
@@ -148,7 +151,8 @@ public class DetailsFragment extends Fragment {
                     @Override
                     public void onSuccess(Reviews reviews) {
                         stopReviewsLoadingProgressBar();
-                        showReviews(reviews);
+                        if (reviews.any()) showReviews(reviews);
+                        else showNoReviewsError();
                     }
 
                     @Override
@@ -193,6 +197,11 @@ public class DetailsFragment extends Fragment {
         this.listVideos.setOnItemClickListener(onItemClickListenerForVideosList);
     }
 
+    private void showNoVideosError() {
+        this.textVideoErrorMessage.setVisibility(TextView.VISIBLE);
+        this.textVideoErrorMessage.setText(getString(R.string.error_videos_not_available));
+    }
+
     private OnItemClickListener buildOnItemClickListenerForVideosList() {
         return new OnItemClickListener() {
             @Override
@@ -226,6 +235,11 @@ public class DetailsFragment extends Fragment {
         this.listReviews.setVisibility(ListView.VISIBLE);
         this.listReviews.setAdapter(movieReviewsAdapter);
         new ListUtilities(this.listReviews).setHeightToSumOfHeightsOfElements();
+    }
+
+    private void showNoReviewsError() {
+        this.textReviewsErrorMessage.setVisibility(TextView.VISIBLE);
+        this.textReviewsErrorMessage.setText(getString(R.string.error_reviews_not_available));
     }
 
     private void showReviewsLoadingFailureError() {
