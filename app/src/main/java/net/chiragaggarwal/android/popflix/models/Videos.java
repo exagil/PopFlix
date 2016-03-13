@@ -38,6 +38,11 @@ public class Videos {
         return getNumberOfVideos() > 0;
     }
 
+    public Video first() {
+        if (getNumberOfVideos() == 0) return null;
+        return this.videos.get(0);
+    }
+
     private void initializeVideos(Video[] videos) {
         this.videos = new ArrayList<>();
         for (Integer videoIndex = 0; videoIndex < videos.length; videoIndex++) {

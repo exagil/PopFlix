@@ -56,4 +56,17 @@ public class VideosTest {
         Videos videos = new Videos();
         assertFalse(videos.any());
     }
+
+    @Test
+    public void shouldBeAbleToFetchFirstVideoInCollection() {
+        Video firstVideo = new Video("1", "en", "US", "73dfj391jn", "Trailer", "YouTube", "Trailer", 1);
+        Videos videos = new Videos(firstVideo);
+        assertEquals(firstVideo, videos.first());
+    }
+
+    @Test
+    public void shouldNotNoVideoWhenTriedToFetchFirstVideoFromEmptyCollection() {
+        Videos videos = new Videos();
+        assertEquals(null, videos.first());
+    }
 }
