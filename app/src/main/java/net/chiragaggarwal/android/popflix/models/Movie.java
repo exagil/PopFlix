@@ -26,19 +26,24 @@ public class Movie implements Parcelable {
     private static final String OVERVIEW = "overview";
     private static final String VOTE_AVERAGE = "vote_average";
     private static final String ID = "id";
+    private static final String POPULARITY = "popularity";
 
     private Integer id;
     public String originalTitle;
     public String posterPath;
     public Date releaseDate;
     public String overview;
+    private Double popularity;
     public Double voteAverage;
 
-    public Movie(@NonNull Integer id, String originalTitle, Date releaseDate, String posterPath, Double voteAverage, String overview) {
+    public Movie(@NonNull Integer id, String originalTitle, Date releaseDate, String posterPath,
+                 Double popularity, Double voteAverage, String overview) {
+
         this.id = id;
         this.originalTitle = originalTitle;
         this.posterPath = posterPath;
         this.releaseDate = releaseDate;
+        this.popularity = popularity;
         this.voteAverage = voteAverage;
         this.overview = overview;
     }
@@ -49,14 +54,9 @@ public class Movie implements Parcelable {
         String posterPath = movieJsonObject.getString(POSTER_PATH);
         Date releaseDate = parseReleaseDate(movieJsonObject);
         String overview = movieJsonObject.getString(OVERVIEW);
+        Double popularity = movieJsonObject.getDouble(POPULARITY);
         Double voteAverage = movieJsonObject.getDouble(VOTE_AVERAGE);
-        return new Movie(id, originalTitle, releaseDate, posterPath, voteAverage, overview);
-    }
-
-    public String imageUrlString(Context context) {
-        String baseImageUrl = context.getString(R.string.base_image_url);
-        String defaultImageSize = context.getString(R.string.default_image_size);
-        return buildImageUrlString(baseImageUrl, defaultImageSize, this.posterPath);
+        return new Movie(id, originalTitle, releaseDate, posterPath, popularity, voteAverage, overview);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Movie implements Parcelable {
 
         Movie movie = (Movie) o;
 
-        if (id != null ? !id.equals(movie.id) : movie.id != null) return false;
+        if (!id.equals(movie.id)) return false;
         if (originalTitle != null ? !originalTitle.equals(movie.originalTitle) : movie.originalTitle != null)
             return false;
         if (posterPath != null ? !posterPath.equals(movie.posterPath) : movie.posterPath != null)
@@ -75,19 +75,28 @@ public class Movie implements Parcelable {
             return false;
         if (overview != null ? !overview.equals(movie.overview) : movie.overview != null)
             return false;
+        if (popularity != null ? !popularity.equals(movie.popularity) : movie.popularity != null)
+            return false;
         return !(voteAverage != null ? !voteAverage.equals(movie.voteAverage) : movie.voteAverage != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id.hashCode();
         result = 31 * result + (originalTitle != null ? originalTitle.hashCode() : 0);
         result = 31 * result + (posterPath != null ? posterPath.hashCode() : 0);
         result = 31 * result + (releaseDate != null ? releaseDate.hashCode() : 0);
         result = 31 * result + (overview != null ? overview.hashCode() : 0);
+        result = 31 * result + (popularity != null ? popularity.hashCode() : 0);
         result = 31 * result + (voteAverage != null ? voteAverage.hashCode() : 0);
         return result;
+    }
+
+    public String imageUrlString(Context context) {
+        String baseImageUrl = context.getString(R.string.base_image_url);
+        String defaultImageSize = context.getString(R.string.default_image_size);
+        return buildImageUrlString(baseImageUrl, defaultImageSize, this.posterPath);
     }
 
     public String yearString() {
@@ -107,6 +116,11 @@ public class Movie implements Parcelable {
         return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
     }
 
+    public String idString() {
+        if (this.id == null) return null;
+        return this.id.toString();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -119,6 +133,7 @@ public class Movie implements Parcelable {
         dest.writeString(this.posterPath);
         dest.writeLong(releaseDate != null ? releaseDate.getTime() : -1);
         dest.writeString(this.overview);
+        dest.writeValue(this.popularity);
         dest.writeValue(this.voteAverage);
     }
 
@@ -129,6 +144,7 @@ public class Movie implements Parcelable {
         long tmpReleaseDate = in.readLong();
         this.releaseDate = tmpReleaseDate == -1 ? null : new Date(tmpReleaseDate);
         this.overview = in.readString();
+        this.popularity = (Double) in.readValue(Double.class.getClassLoader());
         this.voteAverage = (Double) in.readValue(Double.class.getClassLoader());
     }
 
@@ -141,9 +157,4 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
-
-    public String idString() {
-        if (this.id == null) return null;
-        return this.id.toString();
-    }
 }
