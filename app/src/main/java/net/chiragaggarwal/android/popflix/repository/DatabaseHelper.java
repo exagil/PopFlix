@@ -12,6 +12,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String AUTOINCREMENT = " AUTOINCREMENT ";
     private static final String START_BRACKET = "(";
     private static final String END_BRACKET = ")";
+    private static final String NOT_NULL = " NOT NULL ";
+    private static final String COMMA = ", ";
+    private static final String STRING = " STRING ";
+    private static final String NUMERIC = " NUMERIC ";
+    private static final String TEXT = " TEXT ";
     private static DatabaseHelper databaseHelper;
 
     public static SQLiteOpenHelper getInstance(Context context) {
@@ -27,7 +32,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    public SQLiteDatabase getReadableDatabase() {
+        return super.getReadableDatabase();
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase db) {
+        System.out.println();
         db.beginTransaction();
         db.execSQL(buildCreateMoviesTableSqlStatement());
         db.execSQL(buildCreateVideosTableSqlStatement());
@@ -45,7 +56,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String buildCreateMoviesTableSqlStatement() {
         return "CREATE TABLE " + PopFlixContract.MoviesEntry.TABLE_NAME +
                 START_BRACKET +
-                PopFlixContract.MoviesEntry._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT +
+                PopFlixContract.MoviesEntry._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
+                PopFlixContract.MoviesEntry.MOVIE_ID + INTEGER + NOT_NULL + COMMA +
+                PopFlixContract.MoviesEntry.ORIGINAL_TITLE + STRING + NOT_NULL + COMMA +
+                PopFlixContract.MoviesEntry.POSTER_PATH + STRING + COMMA +
+                PopFlixContract.MoviesEntry.RELEASE_DATE + STRING + COMMA +
+                PopFlixContract.MoviesEntry.POPULARITY + NUMERIC + COMMA +
+                PopFlixContract.MoviesEntry.VOTE_AVERAGE + NUMERIC + COMMA +
+                PopFlixContract.MoviesEntry.OVERVIEW + TEXT +
                 END_BRACKET;
     }
 

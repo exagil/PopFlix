@@ -4,20 +4,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
-import org.junit.After;
-import org.junit.Test;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DatabaseHelperTest extends AndroidTestCase {
-
-    @After
-    public void afterEach() {
-        PopFlixContract popFlixContract = PopFlixContract.getInstance(getContext());
-        getContext().deleteDatabase(popFlixContract.getDatabaseName());
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        PopFlixContract popFlixContract = PopFlixContract.getInstance(mContext);
+        mContext.deleteDatabase(popFlixContract.getDatabaseName());
     }
 
-    @Test
     public void shouldCreateDatabaseSuccessfully() {
         String tablesSelectionStatement = "SELECT name FROM sqlite_master WHERE type='table'";
         SQLiteDatabase db = DatabaseHelper.getInstance(getContext()).getReadableDatabase();
@@ -26,12 +23,11 @@ public class DatabaseHelperTest extends AndroidTestCase {
         assertTrue("Database is not open, you haven't implemented it the right way", db.isOpen());
     }
 
-    @Test
     public void shouldCreateRequiredTablesForPopFlix() {
         ArrayList<String> tablesNames = new ArrayList<>();
-        tablesNames.add(PopFlixContract.MoviesEntry.TABLE_NAME);
-        tablesNames.add(PopFlixContract.VideosEntry.TABLE_NAME);
-        tablesNames.add(PopFlixContract.ReviewsEntry.TABLE_NAME);
+        tablesNames.add("movies");
+        tablesNames.add("videos");
+        tablesNames.add("reviews");
         SQLiteDatabase db = DatabaseHelper.getInstance(getContext()).getReadableDatabase();
         Cursor tablesCursor = db.rawQuery("SELECT name FROM " + "sqlite_master" + " WHERE type='table'", null);
         int nameColumnIndex = tablesCursor.getColumnIndex("name");
@@ -39,5 +35,14 @@ public class DatabaseHelperTest extends AndroidTestCase {
         do tablesNames.remove(tablesCursor.getString(nameColumnIndex));
         while (tablesCursor.moveToNext());
         assertEquals(0, tablesNames.size());
+    }
+
+    public void moviesTableShouldHaveTheRightColumns() {
+        SQLiteDatabase database = DatabaseHelper.getInstance(getContext()).getReadableDatabase();
+        Cursor moviesCursor = database.rawQuery("SELECT * FROM movies", null);
+        moviesCursor.moveToFirst();
+        String[] fetchedColumnNames = moviesCursor.getColumnNames();
+        String[] expectedColumnNames = new String[]{"_id", "movie_id", "original_title", "poster_path", "release_date", "popularity", "vote_average", "overview"};
+        assertTrue(Arrays.equals(fetchedColumnNames, expectedColumnNames));
     }
 }
