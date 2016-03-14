@@ -54,9 +54,9 @@ public class DatabaseHelperTest extends AndroidTestCase {
     @Test
     public void videosTableShouldHaveTheRightColumns() {
         SQLiteDatabase database = DatabaseHelper.getInstance(getContext()).getReadableDatabase();
-        Cursor moviesCursor = database.rawQuery("SELECT * FROM videos", null);
-        moviesCursor.moveToFirst();
-        String[] fetchedColumnNames = moviesCursor.getColumnNames();
+        Cursor videosCursor = database.rawQuery("SELECT * FROM videos", null);
+        videosCursor.moveToFirst();
+        String[] fetchedColumnNames = videosCursor.getColumnNames();
         String[] expectedColumnNames = new String[]{"_id", "video_id", "language_code", "country_code", "key", "name", "website", "type"};
         assertTrue(Arrays.equals(expectedColumnNames, fetchedColumnNames));
     }
