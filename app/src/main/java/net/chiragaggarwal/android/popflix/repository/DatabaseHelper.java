@@ -86,7 +86,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String buildCreateReviewsTableSqlStatement() {
         return "CREATE TABLE " + PopFlixContract.ReviewsEntry.TABLE_NAME +
                 START_BRACKET +
-                PopFlixContract.MoviesEntry._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT +
+                PopFlixContract.ReviewsEntry._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
+                PopFlixContract.ReviewsEntry.REVIEW_ID + STRING + NOT_NULL + COMMA +
+                PopFlixContract.ReviewsEntry.AUTHOR + STRING + NOT_NULL + COMMA +
+                PopFlixContract.ReviewsEntry.CONTENT + TEXT + NOT_NULL + COMMA +
+                PopFlixContract.ReviewsEntry.URL_STRING + STRING +
                 END_BRACKET;
     }
 }

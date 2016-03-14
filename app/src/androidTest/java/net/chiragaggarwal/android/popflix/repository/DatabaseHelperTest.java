@@ -60,4 +60,14 @@ public class DatabaseHelperTest extends AndroidTestCase {
         String[] expectedColumnNames = new String[]{"_id", "video_id", "language_code", "country_code", "key", "name", "website", "type"};
         assertTrue(Arrays.equals(expectedColumnNames, fetchedColumnNames));
     }
+
+    @Test
+    public void reviewsTableShouldHaveTheRightColumns() {
+        SQLiteDatabase database = DatabaseHelper.getInstance(getContext()).getReadableDatabase();
+        Cursor reviewsCursor = database.rawQuery("SELECT * FROM reviews", null);
+        reviewsCursor.moveToFirst();
+        String[] fetchedColumnNames = reviewsCursor.getColumnNames();
+        String[] expectedColumnNames = new String[]{"_id", "review_id", "author", "content", "url_string"};
+        assertTrue(Arrays.equals(expectedColumnNames, fetchedColumnNames));
+    }
 }

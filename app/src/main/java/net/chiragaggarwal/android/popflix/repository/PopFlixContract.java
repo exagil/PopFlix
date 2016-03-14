@@ -41,8 +41,12 @@ public class PopFlixContract {
     }
 
 
-    public class ReviewsEntry {
+    public class ReviewsEntry implements BaseColumns {
         public static final String TABLE_NAME = "reviews";
+        public static final String REVIEW_ID = "review_id";
+        public static final String AUTHOR = "author";
+        public static final String CONTENT = "content";
+        public static final String URL_STRING = "url_string";
     }
 
     private PopFlixContract(Context context) {
