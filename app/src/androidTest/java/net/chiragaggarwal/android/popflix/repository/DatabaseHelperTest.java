@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -15,6 +17,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
         mContext.deleteDatabase(popFlixContract.getDatabaseName());
     }
 
+    @Test
     public void shouldCreateDatabaseSuccessfully() {
         String tablesSelectionStatement = "SELECT name FROM sqlite_master WHERE type='table'";
         SQLiteDatabase db = DatabaseHelper.getInstance(getContext()).getReadableDatabase();
@@ -23,6 +26,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
         assertTrue("Database is not open, you haven't implemented it the right way", db.isOpen());
     }
 
+    @Test
     public void shouldCreateRequiredTablesForPopFlix() {
         ArrayList<String> tablesNames = new ArrayList<>();
         tablesNames.add("movies");
@@ -37,12 +41,23 @@ public class DatabaseHelperTest extends AndroidTestCase {
         assertEquals(0, tablesNames.size());
     }
 
+    @Test
     public void moviesTableShouldHaveTheRightColumns() {
         SQLiteDatabase database = DatabaseHelper.getInstance(getContext()).getReadableDatabase();
         Cursor moviesCursor = database.rawQuery("SELECT * FROM movies", null);
         moviesCursor.moveToFirst();
         String[] fetchedColumnNames = moviesCursor.getColumnNames();
         String[] expectedColumnNames = new String[]{"_id", "movie_id", "original_title", "poster_path", "release_date", "popularity", "vote_average", "overview"};
+        assertTrue(Arrays.equals(expectedColumnNames, fetchedColumnNames));
+    }
+
+    @Test
+    public void videosTableShouldHaveTheRightColumns() {
+        SQLiteDatabase database = DatabaseHelper.getInstance(getContext()).getReadableDatabase();
+        Cursor moviesCursor = database.rawQuery("SELECT * FROM videos", null);
+        moviesCursor.moveToFirst();
+        String[] fetchedColumnNames = moviesCursor.getColumnNames();
+        String[] expectedColumnNames = new String[]{"_id", "video_id", "language_code", "country_code", "key", "name", "website", "type"};
         assertTrue(Arrays.equals(expectedColumnNames, fetchedColumnNames));
     }
 }

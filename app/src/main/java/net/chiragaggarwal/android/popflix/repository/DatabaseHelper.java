@@ -71,7 +71,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String buildCreateVideosTableSqlStatement() {
         return "CREATE TABLE " + PopFlixContract.VideosEntry.TABLE_NAME +
                 START_BRACKET +
-                PopFlixContract.MoviesEntry._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT +
+                PopFlixContract.VideosEntry._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
+                PopFlixContract.VideosEntry.VIDEO_ID + INTEGER + NOT_NULL + COMMA +
+                PopFlixContract.VideosEntry.LANGUAGE_CODE + STRING + NOT_NULL + COMMA +
+                PopFlixContract.VideosEntry.COUNTRY_CODE + STRING + COMMA +
+                PopFlixContract.VideosEntry.KEY + STRING + NOT_NULL + COMMA +
+                PopFlixContract.VideosEntry.NAME + STRING + COMMA +
+                PopFlixContract.VideosEntry.WEBSITE + STRING + NOT_NULL + COMMA +
+                PopFlixContract.VideosEntry.TYPE + STRING +
                 END_BRACKET;
     }
 

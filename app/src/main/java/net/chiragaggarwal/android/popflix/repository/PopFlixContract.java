@@ -29,8 +29,15 @@ public class PopFlixContract {
         public static final String OVERVIEW = "overview";
     }
 
-    public class VideosEntry {
+    public class VideosEntry implements BaseColumns {
         public static final String TABLE_NAME = "videos";
+        public static final String VIDEO_ID = "video_id";
+        public static final String LANGUAGE_CODE = "language_code";
+        public static final String COUNTRY_CODE = "country_code";
+        public static final String KEY = "key";
+        public static final String NAME = "name";
+        public static final String WEBSITE = "website";
+        public static final String TYPE = "type";
     }
 
 
