@@ -1,4 +1,4 @@
-package net.chiragaggarwal.android.popflix.repository;
+package net.chiragaggarwal.android.popflix.data;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
