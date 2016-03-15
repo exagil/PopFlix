@@ -33,11 +33,12 @@ public class Movie implements Parcelable {
     public String posterPath;
     public Date releaseDate;
     public String overview;
+    private Boolean isFavourite;
     private Double popularity;
     public Double voteAverage;
 
     public Movie(@NonNull Integer id, String originalTitle, Date releaseDate, String posterPath,
-                 Double popularity, Double voteAverage, String overview) {
+                 Double popularity, Double voteAverage, String overview, Boolean isFavourite) {
 
         this.id = id;
         this.originalTitle = originalTitle;
@@ -46,6 +47,7 @@ public class Movie implements Parcelable {
         this.popularity = popularity;
         this.voteAverage = voteAverage;
         this.overview = overview;
+        this.isFavourite = isFavourite;
     }
 
     public static Movie fromJson(JSONObject movieJsonObject) throws JSONException, ParseException {
@@ -56,7 +58,7 @@ public class Movie implements Parcelable {
         String overview = movieJsonObject.getString(OVERVIEW);
         Double popularity = movieJsonObject.getDouble(POPULARITY);
         Double voteAverage = movieJsonObject.getDouble(VOTE_AVERAGE);
-        return new Movie(id, originalTitle, releaseDate, posterPath, popularity, voteAverage, overview);
+        return new Movie(id, originalTitle, releaseDate, posterPath, popularity, voteAverage, overview, false);
     }
 
     @Override
