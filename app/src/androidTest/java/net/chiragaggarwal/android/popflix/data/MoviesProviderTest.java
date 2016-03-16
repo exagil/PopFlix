@@ -76,4 +76,12 @@ public class MoviesProviderTest extends AndroidTestCase {
         context.getContentResolver().insert(MoviesEntry.buildMovieUri(1), movie.toContentValues());
         assertEquals(0, DatabaseUtils.queryNumEntries(database, MoviesEntry.TABLE_NAME));
     }
+
+    @Test
+    public void shouldInsertMoviesUniquelyBasedOnMovieId() {
+        Movie movie = new Movie(1, "Example", new Date(Long.parseLong("1458098572336")), null, 43.169504, 7.21, "Example Review", false);
+        context.getContentResolver().insert(MoviesEntry.buildMoviesUri(), movie.toContentValues());
+        context.getContentResolver().insert(MoviesEntry.buildMoviesUri(), movie.toContentValues());
+        assertEquals(1, DatabaseUtils.queryNumEntries(database, MoviesEntry.TABLE_NAME));
+    }
 }

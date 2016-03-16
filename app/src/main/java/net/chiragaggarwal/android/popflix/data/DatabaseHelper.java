@@ -18,6 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String NUMERIC = " NUMERIC ";
     private static final String TEXT = " TEXT ";
     private static final String BOOLEAN = " BOOLEAN ";
+    private static final String UNIQUE = " UNIQUE ";
     private static DatabaseHelper databaseHelper;
 
     public static SQLiteOpenHelper getInstance(Context context) {
@@ -58,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return "CREATE TABLE " + PopFlixContract.MoviesEntry.TABLE_NAME +
                 START_BRACKET +
                 PopFlixContract.MoviesEntry._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
-                PopFlixContract.MoviesEntry.MOVIE_ID + NUMERIC + NOT_NULL + COMMA +
+                PopFlixContract.MoviesEntry.MOVIE_ID + NUMERIC + NOT_NULL + UNIQUE + COMMA +
                 PopFlixContract.MoviesEntry.ORIGINAL_TITLE + STRING + NOT_NULL + COMMA +
                 PopFlixContract.MoviesEntry.POSTER_PATH + STRING + COMMA +
                 PopFlixContract.MoviesEntry.RELEASE_DATE + STRING + COMMA +
