@@ -47,7 +47,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
         Cursor moviesCursor = database.rawQuery("SELECT * FROM movies", null);
         moviesCursor.moveToFirst();
         String[] fetchedColumnNames = moviesCursor.getColumnNames();
-        String[] expectedColumnNames = new String[]{"_id", "movie_id", "original_title", "poster_path", "release_date", "popularity", "vote_average", "overview"};
+        String[] expectedColumnNames = new String[]{"_id", "movie_id", "original_title", "poster_path", "release_date", "popularity", "vote_average", "overview", "is_favorite"};
         assertTrue(Arrays.equals(expectedColumnNames, fetchedColumnNames));
     }
 
