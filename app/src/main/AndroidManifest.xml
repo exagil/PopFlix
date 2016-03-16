@@ -28,6 +28,9 @@
                   android:screenOrientation="portrait"
                   android:theme="@style/PreferenceTheme">
         </activity>
+        <provider
+            android:name=".data.MoviesProvider"
+            android:authorities="net.chiragaggarwal.android.popflix.data.movies-provider"/>
     </application>
 
 </manifest>

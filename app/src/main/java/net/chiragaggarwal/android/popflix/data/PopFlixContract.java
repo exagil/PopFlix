@@ -27,6 +27,8 @@ public class PopFlixContract {
         public static final String POPULARITY = "popularity";
         public static final String VOTE_AVERAGE = "vote_average";
         public static final String OVERVIEW = "overview";
+
+        public static String PROVIDER_AUTHORITY = "net.chiragaggarwal.android.popflix.data.movies-provider";
     }
 
     public class VideosEntry implements BaseColumns {
