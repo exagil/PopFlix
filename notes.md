@@ -20,3 +20,6 @@ Problem Snippet A
           compare with the cursor which I get from the database
           Hence I need to iterate through the cursor to verify whether it
           has the right values
+
+ToDo:
+  - Add default of isFavorite value to false
