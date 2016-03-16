@@ -30,7 +30,8 @@
         </activity>
         <provider
             android:name=".data.MoviesProvider"
-            android:authorities="net.chiragaggarwal.android.popflix.data.movies-provider"/>
+            android:authorities="net.chiragaggarwal.android.popflix.data.movies-provider"
+            android:exported="true"/>
     </application>
 
 </manifest>
