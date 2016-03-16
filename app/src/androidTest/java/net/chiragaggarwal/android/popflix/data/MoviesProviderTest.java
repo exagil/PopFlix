@@ -38,8 +38,15 @@ public class MoviesProviderTest extends AndroidTestCase {
 
     @Test
     public void shouldHaveCorrectMimeTypeForMoviesCollection() {
-        String expectedType = getContext().getContentResolver().getType(PopFlixContract.MoviesEntry.buildMoviesUri());
-        String actualType = "vnd.android.cursor.dir/vnd.net.chiragaggarwal.android.popflix.data.movies-provider.movies";
+        String expectedType = "vnd.android.cursor.dir/vnd.net.chiragaggarwal.android.popflix.data.movies-provider.movies";
+        String actualType = getContext().getContentResolver().getType(PopFlixContract.MoviesEntry.buildMoviesUri());
+        assertEquals(expectedType, actualType);
+    }
+
+    @Test
+    public void shouldHaveCorrectMimeTypeForMovie() {
+        String expectedType = "vnd.android.cursor.item/vnd.net.chiragaggarwal.android.popflix.data.movies-provider.movies";
+        String actualType = getContext().getContentResolver().getType(PopFlixContract.MoviesEntry.buildMovieUri(1));
         assertEquals(expectedType, actualType);
     }
 }

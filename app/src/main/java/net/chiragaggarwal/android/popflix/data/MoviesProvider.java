@@ -9,15 +9,12 @@ import android.support.annotation.Nullable;
 
 public class MoviesProvider extends ContentProvider {
     private static final int MOVIES_CODE = 0;
+    private static final int MOVIE_CODE = 1;
     private static UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
         addMoviesUri();
-    }
-
-    private static void addMoviesUri() {
-        MoviesProvider.uriMatcher.addURI(PopFlixContract.MoviesEntry.PROVIDER_AUTHORITY,
-                PopFlixContract.MoviesEntry.TABLE_NAME, MOVIES_CODE);
+        addMovieUri();
     }
 
     @Override
@@ -36,7 +33,9 @@ public class MoviesProvider extends ContentProvider {
     public String getType(Uri uri) {
         int matchCode = uriMatcher.match(uri);
         if (matchCode == MOVIES_CODE)
-            return PopFlixContract.MoviesEntry.buildMoviesType();
+            return PopFlixContract.MoviesEntry.buildMoviesMimeType();
+        if (matchCode == MOVIE_CODE)
+            return PopFlixContract.MoviesEntry.buildMovieMimeType();
         return null;
     }
 
@@ -54,5 +53,15 @@ public class MoviesProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
+    }
+
+    private static void addMoviesUri() {
+        MoviesProvider.uriMatcher.addURI(PopFlixContract.MoviesEntry.PROVIDER_AUTHORITY,
+                PopFlixContract.MoviesEntry.MOVIE_PATH, MOVIE_CODE);
+    }
+
+    private static void addMovieUri() {
+        MoviesProvider.uriMatcher.addURI(PopFlixContract.MoviesEntry.PROVIDER_AUTHORITY,
+                PopFlixContract.MoviesEntry.MOVIES_PATH, MOVIES_CODE);
     }
 }

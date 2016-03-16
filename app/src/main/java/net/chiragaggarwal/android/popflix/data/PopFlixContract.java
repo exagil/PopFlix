@@ -1,12 +1,15 @@
 package net.chiragaggarwal.android.popflix.data;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 
 import net.chiragaggarwal.android.popflix.R;
 
 public class PopFlixContract {
+    private static final String ANY_NUMBER_MATCHER = "#";
     private static PopFlixContract instance;
     private static Context context;
 
@@ -32,18 +35,35 @@ public class PopFlixContract {
         private static final String DOT = ".";
         private static final String COLLECTION_SUBTYPE_PART = "android.cursor.dir";
         private static final String SLASH = "/";
+        private static final String ITEM_SUBTYPE_PART = "android.cursor.item";
 
         public static String PROVIDER_AUTHORITY = "net.chiragaggarwal.android.popflix.data.movies-provider";
+        public static final String MOVIES_PATH = TABLE_NAME;
+        public static final String MOVIE_PATH = "movies/#";
 
         public static Uri buildMoviesUri() {
-            String moviesUriString = "content://" + PROVIDER_AUTHORITY + SLASH + TABLE_NAME;
-            return Uri.parse(moviesUriString);
+            return Uri.parse(buildMoviesUriString());
         }
 
-        public static String buildMoviesType() {
+        public static String buildMoviesMimeType() {
             String mimeTypeMovies = TYPE_PART + DOT + COLLECTION_SUBTYPE_PART + SLASH + TYPE_PART + DOT +
                     PROVIDER_AUTHORITY + DOT + TABLE_NAME;
             return mimeTypeMovies;
+        }
+
+        public static Uri buildMovieUri(int movieId) {
+            Uri moviesUri = Uri.parse(buildMoviesUriString());
+            Uri movieUri = ContentUris.withAppendedId(moviesUri, movieId);
+            return movieUri;
+        }
+
+        @NonNull
+        private static String buildMoviesUriString() {
+            return "content://" + PROVIDER_AUTHORITY + SLASH + TABLE_NAME;
+        }
+
+        public static String buildMovieMimeType() {
+            return TYPE_PART + DOT + ITEM_SUBTYPE_PART + SLASH + TYPE_PART + DOT + PROVIDER_AUTHORITY + DOT + TABLE_NAME;
         }
     }
 
