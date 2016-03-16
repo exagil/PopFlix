@@ -9,8 +9,8 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 public class MoviesProvider extends ContentProvider {
-    private static final int MOVIES_CODE = 0;
-    private static final int MOVIE_CODE = 1;
+    private static final int MOVIES_ENDPOINT = 0;
+    private static final int MOVIE_ENDPOINT = 1;
     private static UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
@@ -33,9 +33,9 @@ public class MoviesProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         int matchCode = uriMatcher.match(uri);
-        if (matchCode == MOVIES_CODE)
+        if (matchCode == MOVIES_ENDPOINT)
             return PopFlixContract.MoviesEntry.buildMoviesMimeType();
-        if (matchCode == MOVIE_CODE)
+        if (matchCode == MOVIE_ENDPOINT)
             return PopFlixContract.MoviesEntry.buildMovieMimeType();
         return null;
     }
@@ -43,9 +43,13 @@ public class MoviesProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues movieContentValues) {
-        SQLiteDatabase database = DatabaseHelper.getInstance(getContext()).getWritableDatabase();
-        Long id = MoviesGateway.getInstance(database).insert(movieContentValues);
-        return PopFlixContract.MoviesEntry.buildMovieUri(id);
+        int matchCode = uriMatcher.match(uri);
+        if (matchCode == MOVIES_ENDPOINT) {
+            SQLiteDatabase database = DatabaseHelper.getInstance(getContext()).getWritableDatabase();
+            Long id = MoviesGateway.getInstance(database).insert(movieContentValues);
+            return PopFlixContract.MoviesEntry.buildMovieUri(id);
+        }
+        return null;
     }
 
     @Override
@@ -60,11 +64,11 @@ public class MoviesProvider extends ContentProvider {
 
     private static void addMoviesUri() {
         MoviesProvider.uriMatcher.addURI(PopFlixContract.MoviesEntry.PROVIDER_AUTHORITY,
-                PopFlixContract.MoviesEntry.MOVIE_PATH, MOVIE_CODE);
+                PopFlixContract.MoviesEntry.MOVIE_PATH, MOVIE_ENDPOINT);
     }
 
     private static void addMovieUri() {
         MoviesProvider.uriMatcher.addURI(PopFlixContract.MoviesEntry.PROVIDER_AUTHORITY,
-                PopFlixContract.MoviesEntry.MOVIES_PATH, MOVIES_CODE);
+                PopFlixContract.MoviesEntry.MOVIES_PATH, MOVIES_ENDPOINT);
     }
 }
