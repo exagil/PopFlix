@@ -1,6 +1,7 @@
 package net.chiragaggarwal.android.popflix.data;
 
 import android.content.Context;
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 import net.chiragaggarwal.android.popflix.R;
@@ -27,8 +28,23 @@ public class PopFlixContract {
         public static final String POPULARITY = "popularity";
         public static final String VOTE_AVERAGE = "vote_average";
         public static final String OVERVIEW = "overview";
+        private static final String TYPE_PART = "vnd";
+        private static final String DOT = ".";
+        private static final String COLLECTION_SUBTYPE_PART = "android.cursor.dir";
+        private static final String SLASH = "/";
 
         public static String PROVIDER_AUTHORITY = "net.chiragaggarwal.android.popflix.data.movies-provider";
+
+        public static Uri buildMoviesUri() {
+            String moviesUriString = "content://" + PROVIDER_AUTHORITY + SLASH + TABLE_NAME;
+            return Uri.parse(moviesUriString);
+        }
+
+        public static String buildMoviesType() {
+            String mimeTypeMovies = TYPE_PART + DOT + COLLECTION_SUBTYPE_PART + SLASH + TYPE_PART + DOT +
+                    PROVIDER_AUTHORITY + DOT + TABLE_NAME;
+            return mimeTypeMovies;
+        }
     }
 
     public class VideosEntry implements BaseColumns {

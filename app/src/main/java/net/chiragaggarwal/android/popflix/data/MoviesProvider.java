@@ -2,11 +2,24 @@ package net.chiragaggarwal.android.popflix.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
 public class MoviesProvider extends ContentProvider {
+    private static final int MOVIES_CODE = 0;
+    private static UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+    static {
+        addMoviesUri();
+    }
+
+    private static void addMoviesUri() {
+        MoviesProvider.uriMatcher.addURI(PopFlixContract.MoviesEntry.PROVIDER_AUTHORITY,
+                PopFlixContract.MoviesEntry.TABLE_NAME, MOVIES_CODE);
+    }
+
     @Override
     public boolean onCreate() {
         return true;
@@ -21,6 +34,9 @@ public class MoviesProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
+        int matchCode = uriMatcher.match(uri);
+        if (matchCode == MOVIES_CODE)
+            return PopFlixContract.MoviesEntry.buildMoviesType();
         return null;
     }
 
