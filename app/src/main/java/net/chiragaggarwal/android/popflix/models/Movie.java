@@ -1,5 +1,6 @@
 package net.chiragaggarwal.android.popflix.models;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static net.chiragaggarwal.android.popflix.data.PopFlixContract.MoviesEntry;
+
 public class Movie implements Parcelable {
     public static final String TAG = "net.chiragaggarwal.android.popflix.models,Movie";
 
@@ -27,6 +30,10 @@ public class Movie implements Parcelable {
     private static final String VOTE_AVERAGE = "vote_average";
     private static final String ID = "id";
     private static final String POPULARITY = "popularity";
+    private static final String IS_FAVORITE = "is_favorite";
+    private static final String YYYY_MM_DD = "yyyy-MM-dd";
+    private static final Integer NOT_FAVORITE = 0;
+    private static final Integer FAVORITE = 1;
 
     private Integer id;
     public String originalTitle;
@@ -108,14 +115,17 @@ public class Movie implements Parcelable {
         return String.valueOf(calendar.get(Calendar.YEAR));
     }
 
-    private static Date parseReleaseDate(JSONObject movieJsonObject) throws ParseException, JSONException {
-        String releaseDateString = movieJsonObject.getString(RELEASE_DATE);
-        if (releaseDateString.isEmpty()) return null;
-        return new SimpleDateFormat(RELEASE_DATE_PATTERN).parse(releaseDateString);
-    }
-
-    private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
-        return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
+    public ContentValues toContentValues() {
+        ContentValues movieContentValues = new ContentValues();
+        movieContentValues.put(MoviesEntry.MOVIE_ID, this.id);
+        movieContentValues.put(MoviesEntry.ORIGINAL_TITLE, this.originalTitle);
+        movieContentValues.put(MoviesEntry.RELEASE_DATE, serializedReleaseDate());
+        movieContentValues.put(MoviesEntry.POSTER_PATH, this.posterPath);
+        movieContentValues.put(MoviesEntry.POPULARITY, this.popularity);
+        movieContentValues.put(MoviesEntry.VOTE_AVERAGE, this.voteAverage);
+        movieContentValues.put(MoviesEntry.OVERVIEW, this.overview);
+        movieContentValues.put(MoviesEntry.IS_FAVORITE, serializedIsFavoriteValue());
+        return movieContentValues;
     }
 
     public String idString() {
@@ -159,4 +169,26 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    private static Date parseReleaseDate(JSONObject movieJsonObject) throws ParseException, JSONException {
+        String releaseDateString = movieJsonObject.getString(RELEASE_DATE);
+        if (releaseDateString.isEmpty()) return null;
+        return new SimpleDateFormat(RELEASE_DATE_PATTERN).parse(releaseDateString);
+    }
+
+    private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
+        return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
+    }
+
+    private String serializedReleaseDate() {
+        SimpleDateFormat serializedReleaseDateFormat = new SimpleDateFormat(YYYY_MM_DD);
+        String serializedReleaseDate = serializedReleaseDateFormat.format(this.releaseDate);
+        return serializedReleaseDate;
+    }
+
+    private Integer serializedIsFavoriteValue() {
+        Integer serializedIsFavoriteValue = NOT_FAVORITE;
+        if (this.isFavourite.equals(Boolean.TRUE)) serializedIsFavoriteValue = FAVORITE;
+        return serializedIsFavoriteValue;
+    }
 }

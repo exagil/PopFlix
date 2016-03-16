@@ -31,6 +31,7 @@ public class PopFlixContract {
         public static final String POPULARITY = "popularity";
         public static final String VOTE_AVERAGE = "vote_average";
         public static final String OVERVIEW = "overview";
+        public static final String IS_FAVORITE = "is_favorite";
         private static final String TYPE_PART = "vnd";
         private static final String DOT = ".";
         private static final String COLLECTION_SUBTYPE_PART = "android.cursor.dir";
@@ -51,7 +52,7 @@ public class PopFlixContract {
             return mimeTypeMovies;
         }
 
-        public static Uri buildMovieUri(int movieId) {
+        public static Uri buildMovieUri(long movieId) {
             Uri moviesUri = Uri.parse(buildMoviesUriString());
             Uri movieUri = ContentUris.withAppendedId(moviesUri, movieId);
             return movieUri;

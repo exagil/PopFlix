@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
@@ -41,8 +42,10 @@ public class MoviesProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        return null;
+    public Uri insert(Uri uri, ContentValues movieContentValues) {
+        SQLiteDatabase database = DatabaseHelper.getInstance(getContext()).getWritableDatabase();
+        Long id = MoviesGateway.getInstance(database).insert(movieContentValues);
+        return PopFlixContract.MoviesEntry.buildMovieUri(id);
     }
 
     @Override
