@@ -41,4 +41,37 @@ public class MoviesGatewayTest extends AndroidTestCase {
     public void shouldHaveZeroCountWhenNoMoviesPresent() {
         assertEquals(0, moviesGateway.getCount());
     }
+
+    @Test
+    public void shouldIncreaseMoviesCountByOneWhenTriedToInsertAValidMovie() {
+        Movie movie = new Movie(1, "Example", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        ContentValues moviesContentValues = movie.toContentValues();
+        moviesGateway.insert(moviesContentValues);
+        assertEquals(1, moviesGateway.getCount());
+    }
+
+    @Test
+    public void shouldNotInsertMovieWithNoOverview() {
+        Movie movie = new Movie(1, null, new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        ContentValues moviesContentValues = movie.toContentValues();
+        moviesGateway.insert(moviesContentValues);
+        assertEquals(0, moviesGateway.getCount());
+    }
+
+    @Test
+    public void shouldNotInsertMovieWithNoMovieId() {
+        Movie movie = new Movie(null, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        ContentValues moviesContentValues = movie.toContentValues();
+        moviesGateway.insert(moviesContentValues);
+        assertEquals(0, moviesGateway.getCount());
+    }
+
+    @Test
+    public void shouldNotInsertMovieWithSameMovieIdMoreThanOnce() {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        ContentValues moviesContentValues = movie.toContentValues();
+        moviesGateway.insert(moviesContentValues);
+        moviesGateway.insert(moviesContentValues);
+        assertEquals(1, moviesGateway.getCount());
+    }
 }
