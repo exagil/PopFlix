@@ -1,5 +1,7 @@
 package net.chiragaggarwal.android.popflix.models;
 
+import android.database.Cursor;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,14 +17,6 @@ public class Movies {
         initializeMovies(movies);
     }
 
-    private void initializeMovies(Movie[] movies) {
-        this.movies = new ArrayList<>();
-        for (Integer movieIndex = 0; movieIndex < movies.length; movieIndex++) {
-            Movie movie = movies[movieIndex];
-            this.movies.add(movie);
-        }
-    }
-
     public static Movies fromJson(JSONObject moviesJson) throws JSONException, ParseException {
         JSONArray moviesResults = moviesJson.getJSONArray(RESULTS);
         Movies movies = new Movies();
@@ -34,8 +28,32 @@ public class Movies {
         return movies;
     }
 
-    private void add(Movie movie) {
-        this.movies.add(movie);
+    public static Movies fromCursor(Cursor moviesCursor) throws ParseException {
+        Movies movies = new Movies();
+        if (moviesCursor.getCount() == 0) return movies;
+        moviesCursor.moveToFirst();
+        do {
+            Movie movie = Movie.fromCursor(moviesCursor);
+            movies.add(movie);
+        } while (moviesCursor.moveToNext());
+        return movies;
+    }
+
+    @Override
+    public boolean equals(Object those) {
+        if (those == null || (this.getClass() != those.getClass())) return false;
+        Movies thoseMovies = (Movies) those;
+        for (Integer movieIndex = 0; movieIndex < thoseMovies.count(); movieIndex++) {
+            Movie movieOfThisCollection = this.get(movieIndex);
+            Movie movieOfThatCollection = thoseMovies.get(movieIndex);
+            if (!(movieOfThisCollection.equals(movieOfThatCollection))) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return movies != null ? movies.hashCode() : 0;
     }
 
     public int count() {
@@ -45,6 +63,18 @@ public class Movies {
     public Movie get(Integer movieIndex) {
         if (isMovieIndexInvalid(movieIndex)) return null;
         return this.movies.get(movieIndex);
+    }
+
+    private void initializeMovies(Movie[] movies) {
+        this.movies = new ArrayList<>();
+        for (Integer movieIndex = 0; movieIndex < movies.length; movieIndex++) {
+            Movie movie = movies[movieIndex];
+            this.movies.add(movie);
+        }
+    }
+
+    private void add(Movie movie) {
+        this.movies.add(movie);
     }
 
     private boolean isMovieIndexInvalid(Integer movieIndex) {
