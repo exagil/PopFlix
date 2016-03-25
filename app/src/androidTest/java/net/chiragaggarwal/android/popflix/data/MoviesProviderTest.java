@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
@@ -17,6 +18,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 import static net.chiragaggarwal.android.popflix.data.PopFlixContract.MoviesEntry;
+import static net.chiragaggarwal.android.popflix.test_utilities.Assert.assertEqualityOfMoviesCursors;
 
 public class MoviesProviderTest extends AndroidTestCase {
 
@@ -109,5 +111,54 @@ public class MoviesProviderTest extends AndroidTestCase {
         ContentValues moviesContentValues = movie.toContentValues();
         getContext().getContentResolver().insert(MoviesEntry.buildMoviesUri(), moviesContentValues);
         assertEquals(0, DatabaseUtils.queryNumEntries(database, MoviesEntry.TABLE_NAME));
+    }
+
+    @Test
+    public void shouldFetchNoMoviesIfNoMoviesPresent() {
+        Cursor cursor = getContext().getContentResolver().query(MoviesEntry.buildMoviesUri(), null, null, null, null);
+        assertNull(cursor);
+    }
+
+    @Test
+    public void shouldKnowHowToFetchFavoriteMovies() throws ParseException {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        ContentValues moviesContentValues = movie.toContentValues();
+        this.database.insert(MoviesEntry.TABLE_NAME, null, moviesContentValues);
+        Cursor expectedMoviesCursor = MoviesGateway.getInstance(this.database).getFavoriteMovies();
+        Cursor actualMoviesCursor = getContext().getContentResolver()
+                .query(MoviesEntry.buildMoviesUri(), null, "is_favorite=?", new String[]{"1"}, null);
+
+        assertEqualityOfMoviesCursors(expectedMoviesCursor, actualMoviesCursor);
+    }
+
+    @Test
+    public void shouldFetchOnlyFavoriteMoviesIfBothFavoriteAndNotFavoriteMoviesArePresent() throws ParseException {
+        Movie favoriteMovie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        Movie notFavoriteMovie = new Movie(2, "original_title_two", new Date(), "example_this/another_example", 12.34, 56.78, "overview", false);
+        ContentValues favoriteMovieContentValues = favoriteMovie.toContentValues();
+        this.database.insert(MoviesEntry.TABLE_NAME, null, favoriteMovieContentValues);
+        ContentValues notFavoriteMovieContentValues = notFavoriteMovie.toContentValues();
+        this.database.insert(MoviesEntry.TABLE_NAME, null, notFavoriteMovieContentValues);
+
+        Cursor expectedMoviesCursor = MoviesGateway.getInstance(this.database).getFavoriteMovies();
+        Cursor actualMoviesCursor = getContext().getContentResolver()
+                .query(MoviesEntry.buildMoviesUri(), null, "is_favorite=?", new String[]{"1"}, null);
+
+        assertEqualityOfMoviesCursors(expectedMoviesCursor, actualMoviesCursor);
+    }
+
+    @Test
+    public void shouldFetchNoMoviesIfFavoriteSelectionNotSpecified() throws ParseException {
+        Movie favoriteMovie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        Movie notFavoriteMovie = new Movie(2, "original_title_two", new Date(), "example_this/another_example", 12.34, 56.78, "overview", false);
+        ContentValues favoriteMovieContentValues = favoriteMovie.toContentValues();
+        this.database.insert(MoviesEntry.TABLE_NAME, null, favoriteMovieContentValues);
+        ContentValues notFavoriteMovieContentValues = notFavoriteMovie.toContentValues();
+        this.database.insert(MoviesEntry.TABLE_NAME, null, notFavoriteMovieContentValues);
+
+        Cursor expectedMoviesCursor = null;
+        Cursor actualMoviesCursor = getContext().getContentResolver().query(MoviesEntry.buildMoviesUri(), null, null, null, null);
+
+        assertEqualityOfMoviesCursors(expectedMoviesCursor, actualMoviesCursor);
     }
 }

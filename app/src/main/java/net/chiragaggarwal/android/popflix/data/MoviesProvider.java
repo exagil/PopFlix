@@ -9,7 +9,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import net.chiragaggarwal.android.popflix.models.Movie;
+
 import java.text.ParseException;
+import java.util.Arrays;
+
+import static net.chiragaggarwal.android.popflix.data.PopFlixContract.MoviesEntry;
 
 public class MoviesProvider extends ContentProvider {
     private static final int MOVIES_ENDPOINT = 0;
@@ -32,7 +37,13 @@ public class MoviesProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+        Cursor movies = null;
+        int matchCode = uriMatcher.match(uri);
+        if (matchCode == MOVIES_ENDPOINT && isFavoriteSelection(selection, selectionArgs)) {
+            SQLiteDatabase database = this.databaseHelper.getWritableDatabase();
+            movies = MoviesGateway.getInstance(database).getFavoriteMovies();
+        }
+        return movies;
     }
 
     @Nullable
@@ -40,9 +51,9 @@ public class MoviesProvider extends ContentProvider {
     public String getType(Uri uri) {
         int matchCode = uriMatcher.match(uri);
         if (matchCode == MOVIES_ENDPOINT)
-            return PopFlixContract.MoviesEntry.buildMoviesMimeType();
+            return MoviesEntry.buildMoviesMimeType();
         if (matchCode == MOVIE_ENDPOINT)
-            return PopFlixContract.MoviesEntry.buildMovieMimeType();
+            return MoviesEntry.buildMovieMimeType();
         return null;
     }
 
@@ -54,7 +65,7 @@ public class MoviesProvider extends ContentProvider {
             if (matchCode == MOVIES_ENDPOINT) {
                 SQLiteDatabase database = databaseHelper.getWritableDatabase();
                 Long id = MoviesGateway.getInstance(database).insertIfFavorite(movieContentValues);
-                return PopFlixContract.MoviesEntry.buildMovieUri(id);
+                return MoviesEntry.buildMovieUri(id);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -73,12 +84,17 @@ public class MoviesProvider extends ContentProvider {
     }
 
     private static void addMoviesUri() {
-        MoviesProvider.uriMatcher.addURI(PopFlixContract.MoviesEntry.PROVIDER_AUTHORITY,
-                PopFlixContract.MoviesEntry.MOVIE_PATH, MOVIE_ENDPOINT);
+        MoviesProvider.uriMatcher.addURI(MoviesEntry.PROVIDER_AUTHORITY,
+                MoviesEntry.MOVIE_PATH, MOVIE_ENDPOINT);
     }
 
     private static void addMovieUri() {
-        MoviesProvider.uriMatcher.addURI(PopFlixContract.MoviesEntry.PROVIDER_AUTHORITY,
-                PopFlixContract.MoviesEntry.MOVIES_PATH, MOVIES_ENDPOINT);
+        MoviesProvider.uriMatcher.addURI(MoviesEntry.PROVIDER_AUTHORITY,
+                MoviesEntry.MOVIES_PATH, MOVIES_ENDPOINT);
+    }
+
+    private boolean isFavoriteSelection(String selection, String[] selectionArgs) {
+        return Arrays.asList(selection).contains(MoviesEntry.FAVORITE_SELECTION) &&
+                Arrays.asList(selectionArgs).contains(Movie.FAVORITE_SELECTION_ARGS);
     }
 }

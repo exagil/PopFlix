@@ -95,7 +95,8 @@ public class MoviesGatewayTest extends AndroidTestCase {
     public void shouldKnowHowToFetchFavoriteMovies() throws ParseException {
         Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
         ContentValues moviesContentValues = movie.toContentValues();
-        moviesGateway.insertIfFavorite(moviesContentValues);
+        this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, moviesContentValues);
+
         Cursor cursor = moviesGateway.getFavoriteMovies();
         assertEquals(1, cursor.getCount());
     }
@@ -104,7 +105,8 @@ public class MoviesGatewayTest extends AndroidTestCase {
     public void shouldNotFetchNonFavoriteMoviesWhileFetchingFavoriteMovies() throws ParseException {
         Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
         ContentValues moviesContentValues = movie.toContentValues();
-        moviesGateway.insertIfFavorite(moviesContentValues);
+        this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, moviesContentValues);
+
         Cursor cursor = moviesGateway.getFavoriteMovies();
         assertEquals(0, cursor.getCount());
     }

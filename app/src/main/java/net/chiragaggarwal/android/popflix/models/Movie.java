@@ -21,8 +21,8 @@ import static net.chiragaggarwal.android.popflix.data.PopFlixContract.MoviesEntr
 
 public class Movie implements Parcelable {
     public static final String TAG = "net.chiragaggarwal.android.popflix.models,Movie";
-
     public static final String FAVORITE_SELECTION_ARGS = "1";
+
     private static final String ORIGINAL_TITLE = "original_title";
     private static final String POSTER_PATH = "poster_path";
     private static final String SLASH = "/";

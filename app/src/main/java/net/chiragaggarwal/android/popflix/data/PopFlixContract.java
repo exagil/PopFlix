@@ -37,6 +37,7 @@ public class PopFlixContract {
         private static final String COLLECTION_SUBTYPE_PART = "android.cursor.dir";
         private static final String SLASH = "/";
         private static final String ITEM_SUBTYPE_PART = "android.cursor.item";
+        public static final String FAVORITE_SELECTION = "is_favorite=?";
 
         public static String PROVIDER_AUTHORITY = "net.chiragaggarwal.android.popflix.data.movies-provider";
         public static final String MOVIES_PATH = TABLE_NAME;

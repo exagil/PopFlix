@@ -30,7 +30,7 @@ public class Movies {
 
     public static Movies fromCursor(Cursor moviesCursor) throws ParseException {
         Movies movies = new Movies();
-        if (moviesCursor.getCount() == 0) return movies;
+        if (moviesCursor == null || moviesCursor.getCount() == 0) return movies;
         moviesCursor.moveToFirst();
         do {
             Movie movie = Movie.fromCursor(moviesCursor);
@@ -46,7 +46,8 @@ public class Movies {
         for (Integer movieIndex = 0; movieIndex < thoseMovies.count(); movieIndex++) {
             Movie movieOfThisCollection = this.get(movieIndex);
             Movie movieOfThatCollection = thoseMovies.get(movieIndex);
-            if (!(movieOfThisCollection.equals(movieOfThatCollection))) return false;
+            if (movieOfThisCollection == null || movieOfThatCollection == null) return false;
+            else if (!(movieOfThisCollection.equals(movieOfThatCollection))) return false;
         }
         return true;
     }
