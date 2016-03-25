@@ -2,6 +2,7 @@ package net.chiragaggarwal.android.popflix.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
@@ -73,5 +74,29 @@ public class MoviesGatewayTest extends AndroidTestCase {
         moviesGateway.insert(moviesContentValues);
         moviesGateway.insert(moviesContentValues);
         assertEquals(1, moviesGateway.getCount());
+    }
+
+    @Test
+    public void shouldFetchNoFavoriteMoviesIfNoMoviesPresent() {
+        Cursor cursor = moviesGateway.getFavoriteMovies();
+        assertEquals(0, cursor.getCount());
+    }
+
+    @Test
+    public void shouldKnowHowToFetchFavoriteMovies() {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        ContentValues moviesContentValues = movie.toContentValues();
+        moviesGateway.insert(moviesContentValues);
+        Cursor cursor = moviesGateway.getFavoriteMovies();
+        assertEquals(1, cursor.getCount());
+    }
+
+    @Test
+    public void shouldNotFetchNonFavoriteMoviesWhileFetchingFavoriteMovies() {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
+        ContentValues moviesContentValues = movie.toContentValues();
+        moviesGateway.insert(moviesContentValues);
+        Cursor cursor = moviesGateway.getFavoriteMovies();
+        assertEquals(0, cursor.getCount());
     }
 }

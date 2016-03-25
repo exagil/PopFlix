@@ -1,8 +1,12 @@
 package net.chiragaggarwal.android.popflix.data;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+
+import net.chiragaggarwal.android.popflix.models.Movie;
 
 import static net.chiragaggarwal.android.popflix.data.PopFlixContract.MoviesEntry;
 
@@ -25,5 +29,15 @@ public class MoviesGateway {
 
     public long getCount() {
         return DatabaseUtils.queryNumEntries(this.sqLiteDatabase, MoviesEntry.TABLE_NAME);
+    }
+
+    public Cursor getFavoriteMovies() {
+        return this.sqLiteDatabase.query(MoviesEntry.TABLE_NAME, null, favoriteMoviesSelection(),
+                new String[]{Movie.FAVORITE_SELECTION_ARGS}, null, null, null);
+    }
+
+    @NonNull
+    private String favoriteMoviesSelection() {
+        return "is_favorite=?";
     }
 }
