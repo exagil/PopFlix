@@ -10,6 +10,7 @@ import net.chiragaggarwal.android.popflix.models.Movie;
 
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.util.Date;
 
 public class MoviesGatewayTest extends AndroidTestCase {
@@ -44,35 +45,43 @@ public class MoviesGatewayTest extends AndroidTestCase {
     }
 
     @Test
-    public void shouldIncreaseMoviesCountByOneWhenTriedToInsertAValidMovie() {
+    public void shouldIncreaseMoviesCountByOneWhenTriedToInsertAValidFavoriteMovie() throws ParseException {
         Movie movie = new Movie(1, "Example", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
         ContentValues moviesContentValues = movie.toContentValues();
-        moviesGateway.insert(moviesContentValues);
+        moviesGateway.insertIfFavorite(moviesContentValues);
         assertEquals(1, moviesGateway.getCount());
     }
 
     @Test
-    public void shouldNotInsertMovieWithNoOverview() {
+    public void shouldNotInsertFavoriteMovieWithNoOverview() throws ParseException {
         Movie movie = new Movie(1, null, new Date(), "example/another_example", 12.34, 56.78, "overview", true);
         ContentValues moviesContentValues = movie.toContentValues();
-        moviesGateway.insert(moviesContentValues);
+        moviesGateway.insertIfFavorite(moviesContentValues);
         assertEquals(0, moviesGateway.getCount());
     }
 
     @Test
-    public void shouldNotInsertMovieWithNoMovieId() {
+    public void shouldNotInsertAFavoriteMovieWithNoMovieId() throws ParseException {
         Movie movie = new Movie(null, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
         ContentValues moviesContentValues = movie.toContentValues();
-        moviesGateway.insert(moviesContentValues);
+        moviesGateway.insertIfFavorite(moviesContentValues);
         assertEquals(0, moviesGateway.getCount());
     }
 
     @Test
-    public void shouldNotInsertMovieWithSameMovieIdMoreThanOnce() {
+    public void shouldNotInsertANonFavoriteMovie() throws ParseException {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
+        ContentValues moviesContentValues = movie.toContentValues();
+        moviesGateway.insertIfFavorite(moviesContentValues);
+        assertEquals(0, moviesGateway.getCount());
+    }
+
+    @Test
+    public void shouldNotInsertMovieWithSameMovieIdMoreThanOnce() throws ParseException {
         Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
         ContentValues moviesContentValues = movie.toContentValues();
-        moviesGateway.insert(moviesContentValues);
-        moviesGateway.insert(moviesContentValues);
+        moviesGateway.insertIfFavorite(moviesContentValues);
+        moviesGateway.insertIfFavorite(moviesContentValues);
         assertEquals(1, moviesGateway.getCount());
     }
 
@@ -83,19 +92,19 @@ public class MoviesGatewayTest extends AndroidTestCase {
     }
 
     @Test
-    public void shouldKnowHowToFetchFavoriteMovies() {
+    public void shouldKnowHowToFetchFavoriteMovies() throws ParseException {
         Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
         ContentValues moviesContentValues = movie.toContentValues();
-        moviesGateway.insert(moviesContentValues);
+        moviesGateway.insertIfFavorite(moviesContentValues);
         Cursor cursor = moviesGateway.getFavoriteMovies();
         assertEquals(1, cursor.getCount());
     }
 
     @Test
-    public void shouldNotFetchNonFavoriteMoviesWhileFetchingFavoriteMovies() {
+    public void shouldNotFetchNonFavoriteMoviesWhileFetchingFavoriteMovies() throws ParseException {
         Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
         ContentValues moviesContentValues = movie.toContentValues();
-        moviesGateway.insert(moviesContentValues);
+        moviesGateway.insertIfFavorite(moviesContentValues);
         Cursor cursor = moviesGateway.getFavoriteMovies();
         assertEquals(0, cursor.getCount());
     }

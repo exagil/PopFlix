@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 
 import net.chiragaggarwal.android.popflix.models.Movie;
 
+import java.text.ParseException;
+
 import static net.chiragaggarwal.android.popflix.data.PopFlixContract.MoviesEntry;
 
 public class MoviesGateway {
@@ -23,8 +25,11 @@ public class MoviesGateway {
         this.sqLiteDatabase = sqLiteDatabase;
     }
 
-    public Long insert(ContentValues moviesContentValues) {
-        return this.sqLiteDatabase.insert(MoviesEntry.TABLE_NAME, null, moviesContentValues);
+    public Long insertIfFavorite(ContentValues moviesContentValues) throws ParseException {
+        Movie movie = Movie.fromContentValues(moviesContentValues);
+        if (movie.isFavorite())
+            return this.sqLiteDatabase.insert(MoviesEntry.TABLE_NAME, null, moviesContentValues);
+        return null;
     }
 
     public long getCount() {
