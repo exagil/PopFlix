@@ -2,6 +2,7 @@ package net.chiragaggarwal.android.popflix.models;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -78,6 +79,29 @@ public class Movie implements Parcelable {
         Double voteAverage = movieContentValues.getAsDouble(MoviesEntry.VOTE_AVERAGE);
         String overview = movieContentValues.getAsString(MoviesEntry.OVERVIEW);
         Integer serializedIsFavoriteValue = movieContentValues.getAsInteger(MoviesEntry.IS_FAVORITE);
+        Boolean isFavorite = deserializeIsFavoriteValue(serializedIsFavoriteValue);
+        return new Movie(id, originalTitle, releaseDate, posterPath, popularity, voteAverage, overview, isFavorite);
+    }
+
+    public static Movie fromCursor(Cursor movieCursor) throws ParseException {
+        int movieIdColumnIndex = movieCursor.getColumnIndex(MoviesEntry.MOVIE_ID);
+        int originalTitleColumnIndex = movieCursor.getColumnIndex(MoviesEntry.ORIGINAL_TITLE);
+        int posterPathColumnIndex = movieCursor.getColumnIndex(MoviesEntry.POSTER_PATH);
+        int releaseDateColumnIndex = movieCursor.getColumnIndex(MoviesEntry.RELEASE_DATE);
+        int popularityColumnIndex = movieCursor.getColumnIndex(MoviesEntry.POPULARITY);
+        int voteAverageColumnIndex = movieCursor.getColumnIndex(MoviesEntry.VOTE_AVERAGE);
+        int overviewColumnIndex = movieCursor.getColumnIndex(MoviesEntry.OVERVIEW);
+        int isFavoriteColumnIndex = movieCursor.getColumnIndex(MoviesEntry.IS_FAVORITE);
+
+        Integer id = movieCursor.getInt(movieIdColumnIndex);
+        String originalTitle = movieCursor.getString(originalTitleColumnIndex);
+        String posterPath = movieCursor.getString(posterPathColumnIndex);
+        String serealizedReleaseDate = movieCursor.getString(releaseDateColumnIndex);
+        Date releaseDate = deserializeReleaseDate(serealizedReleaseDate);
+        Double popularity = movieCursor.getDouble(popularityColumnIndex);
+        Double voteAverage = movieCursor.getDouble(voteAverageColumnIndex);
+        String overview = movieCursor.getString(overviewColumnIndex);
+        Integer serializedIsFavoriteValue = movieCursor.getInt(isFavoriteColumnIndex);
         Boolean isFavorite = deserializeIsFavoriteValue(serializedIsFavoriteValue);
         return new Movie(id, originalTitle, releaseDate, posterPath, popularity, voteAverage, overview, isFavorite);
     }
