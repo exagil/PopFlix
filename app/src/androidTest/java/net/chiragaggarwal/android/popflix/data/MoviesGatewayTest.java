@@ -110,4 +110,20 @@ public class MoviesGatewayTest extends AndroidTestCase {
         Cursor cursor = moviesGateway.getFavoriteMovies();
         assertEquals(0, cursor.getCount());
     }
+
+    @Test
+    public void shouldDeleteMovieWithParticularMovieId() {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
+        ContentValues moviesContentValues = movie.toContentValues();
+        long movieId = this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, moviesContentValues);
+        int numberOfDeletedMovies = MoviesGateway.getInstance(database).delete(movieId);
+        assertEquals(1, numberOfDeletedMovies);
+    }
+
+    @Test
+    public void shouldNotDeleteInexistantMovie() {
+        long invalidMovieId = 19;
+        int numberOfDeletedMovies = MoviesGateway.getInstance(database).delete(invalidMovieId);
+        assertEquals(0, numberOfDeletedMovies);
+    }
 }

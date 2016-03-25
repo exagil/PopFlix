@@ -41,6 +41,12 @@ public class MoviesGateway {
                 new String[]{Movie.FAVORITE_SELECTION_ARGS}, null, null, null);
     }
 
+    public int delete(long movieId) {
+        String movieIdString = String.valueOf(movieId);
+        return this.sqLiteDatabase.delete(MoviesEntry.TABLE_NAME, MoviesEntry.MOVIE_ID_SELECTION,
+                new String[]{movieIdString});
+    }
+
     @NonNull
     private String favoriteMoviesSelection() {
         return "is_favorite=?";
