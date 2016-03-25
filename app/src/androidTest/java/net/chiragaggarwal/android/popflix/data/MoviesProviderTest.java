@@ -161,4 +161,28 @@ public class MoviesProviderTest extends AndroidTestCase {
 
         assertEqualityOfMoviesCursors(expectedMoviesCursor, actualMoviesCursor);
     }
+
+    @Test
+    public void shouldDeleteMovieWithSpecificId() {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        ContentValues movieContentValues = movie.toContentValues();
+        long movieId = this.database.insert(MoviesEntry.TABLE_NAME, null, movieContentValues);
+        int deletedRows = getContext().getContentResolver().delete(MoviesEntry.buildMovieUri(movieId), null, null);
+        assertEquals(1, deletedRows);
+    }
+
+    @Test
+    public void shouldNotDeleteMoviesWhenTriedToDeleteAtMoviesEndpoint() {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        ContentValues movieContentValues = movie.toContentValues();
+        this.database.insert(MoviesEntry.TABLE_NAME, null, movieContentValues);
+        int deletedRows = getContext().getContentResolver().delete(MoviesEntry.buildMoviesUri(), null, null);
+        assertEquals(0, deletedRows);
+    }
+
+    @Test
+    public void shouldNotDeleteMoviesForInexistantMovieId() {
+        int deletedRows = getContext().getContentResolver().delete(MoviesEntry.buildMovieUri(19), null, null);
+        assertEquals(0, deletedRows);
+    }
 }

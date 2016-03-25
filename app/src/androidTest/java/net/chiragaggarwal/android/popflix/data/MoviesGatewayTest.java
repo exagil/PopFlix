@@ -126,4 +126,21 @@ public class MoviesGatewayTest extends AndroidTestCase {
         int numberOfDeletedMovies = MoviesGateway.getInstance(database).delete(invalidMovieId);
         assertEquals(0, numberOfDeletedMovies);
     }
+
+    @Test
+    public void shouldDeleteMovieWithParticularMovieIdString() {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
+        ContentValues moviesContentValues = movie.toContentValues();
+        long movieId = this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, moviesContentValues);
+        String movieIdString = String.valueOf(movieId);
+        int numberOfDeletedMovies = MoviesGateway.getInstance(database).delete(movieIdString);
+        assertEquals(1, numberOfDeletedMovies);
+    }
+
+    @Test
+    public void shouldNotDeleteInexistantMovieUsingMovieString() {
+        String invalidMovieIdString = "19";
+        int numberOfDeletedMovies = MoviesGateway.getInstance(database).delete(invalidMovieIdString);
+        assertEquals(0, numberOfDeletedMovies);
+    }
 }

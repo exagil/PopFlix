@@ -75,7 +75,14 @@ public class MoviesProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        int matchCode = uriMatcher.match(uri);
+        int deletedMovies = 0;
+        if (matchCode == MOVIE_ENDPOINT) {
+            SQLiteDatabase database = databaseHelper.getWritableDatabase();
+            String movieId = uri.getLastPathSegment();
+            deletedMovies = MoviesGateway.getInstance(database).delete(movieId);
+        }
+        return deletedMovies;
     }
 
     @Override
@@ -83,12 +90,12 @@ public class MoviesProvider extends ContentProvider {
         return 0;
     }
 
-    private static void addMoviesUri() {
+    private static void addMovieUri() {
         MoviesProvider.uriMatcher.addURI(MoviesEntry.PROVIDER_AUTHORITY,
                 MoviesEntry.MOVIE_PATH, MOVIE_ENDPOINT);
     }
 
-    private static void addMovieUri() {
+    private static void addMoviesUri() {
         MoviesProvider.uriMatcher.addURI(MoviesEntry.PROVIDER_AUTHORITY,
                 MoviesEntry.MOVIES_PATH, MOVIES_ENDPOINT);
     }
