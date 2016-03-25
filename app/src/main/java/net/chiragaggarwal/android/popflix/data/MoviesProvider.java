@@ -5,8 +5,11 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+
+import java.text.ParseException;
 
 public class MoviesProvider extends ContentProvider {
     private static final int MOVIES_ENDPOINT = 0;
@@ -18,8 +21,11 @@ public class MoviesProvider extends ContentProvider {
         addMovieUri();
     }
 
+    private SQLiteOpenHelper databaseHelper;
+
     @Override
     public boolean onCreate() {
+        this.databaseHelper = DatabaseHelper.getInstance(getContext());
         return true;
     }
 
@@ -44,10 +50,14 @@ public class MoviesProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues movieContentValues) {
         int matchCode = uriMatcher.match(uri);
-        if (matchCode == MOVIES_ENDPOINT) {
-            SQLiteDatabase database = DatabaseHelper.getInstance(getContext()).getWritableDatabase();
-            Long id = MoviesGateway.getInstance(database).insert(movieContentValues);
-            return PopFlixContract.MoviesEntry.buildMovieUri(id);
+        try {
+            if (matchCode == MOVIES_ENDPOINT) {
+                SQLiteDatabase database = databaseHelper.getWritableDatabase();
+                Long id = MoviesGateway.getInstance(database).insertIfFavorite(movieContentValues);
+                return PopFlixContract.MoviesEntry.buildMovieUri(id);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return null;
     }

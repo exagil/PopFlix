@@ -21,6 +21,7 @@ import static net.chiragaggarwal.android.popflix.data.PopFlixContract.MoviesEntr
 public class Movie implements Parcelable {
     public static final String TAG = "net.chiragaggarwal.android.popflix.models,Movie";
 
+    public static final String FAVORITE_SELECTION_ARGS = "1";
     private static final String ORIGINAL_TITLE = "original_title";
     private static final String POSTER_PATH = "poster_path";
     private static final String SLASH = "/";
@@ -30,7 +31,6 @@ public class Movie implements Parcelable {
     private static final String VOTE_AVERAGE = "vote_average";
     private static final String ID = "id";
     private static final String POPULARITY = "popularity";
-    private static final String IS_FAVORITE = "is_favorite";
     private static final String YYYY_MM_DD = "yyyy-MM-dd";
     private static final Integer NOT_FAVORITE = 0;
     private static final Integer FAVORITE = 1;
@@ -66,6 +66,20 @@ public class Movie implements Parcelable {
         Double popularity = movieJsonObject.getDouble(POPULARITY);
         Double voteAverage = movieJsonObject.getDouble(VOTE_AVERAGE);
         return new Movie(id, originalTitle, releaseDate, posterPath, popularity, voteAverage, overview, false);
+    }
+
+    public static Movie fromContentValues(ContentValues movieContentValues) throws ParseException {
+        Integer id = movieContentValues.getAsInteger(MoviesEntry.MOVIE_ID);
+        String originalTitle = movieContentValues.getAsString(MoviesEntry.ORIGINAL_TITLE);
+        String serializedReleaseDate = movieContentValues.getAsString(MoviesEntry.RELEASE_DATE);
+        Date releaseDate = deserializeReleaseDate(serializedReleaseDate);
+        String posterPath = movieContentValues.getAsString(MoviesEntry.POSTER_PATH);
+        Double popularity = movieContentValues.getAsDouble(MoviesEntry.POPULARITY);
+        Double voteAverage = movieContentValues.getAsDouble(MoviesEntry.VOTE_AVERAGE);
+        String overview = movieContentValues.getAsString(MoviesEntry.OVERVIEW);
+        Integer serializedIsFavoriteValue = movieContentValues.getAsInteger(MoviesEntry.IS_FAVORITE);
+        Boolean isFavorite = deserializeIsFavoriteValue(serializedIsFavoriteValue);
+        return new Movie(id, originalTitle, releaseDate, posterPath, popularity, voteAverage, overview, isFavorite);
     }
 
     @Override
@@ -119,18 +133,22 @@ public class Movie implements Parcelable {
         ContentValues movieContentValues = new ContentValues();
         movieContentValues.put(MoviesEntry.MOVIE_ID, this.id);
         movieContentValues.put(MoviesEntry.ORIGINAL_TITLE, this.originalTitle);
-        movieContentValues.put(MoviesEntry.RELEASE_DATE, serializedReleaseDate());
+        movieContentValues.put(MoviesEntry.RELEASE_DATE, serializeReleaseDate(this.releaseDate));
         movieContentValues.put(MoviesEntry.POSTER_PATH, this.posterPath);
         movieContentValues.put(MoviesEntry.POPULARITY, this.popularity);
         movieContentValues.put(MoviesEntry.VOTE_AVERAGE, this.voteAverage);
         movieContentValues.put(MoviesEntry.OVERVIEW, this.overview);
-        movieContentValues.put(MoviesEntry.IS_FAVORITE, serializedIsFavoriteValue());
+        movieContentValues.put(MoviesEntry.IS_FAVORITE, serializeIsFavoriteValue(this.isFavourite));
         return movieContentValues;
     }
 
     public String idString() {
         if (this.id == null) return null;
         return this.id.toString();
+    }
+
+    public Boolean isFavorite() {
+        return this.isFavourite;
     }
 
     @Override
@@ -176,19 +194,30 @@ public class Movie implements Parcelable {
         return new SimpleDateFormat(RELEASE_DATE_PATTERN).parse(releaseDateString);
     }
 
+    private static Date deserializeReleaseDate(String dateString) throws ParseException {
+        if (dateString == null) return null;
+        return new SimpleDateFormat(RELEASE_DATE_PATTERN).parse(dateString);
+    }
+
+    private static Boolean deserializeIsFavoriteValue(Integer serializedIsFavoriteValue) {
+        Boolean deserializedIsFavoriteValue = Boolean.FALSE;
+        if (serializedIsFavoriteValue.equals(FAVORITE)) deserializedIsFavoriteValue = Boolean.TRUE;
+        return deserializedIsFavoriteValue;
+    }
+
     private String buildImageUrlString(String baseImageUri, String defaultImageSize, String posterPath) {
         return baseImageUri + SLASH + defaultImageSize + SLASH + posterPath;
     }
 
-    private String serializedReleaseDate() {
+    private String serializeReleaseDate(Date releaseDate) {
         SimpleDateFormat serializedReleaseDateFormat = new SimpleDateFormat(YYYY_MM_DD);
-        String serializedReleaseDate = serializedReleaseDateFormat.format(this.releaseDate);
+        String serializedReleaseDate = serializedReleaseDateFormat.format(releaseDate);
         return serializedReleaseDate;
     }
 
-    private Integer serializedIsFavoriteValue() {
+    private Integer serializeIsFavoriteValue(Boolean isFavourite) {
         Integer serializedIsFavoriteValue = NOT_FAVORITE;
-        if (this.isFavourite.equals(Boolean.TRUE)) serializedIsFavoriteValue = FAVORITE;
+        if (isFavourite.equals(Boolean.TRUE)) serializedIsFavoriteValue = FAVORITE;
         return serializedIsFavoriteValue;
     }
 }

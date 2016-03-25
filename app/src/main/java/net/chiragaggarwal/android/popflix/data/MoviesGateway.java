@@ -29,7 +29,7 @@ public class MoviesGateway {
         Movie movie = Movie.fromContentValues(moviesContentValues);
         if (movie.isFavorite())
             return this.sqLiteDatabase.insert(MoviesEntry.TABLE_NAME, null, moviesContentValues);
-        return null;
+        return new Long(-1);
     }
 
     public long getCount() {
