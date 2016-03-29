@@ -28,6 +28,7 @@ import net.chiragaggarwal.android.popflix.NetworkUtilities;
 import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
+import net.chiragaggarwal.android.popflix.models.ImageSize;
 import net.chiragaggarwal.android.popflix.models.Movie;
 import net.chiragaggarwal.android.popflix.models.Reviews;
 import net.chiragaggarwal.android.popflix.models.Video;
@@ -191,7 +192,7 @@ public class DetailsFragment extends Fragment {
 
     private void showPoster(Movie movie) {
         Picasso.with(getContext()).
-                load(movie.imageUrlString(getContext()))
+                load(movie.imageUrlString(getContext(), ImageSize.MEDIUM))
                 .into(this.moviePoster);
     }
 
