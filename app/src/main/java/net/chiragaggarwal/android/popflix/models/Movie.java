@@ -146,6 +146,11 @@ public class Movie implements Parcelable {
         return buildImageUrlString(baseImageUrl, defaultImageSize, this.posterPath);
     }
 
+    public String imageUrlString(Context context, ImageSize imageSize) {
+        String baseImageUrl = context.getString(R.string.base_image_url);
+        return buildImageUrlString(baseImageUrl, imageSize.decode(), this.posterPath);
+    }
+
     public String yearString() {
         if (this.releaseDate == null) return null;
         Calendar calendar = Calendar.getInstance();
