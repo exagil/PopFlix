@@ -13,8 +13,7 @@
         <item name="android:layout_marginTop">?attr/actionBarSize</item>
     </style>
 
-    <style name="movie_placeholder" parent="@style/movies_placeholder">
-    </style>
+    <style name="movie_placeholder" parent="@style/movies_placeholder"></style>
 
     <style name="grid_item_movie_poster">
         <item name="android:layout_width">match_parent</item>
@@ -99,8 +98,7 @@
         <item name="android:background">@color/background_grey</item>
     </style>
 
-    <style name="movie_placeholder_land" parent="movies_placeholder_land">
-    </style>
+    <style name="movie_placeholder_land" parent="movies_placeholder_land"></style>
 
     <style name="container_land">
         <item name="android:layout_width">match_parent</item>
@@ -180,5 +178,18 @@
 
     <style name="movie_reviews_heading" parent="movie_trailer_heading">
         <item name="android:layout_below">@id/layout_content_trailers</item>
+    </style>
+
+    <style name="button_mark_favorite" parent="@style/movie_detail_widget_common_minimal">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/movie_vote_average</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:layout_toRightOf">@id/movie_poster</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">#86E4DB</item>
+        <item name="android:textColor">#747575</item>
     </style>
 </resources>

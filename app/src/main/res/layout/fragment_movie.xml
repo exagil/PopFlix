@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,32 +12,37 @@
         <TextView
             android:id="@+id/movie_name"
             style="@style/movie_name"
-            tools:text="Interstellar"/>
+            tools:text="Interstellar" />
 
         <ImageView
             android:id="@+id/movie_poster"
             style="@style/movie_poster"
-            tools:src="@drawable/interstellar_poster"/>
+            tools:src="@drawable/interstellar_poster" />
 
         <TextView
             android:id="@+id/movie_year"
             style="@style/movie_year"
-            tools:text="2015"/>
+            tools:text="2015" />
 
         <TextView
             android:id="@+id/movie_vote_average"
             style="@style/movie_vote_average"
-            tools:text="7.36 / 10"/>
+            tools:text="7.36 / 10" />
+
+        <Button
+            android:id="@+id/button_mark_favorite"
+            style="@style/button_mark_favorite"
+            android:text="Mark as\nfavorite" />
 
         <TextView
             android:id="@+id/movie_overview"
             style="@style/movie_overview"
-            tools:text="@string/lorem"/>
+            tools:text="@string/lorem" />
 
         <TextView
             android:id="@+id/text_trailers_heading"
             style="@style/movie_trailer_heading"
-            android:text="@string/trailers_heading"/>
+            android:text="@string/trailers_heading" />
 
         <FrameLayout
             android:id="@+id/layout_content_trailers"
@@ -46,23 +50,23 @@
 
             <ListView
                 android:id="@+id/list_videos"
-                style="@style/movie_videos_list"/>
+                style="@style/movie_videos_list" />
 
             <ProgressBar
                 android:id="@+id/progressbar_videos"
-                style="@style/progressbar_videos"/>
+                style="@style/progressbar_videos" />
 
             <TextView
                 android:id="@+id/text_video_error_message"
                 style="@style/text_video_error_message"
-                android:text="@string/error_cannot_load_videos"/>
+                android:text="@string/error_cannot_load_videos" />
 
         </FrameLayout>
 
         <TextView
             android:id="@+id/text_reviews_heading"
             style="@style/movie_reviews_heading"
-            android:text="@string/text_reviews_heading"/>
+            android:text="@string/text_reviews_heading" />
 
         <FrameLayout
             android:id="@+id/layout_content_reviews"
@@ -70,16 +74,16 @@
 
             <ListView
                 android:id="@+id/list_reviews"
-                style="@style/list_reviews"/>
+                style="@style/list_reviews" />
 
             <ProgressBar
                 android:id="@+id/progressbar_reviews"
-                style="@style/progressbar_reviews"/>
+                style="@style/progressbar_reviews" />
 
             <TextView
                 android:id="@+id/text_reviews_error_message"
                 style="@style/text_reviews_error_message"
-                android:text="@string/error_cannot_load_reviews"/>
+                android:text="@string/error_cannot_load_reviews" />
 
         </FrameLayout>
 
