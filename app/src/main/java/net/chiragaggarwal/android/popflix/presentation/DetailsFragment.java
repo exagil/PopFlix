@@ -27,6 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import net.chiragaggarwal.android.popflix.NetworkUtilities;
 import net.chiragaggarwal.android.popflix.R;
+import net.chiragaggarwal.android.popflix.data.MoviesProviderService;
 import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.ImageSize;
@@ -39,7 +40,7 @@ import net.chiragaggarwal.android.popflix.network.FetchVideosTask;
 
 import static android.widget.AdapterView.OnItemClickListener;
 
-public class DetailsFragment extends Fragment {
+public class DetailsFragment extends Fragment implements MovieDetailsView {
     private static final String DIVIDED_BY_TEN = " / 10";
     private static final String LOG_TAG = "popflix.detailsfragment";
     private static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
@@ -61,6 +62,7 @@ public class DetailsFragment extends Fragment {
     private Movie movie;
     private Button buttonToggleFavorite;
     private MovieDetailViewModel movieDetailViewModel;
+    private MovieDetailsPresenter movieDetailsPresenter;
 
     @Nullable
     @Override
@@ -69,6 +71,8 @@ public class DetailsFragment extends Fragment {
         setHasOptionsMenu(true);
         this.movie = fetchMovieFromArguments();
         this.movieDetailViewModel = new MovieDetailViewModel(this.movie);
+        MoviesProviderService moviesProviderService = new MoviesProviderService();
+        this.movieDetailsPresenter = new MovieDetailsPresenter(this, moviesProviderService);
         initializeViews(view);
         showDetailsFor(this.movie);
         loadVideosFor(this.movie);
@@ -93,6 +97,16 @@ public class DetailsFragment extends Fragment {
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onSaveFavoriteMovie() {
+        initializeStates();
+    }
+
+    @Override
+    public void onDeleteFavoriteMovie() {
+        initializeStates();
     }
 
     private Movie fetchMovieFromArguments() {
@@ -196,11 +210,15 @@ public class DetailsFragment extends Fragment {
     private void setOnClickListenerForFavoriteToggle() {
         this.buttonToggleFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                movieDetailViewModel.toggleFavorite();
-                initializeStates();
+            public void onClick(View view) {
+                toggleFavorite();
             }
         });
+    }
+
+    private void toggleFavorite() {
+        movieDetailViewModel.toggleFavorite();
+        movieDetailsPresenter.toggleFavorite(movie);
     }
 
     private void setDefaultShareAction() {

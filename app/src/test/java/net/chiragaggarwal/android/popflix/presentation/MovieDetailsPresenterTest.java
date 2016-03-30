@@ -4,7 +4,6 @@ import net.chiragaggarwal.android.popflix.data.MoviesProviderService;
 import net.chiragaggarwal.android.popflix.models.Movie;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.Date;
 
@@ -24,6 +23,7 @@ public class MovieDetailsPresenterTest {
         movieDetailsPresenter.toggleFavorite(movie);
 
         verify(moviesProviderService).saveFavoritedMovie(movie);
+        verify(movieDetailsView).onSaveFavoriteMovie();
     }
 
     @Test
@@ -36,6 +36,7 @@ public class MovieDetailsPresenterTest {
 
         movieDetailsPresenter.toggleFavorite(movie);
 
-        verify(moviesProviderService, Mockito.times(0)).saveFavoritedMovie(movie);
+        verify(moviesProviderService).deleteFavoritedMovie(movie.idString());
+        verify(movieDetailsView).onDeleteFavoriteMovie();
     }
 }

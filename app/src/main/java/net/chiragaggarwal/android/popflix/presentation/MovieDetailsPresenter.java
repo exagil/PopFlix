@@ -13,8 +13,13 @@ public class MovieDetailsPresenter {
     }
 
     public void toggleFavorite(Movie movie) {
-        if (!this.moviesProviderService.containsMovieById(movie.idString())) {
+        String movieIdString = movie.idString();
+        if (this.moviesProviderService.containsMovieById(movieIdString)) {
+            this.moviesProviderService.deleteFavoritedMovie(movieIdString);
+            this.movieDetailsView.onDeleteFavoriteMovie();
+        } else {
             this.moviesProviderService.saveFavoritedMovie(movie);
+            this.movieDetailsView.onSaveFavoriteMovie();
         }
     }
 }
