@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -58,6 +59,8 @@ public class DetailsFragment extends Fragment {
     private MovieReviewsAdapter movieReviewsAdapter;
     private ShareActionProvider shareActionProvider;
     private Movie movie;
+    private Button buttonToggleFavorite;
+    private MovieDetailViewModel movieDetailViewModel;
 
     @Nullable
     @Override
@@ -65,6 +68,7 @@ public class DetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
         setHasOptionsMenu(true);
         this.movie = fetchMovieFromArguments();
+        this.movieDetailViewModel = new MovieDetailViewModel(this.movie);
         initializeViews(view);
         showDetailsFor(this.movie);
         loadVideosFor(this.movie);
@@ -107,6 +111,9 @@ public class DetailsFragment extends Fragment {
         this.listReviews = ((ListView) view.findViewById(R.id.list_reviews));
         this.progressbarReviews = ((ProgressBar) view.findViewById(R.id.progressbar_reviews));
         this.textReviewsErrorMessage = ((TextView) view.findViewById(R.id.text_reviews_error_message));
+        this.buttonToggleFavorite = (Button) view.findViewById(R.id.button_toggle_favorite);
+        initializeStates();
+        setEventListeners();
     }
 
     private void showDetailsFor(Movie movie) {
@@ -175,6 +182,25 @@ public class DetailsFragment extends Fragment {
                         Log.e(LOG_TAG, "Fetching Reviews - Unexpected Failure");
                     }
                 }).execute();
+    }
+
+    private void initializeStates() {
+        String favoriteToggleText = movieDetailViewModel.favoriteToggleText();
+        this.buttonToggleFavorite.setText(favoriteToggleText);
+    }
+
+    private void setEventListeners() {
+        setOnClickListenerForFavoriteToggle();
+    }
+
+    private void setOnClickListenerForFavoriteToggle() {
+        this.buttonToggleFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                movieDetailViewModel.toggleFavorite();
+                initializeStates();
+            }
+        });
     }
 
     private void setDefaultShareAction() {

@@ -30,7 +30,7 @@
             tools:text="7.36 / 10" />
 
         <Button
-            android:id="@+id/button_mark_favorite"
+            android:id="@+id/button_toggle_favorite"
             style="@style/button_mark_favorite"
             android:text="@string/mark_as_favorite" />
 
