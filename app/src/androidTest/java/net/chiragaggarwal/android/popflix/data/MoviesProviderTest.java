@@ -185,4 +185,53 @@ public class MoviesProviderTest extends AndroidTestCase {
         int deletedRows = getContext().getContentResolver().delete(MoviesEntry.buildMovieUri(19), null, null);
         assertEquals(0, deletedRows);
     }
+
+    @Test
+    public void shouldNotBeAbleToFindAMovieWhichDoesNotPersist() {
+        Cursor moviesCursor = getContext().getContentResolver().query(
+                PopFlixContract.MoviesEntry.buildMovieUri("1"),
+                null,
+                MoviesEntry.FAVORITE_SELECTION,
+                new String[]{Movie.FAVORITE_SELECTION_ARGS},
+                null);
+        assertEquals(0, moviesCursor.getCount());
+    }
+
+    @Test
+    public void shouldBeAbleToFindAMovieWhichDoesPersists() throws ParseException {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        getContext().getContentResolver().insert(PopFlixContract.MoviesEntry.buildMoviesUri(), movie.toContentValues());
+
+        Cursor expectedMoviesCursor = this.database.query(MoviesEntry.TABLE_NAME, null,
+                MoviesEntry.MOVIE_ID_AND_FAVORITE_SELECTION, new String[]{movie.idString(),
+                        Movie.FAVORITE_SELECTION_ARGS}, null, null, null);
+        Cursor actualMoviesCursor = getContext().getContentResolver().query(
+                PopFlixContract.MoviesEntry.buildMovieUri("1"),
+                null,
+                MoviesEntry.FAVORITE_SELECTION,
+                new String[]{Movie.FAVORITE_SELECTION_ARGS},
+                null);
+
+        assertEquals(1, actualMoviesCursor.getCount());
+        assertEqualityOfMoviesCursors(expectedMoviesCursor, actualMoviesCursor);
+    }
+
+    @Test
+    public void shouldNotFetchUnfavoriteMovieById() throws ParseException {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
+        this.database.insert(MoviesEntry.TABLE_NAME, null, movie.toContentValues());
+
+        Cursor expectedMoviesCursor = this.database.query(MoviesEntry.TABLE_NAME, null,
+                MoviesEntry.MOVIE_ID_AND_FAVORITE_SELECTION, new String[]{movie.idString(),
+                        Movie.FAVORITE_SELECTION_ARGS}, null, null, null);
+        Cursor actualMoviesCursor = getContext().getContentResolver().query(
+                MoviesEntry.buildMovieUri(movie.idString()),
+                null,
+                MoviesEntry.FAVORITE_SELECTION,
+                new String[]{Movie.FAVORITE_SELECTION_ARGS},
+                null);
+
+        assertEquals(0, actualMoviesCursor.getCount());
+        assertEqualityOfMoviesCursors(expectedMoviesCursor, actualMoviesCursor);
+    }
 }

@@ -40,8 +40,10 @@ public class MoviesProvider extends ContentProvider {
         Cursor movies = null;
         int matchCode = uriMatcher.match(uri);
         if (matchCode == MOVIES_ENDPOINT && isFavoriteSelection(selection, selectionArgs)) {
-            SQLiteDatabase database = this.databaseHelper.getWritableDatabase();
-            movies = MoviesGateway.getInstance(database).getFavoriteMovies();
+            movies = getMoviesGateway().getFavoriteMovies();
+        } else if (matchCode == MOVIE_ENDPOINT && isFavoriteSelection(selection, selectionArgs)) {
+            String movieId = uri.getLastPathSegment();
+            movies = getMoviesGateway().getFavoriteMovie(movieId);
         }
         return movies;
     }
@@ -103,5 +105,10 @@ public class MoviesProvider extends ContentProvider {
     private boolean isFavoriteSelection(String selection, String[] selectionArgs) {
         return Arrays.asList(selection).contains(MoviesEntry.FAVORITE_SELECTION) &&
                 Arrays.asList(selectionArgs).contains(Movie.FAVORITE_SELECTION_ARGS);
+    }
+
+    private MoviesGateway getMoviesGateway() {
+        SQLiteDatabase database = this.databaseHelper.getWritableDatabase();
+        return MoviesGateway.getInstance(database);
     }
 }
