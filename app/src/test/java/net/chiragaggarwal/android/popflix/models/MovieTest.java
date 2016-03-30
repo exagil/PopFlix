@@ -109,4 +109,16 @@ public class MovieTest {
         movie.toggleFavorite();
         assertTrue("\nExpected: true\nActual: " + movie.isFavorite(), movie.isFavorite());
     }
+
+    @Test
+    public void shouldNotBeFavoriteByDefault() {
+        Movie movie = new Movie(1, null, new Date(), null, null, null, null, null);
+        assertFalse("\nExpected: false\nActual: " + movie.isFavorite(), movie.isFavorite());
+    }
+
+    @Test
+    public void shouldBeFavoriteIfSetFavoriteByDefault() {
+        Movie movie = new Movie(1, null, new Date(), null, null, null, null, true);
+        assertTrue("\nExpected: true\nActual: " + movie.isFavorite(), movie.isFavorite());
+    }
 }

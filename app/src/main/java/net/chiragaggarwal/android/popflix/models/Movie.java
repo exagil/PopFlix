@@ -41,12 +41,12 @@ public class Movie implements Parcelable {
     public String posterPath;
     public Date releaseDate;
     public String overview;
-    private Boolean isFavourite;
+    private Boolean isFavorite;
     private Double popularity;
     public Double voteAverage;
 
     public Movie(@NonNull Integer id, String originalTitle, Date releaseDate, String posterPath,
-                 Double popularity, Double voteAverage, String overview, Boolean isFavourite) {
+                 Double popularity, Double voteAverage, String overview, Boolean isFavorite) {
 
         this.id = id;
         this.originalTitle = originalTitle;
@@ -55,7 +55,7 @@ public class Movie implements Parcelable {
         this.popularity = popularity;
         this.voteAverage = voteAverage;
         this.overview = overview;
-        this.isFavourite = isFavourite;
+        this.isFavorite = isFavorite;
     }
 
     public static Movie fromJson(JSONObject movieJsonObject) throws JSONException, ParseException {
@@ -66,7 +66,7 @@ public class Movie implements Parcelable {
         String overview = movieJsonObject.getString(OVERVIEW);
         Double popularity = movieJsonObject.getDouble(POPULARITY);
         Double voteAverage = movieJsonObject.getDouble(VOTE_AVERAGE);
-        return new Movie(id, originalTitle, releaseDate, posterPath, popularity, voteAverage, overview, false);
+        return new Movie(id, originalTitle, releaseDate, posterPath, popularity, voteAverage, overview, Boolean.FALSE);
     }
 
     public static Movie fromContentValues(ContentValues movieContentValues) throws ParseException {
@@ -167,7 +167,7 @@ public class Movie implements Parcelable {
         movieContentValues.put(MoviesEntry.POPULARITY, this.popularity);
         movieContentValues.put(MoviesEntry.VOTE_AVERAGE, this.voteAverage);
         movieContentValues.put(MoviesEntry.OVERVIEW, this.overview);
-        movieContentValues.put(MoviesEntry.IS_FAVORITE, serializeIsFavoriteValue(this.isFavourite));
+        movieContentValues.put(MoviesEntry.IS_FAVORITE, serializeIsFavoriteValue(this.isFavorite));
         return movieContentValues;
     }
 
@@ -177,11 +177,14 @@ public class Movie implements Parcelable {
     }
 
     public Boolean isFavorite() {
-        return this.isFavourite;
+        if (this.isFavorite != null && this.isFavorite)
+            return Boolean.TRUE;
+        else
+            return Boolean.FALSE;
     }
 
     public void toggleFavorite() {
-        this.isFavourite = !this.isFavourite;
+        this.isFavorite = !this.isFavorite;
     }
 
     @Override
@@ -196,6 +199,7 @@ public class Movie implements Parcelable {
         dest.writeString(this.posterPath);
         dest.writeLong(releaseDate != null ? releaseDate.getTime() : -1);
         dest.writeString(this.overview);
+        dest.writeValue(this.isFavorite);
         dest.writeValue(this.popularity);
         dest.writeValue(this.voteAverage);
     }
@@ -207,6 +211,7 @@ public class Movie implements Parcelable {
         long tmpReleaseDate = in.readLong();
         this.releaseDate = tmpReleaseDate == -1 ? null : new Date(tmpReleaseDate);
         this.overview = in.readString();
+        this.isFavorite = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.popularity = (Double) in.readValue(Double.class.getClassLoader());
         this.voteAverage = (Double) in.readValue(Double.class.getClassLoader());
     }
