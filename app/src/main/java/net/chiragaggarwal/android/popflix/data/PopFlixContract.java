@@ -39,6 +39,8 @@ public class PopFlixContract {
         private static final String ITEM_SUBTYPE_PART = "android.cursor.item";
         public static final String FAVORITE_SELECTION = "is_favorite=?";
         public static final String MOVIE_ID_SELECTION = "movie_id=?";
+        public static final String MOVIE_ID_AND_FAVORITE_SELECTION = "movie_id=? AND is_favorite=?";
+
 
         public static String PROVIDER_AUTHORITY = "net.chiragaggarwal.android.popflix.data.movies-provider";
         public static final String MOVIES_PATH = TABLE_NAME;
@@ -57,6 +59,12 @@ public class PopFlixContract {
         public static Uri buildMovieUri(long movieId) {
             Uri moviesUri = Uri.parse(buildMoviesUriString());
             Uri movieUri = ContentUris.withAppendedId(moviesUri, movieId);
+            return movieUri;
+        }
+
+        public static Uri buildMovieUri(String movieIdString) {
+            Uri moviesUri = Uri.parse(buildMoviesUriString());
+            Uri movieUri = moviesUri.withAppendedPath(moviesUri, movieIdString);
             return movieUri;
         }
 
