@@ -32,7 +32,7 @@
         <Button
             android:id="@+id/button_mark_favorite"
             style="@style/button_mark_favorite"
-            android:text="Mark as\nfavorite" />
+            android:text="@string/mark_as_favorite" />
 
         <TextView
             android:id="@+id/movie_overview"
