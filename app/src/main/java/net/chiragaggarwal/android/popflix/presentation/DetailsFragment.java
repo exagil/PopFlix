@@ -71,7 +71,7 @@ public class DetailsFragment extends Fragment implements MovieDetailsView {
         setHasOptionsMenu(true);
         this.movie = fetchMovieFromArguments();
         this.movieDetailViewModel = new MovieDetailViewModel(this.movie);
-        MoviesProviderService moviesProviderService = new MoviesProviderService();
+        MoviesProviderService moviesProviderService = new MoviesProviderService(getContext());
         this.movieDetailsPresenter = new MovieDetailsPresenter(this, moviesProviderService);
         initializeViews(view);
         showDetailsFor(this.movie);
