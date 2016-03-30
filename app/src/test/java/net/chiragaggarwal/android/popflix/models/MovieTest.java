@@ -95,4 +95,18 @@ public class MovieTest {
         Movie movie = new Movie(null, "example_title", null, "example_poster_path", 10.10, 10.10, "example_overview", false);
         assertEquals(null, movie.idString());
     }
+
+    @Test
+    public void shouldBeAbleToToggleUnfavoriteMovieToFavorite() {
+        Movie movie = new Movie(1, null, new Date(), null, null, null, null, true);
+        movie.toggleFavorite();
+        assertFalse("\nExpected: false\nActual: " + movie.isFavorite(), movie.isFavorite());
+    }
+
+    @Test
+    public void shouldBeAbleToToggleFavoriteMovieToUnfavorite() {
+        Movie movie = new Movie(1, null, new Date(), null, null, null, null, false);
+        movie.toggleFavorite();
+        assertTrue("\nExpected: true\nActual: " + movie.isFavorite(), movie.isFavorite());
+    }
 }

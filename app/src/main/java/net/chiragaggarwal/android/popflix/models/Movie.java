@@ -180,6 +180,10 @@ public class Movie implements Parcelable {
         return this.isFavourite;
     }
 
+    public void toggleFavorite() {
+        this.isFavourite = !this.isFavourite;
+    }
+
     @Override
     public int describeContents() {
         return 0;
