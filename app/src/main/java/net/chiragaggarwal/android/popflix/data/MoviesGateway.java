@@ -50,6 +50,15 @@ public class MoviesGateway {
         return deleteMovieWithMovieIdString(movieIdString);
     }
 
+    public Cursor getFavoriteMovie(String movieId) {
+        return this.sqLiteDatabase.query(
+                MoviesEntry.TABLE_NAME,
+                null,
+                MoviesEntry.MOVIE_ID_AND_FAVORITE_SELECTION,
+                new String[]{movieId, Movie.FAVORITE_SELECTION_ARGS},
+                null, null, null);
+    }
+
     @NonNull
     private String favoriteMoviesSelection() {
         return "is_favorite=?";

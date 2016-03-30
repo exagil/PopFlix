@@ -13,6 +13,9 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.util.Date;
 
+import static net.chiragaggarwal.android.popflix.data.PopFlixContract.MoviesEntry;
+import static net.chiragaggarwal.android.popflix.test_utilities.Assert.assertEqualityOfMoviesCursors;
+
 public class MoviesGatewayTest extends AndroidTestCase {
     private Context context;
     private SQLiteDatabase database;
@@ -35,7 +38,7 @@ public class MoviesGatewayTest extends AndroidTestCase {
     public void shouldHavePositiveCountWhenMoviesArePresent() {
         Movie movie = new Movie(1, "Example", new Date(), "nothing/everything", 12.34, 12.34, "example", true);
         ContentValues movieContentValues = movie.toContentValues();
-        this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, movieContentValues);
+        this.database.insert(MoviesEntry.TABLE_NAME, null, movieContentValues);
         assertEquals(1, moviesGateway.getCount());
     }
 
@@ -95,7 +98,7 @@ public class MoviesGatewayTest extends AndroidTestCase {
     public void shouldKnowHowToFetchFavoriteMovies() throws ParseException {
         Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
         ContentValues moviesContentValues = movie.toContentValues();
-        this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, moviesContentValues);
+        this.database.insert(MoviesEntry.TABLE_NAME, null, moviesContentValues);
 
         Cursor cursor = moviesGateway.getFavoriteMovies();
         assertEquals(1, cursor.getCount());
@@ -105,7 +108,7 @@ public class MoviesGatewayTest extends AndroidTestCase {
     public void shouldNotFetchNonFavoriteMoviesWhileFetchingFavoriteMovies() throws ParseException {
         Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
         ContentValues moviesContentValues = movie.toContentValues();
-        this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, moviesContentValues);
+        this.database.insert(MoviesEntry.TABLE_NAME, null, moviesContentValues);
 
         Cursor cursor = moviesGateway.getFavoriteMovies();
         assertEquals(0, cursor.getCount());
@@ -115,7 +118,7 @@ public class MoviesGatewayTest extends AndroidTestCase {
     public void shouldDeleteMovieWithParticularMovieId() {
         Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
         ContentValues moviesContentValues = movie.toContentValues();
-        long movieId = this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, moviesContentValues);
+        long movieId = this.database.insert(MoviesEntry.TABLE_NAME, null, moviesContentValues);
         int numberOfDeletedMovies = MoviesGateway.getInstance(database).delete(movieId);
         assertEquals(1, numberOfDeletedMovies);
     }
@@ -131,7 +134,7 @@ public class MoviesGatewayTest extends AndroidTestCase {
     public void shouldDeleteMovieWithParticularMovieIdString() {
         Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
         ContentValues moviesContentValues = movie.toContentValues();
-        long movieId = this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, moviesContentValues);
+        long movieId = this.database.insert(MoviesEntry.TABLE_NAME, null, moviesContentValues);
         String movieIdString = String.valueOf(movieId);
         int numberOfDeletedMovies = MoviesGateway.getInstance(database).delete(movieIdString);
         assertEquals(1, numberOfDeletedMovies);
@@ -142,5 +145,46 @@ public class MoviesGatewayTest extends AndroidTestCase {
         String invalidMovieIdString = "19";
         int numberOfDeletedMovies = MoviesGateway.getInstance(database).delete(invalidMovieIdString);
         assertEquals(0, numberOfDeletedMovies);
+    }
+
+    @Test
+    public void shouldKnowHowToFindFavoriteMovieById() throws ParseException {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        this.database.insert(MoviesEntry.TABLE_NAME, null, movie.toContentValues());
+
+        Cursor expectedMoviesCursor = this.database.query(MoviesEntry.TABLE_NAME, null,
+                MoviesEntry.MOVIE_ID_AND_FAVORITE_SELECTION, new String[]{movie.idString(),
+                        Movie.FAVORITE_SELECTION_ARGS}, null, null, null);
+        Cursor actualMoviesCursor = this.moviesGateway.getFavoriteMovie(movie.idString());
+
+        assertEquals(1, actualMoviesCursor.getCount());
+        assertEqualityOfMoviesCursors(expectedMoviesCursor, actualMoviesCursor);
+    }
+
+    @Test
+    public void shouldNotBeAbleToFindAFavoriteMovieWhichDoesNotPersist() throws ParseException {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+
+        Cursor expectedMoviesCursor = this.database.query(MoviesEntry.TABLE_NAME, null,
+                MoviesEntry.MOVIE_ID_AND_FAVORITE_SELECTION, new String[]{movie.idString(),
+                        Movie.FAVORITE_SELECTION_ARGS}, null, null, null);
+        Cursor actualMoviesCursor = this.moviesGateway.getFavoriteMovie(movie.idString());
+
+        assertEquals(0, actualMoviesCursor.getCount());
+        assertEqualityOfMoviesCursors(expectedMoviesCursor, actualMoviesCursor);
+    }
+
+    @Test
+    public void shouldNotFetchUnfavoriteMovieById() throws ParseException {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", false);
+        this.database.insert(MoviesEntry.TABLE_NAME, null, movie.toContentValues());
+
+        Cursor expectedMoviesCursor = this.database.query(MoviesEntry.TABLE_NAME, null,
+                MoviesEntry.MOVIE_ID_AND_FAVORITE_SELECTION, new String[]{movie.idString(),
+                        Movie.FAVORITE_SELECTION_ARGS}, null, null, null);
+        Cursor actualMoviesCursor = this.moviesGateway.getFavoriteMovie(movie.idString());
+
+        assertEquals(0, actualMoviesCursor.getCount());
+        assertEqualityOfMoviesCursors(expectedMoviesCursor, actualMoviesCursor);
     }
 }
