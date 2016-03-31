@@ -70,12 +70,26 @@ public class MoviesProviderServiceTest extends AndroidTestCase {
     public void shouldKnowPersistentMoviePresentById() {
         Movie movie = new Movie(1, "Example", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
         this.moviesProviderService.saveFavoritedMovie(movie);
-        assertEquals(true, this.moviesProviderService.containsMovieById(movie.idString()));
+        assertEquals(true, this.moviesProviderService.containsFavoriteMovieById(movie.idString()));
     }
 
     @Test
     public void shouldKnowMovieNotPresentIfNotPersistent() {
         Movie movie = new Movie(1, "Example", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
-        assertEquals(false, this.moviesProviderService.containsMovieById(movie.idString()));
+        assertEquals(false, this.moviesProviderService.containsFavoriteMovieById(movie.idString()));
+    }
+
+    @Test
+    public void shouldNotDeleteMoviesForInexistantMovieId() {
+        int deletedRows = this.moviesProviderService.deleteFavoritedMovie("19");
+        assertEquals(0, deletedRows);
+    }
+
+    @Test
+    public void shouldDeleteMovieWithSpecificId() {
+        Movie movie = new Movie(1, "original_title", new Date(), "example/another_example", 12.34, 56.78, "overview", true);
+        this.database.insert(PopFlixContract.MoviesEntry.TABLE_NAME, null, movie.toContentValues());
+        int deletedRows = this.moviesProviderService.deleteFavoritedMovie(movie.idString());
+        assertEquals(1, deletedRows);
     }
 }

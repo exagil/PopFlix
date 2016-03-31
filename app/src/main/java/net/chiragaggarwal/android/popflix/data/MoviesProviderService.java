@@ -19,18 +19,20 @@ public class MoviesProviderService {
         );
     }
 
-    public boolean containsMovieById(String movieIdString) {
+    public boolean containsFavoriteMovieById(String movieIdString) {
         Cursor moviesCursor = this.context.getContentResolver().query(
-                PopFlixContract.MoviesEntry.buildMoviesUri(),
+                PopFlixContract.MoviesEntry.buildMovieUri(movieIdString),
                 null,
-                PopFlixContract.MoviesEntry.MOVIE_ID_SELECTION,
-                new String[]{movieIdString},
+                PopFlixContract.MoviesEntry.FAVORITE_SELECTION,
+                new String[]{Movie.FAVORITE_SELECTION_ARGS},
                 null);
         return isNotNull(moviesCursor) && hasElements(moviesCursor);
     }
 
-    public void deleteFavoritedMovie(String movieIdString) {
-
+    public int deleteFavoritedMovie(String movieIdString) {
+        return this.context.getContentResolver().delete(
+                PopFlixContract.MoviesEntry.buildMovieUri(movieIdString),
+                null, null);
     }
 
     private boolean isNotNull(Cursor moviesCursor) {
