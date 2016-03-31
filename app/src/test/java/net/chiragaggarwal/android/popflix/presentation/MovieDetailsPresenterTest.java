@@ -2,6 +2,8 @@ package net.chiragaggarwal.android.popflix.presentation;
 
 import net.chiragaggarwal.android.popflix.data.MoviesProviderService;
 import net.chiragaggarwal.android.popflix.models.Movie;
+import net.chiragaggarwal.android.popflix.presentation.common.MovieDetailsPresenter;
+import net.chiragaggarwal.android.popflix.presentation.common.MovieDetailsView;
 
 import org.junit.Test;
 

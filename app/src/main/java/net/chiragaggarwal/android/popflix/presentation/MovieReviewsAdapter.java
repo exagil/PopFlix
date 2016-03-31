@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Review;
 import net.chiragaggarwal.android.popflix.models.Reviews;
+import net.chiragaggarwal.android.popflix.presentation.common.ReviewViewHolder;
 
 public class MovieReviewsAdapter extends BaseAdapter {
     private Reviews reviews;

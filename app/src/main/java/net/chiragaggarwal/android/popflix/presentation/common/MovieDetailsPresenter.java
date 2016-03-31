@@ -1,4 +1,4 @@
-package net.chiragaggarwal.android.popflix.presentation;
+package net.chiragaggarwal.android.popflix.presentation.common;
 
 import net.chiragaggarwal.android.popflix.data.MoviesProviderService;
 import net.chiragaggarwal.android.popflix.models.Movie;

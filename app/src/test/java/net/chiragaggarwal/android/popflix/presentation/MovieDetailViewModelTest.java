@@ -1,6 +1,7 @@
 package net.chiragaggarwal.android.popflix.presentation;
 
 import net.chiragaggarwal.android.popflix.models.Movie;
+import net.chiragaggarwal.android.popflix.presentation.common.MovieDetailViewModel;
 
 import org.junit.Test;
 

@@ -37,6 +37,10 @@ import net.chiragaggarwal.android.popflix.models.Video;
 import net.chiragaggarwal.android.popflix.models.Videos;
 import net.chiragaggarwal.android.popflix.network.FetchReviewsTask;
 import net.chiragaggarwal.android.popflix.network.FetchVideosTask;
+import net.chiragaggarwal.android.popflix.presentation.common.ListUtilities;
+import net.chiragaggarwal.android.popflix.presentation.common.MovieDetailViewModel;
+import net.chiragaggarwal.android.popflix.presentation.common.MovieDetailsPresenter;
+import net.chiragaggarwal.android.popflix.presentation.common.MovieDetailsView;
 
 import static android.widget.AdapterView.OnItemClickListener;
 

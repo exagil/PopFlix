@@ -51,7 +51,6 @@ public class MoviesFragment extends Fragment {
     public void onStart() {
         super.onStart();
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        fetchMovies();
     }
 
     @Nullable
@@ -62,6 +61,7 @@ public class MoviesFragment extends Fragment {
         setHasOptionsMenu(true);
         initializeViews(view);
         setOnItemClickListenerForMovieGrid();
+        fetchMovies();
         return view;
     }
 

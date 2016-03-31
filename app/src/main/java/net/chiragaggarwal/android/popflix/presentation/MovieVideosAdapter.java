@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Video;
 import net.chiragaggarwal.android.popflix.models.Videos;
+import net.chiragaggarwal.android.popflix.presentation.common.VideoViewHolder;
 
 public class MovieVideosAdapter extends BaseAdapter {
     private Videos videos;
