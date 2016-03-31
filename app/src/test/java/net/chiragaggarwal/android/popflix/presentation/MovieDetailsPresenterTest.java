@@ -16,7 +16,7 @@ public class MovieDetailsPresenterTest {
     public void shouldSaveFavoritedMovieWhenNotPresentAlready() {
         Movie movie = new Movie(1, "example", new Date(), "example", 1.23, 4.56, "example", true);
         MoviesProviderService moviesProviderService = mock(MoviesProviderService.class);
-        when(moviesProviderService.containsMovieById(movie.idString())).thenReturn(false);
+        when(moviesProviderService.containsFavoriteMovieById(movie.idString())).thenReturn(false);
         MovieDetailsView movieDetailsView = mock(MovieDetailsView.class);
         MovieDetailsPresenter movieDetailsPresenter = new MovieDetailsPresenter(movieDetailsView, moviesProviderService);
 
@@ -31,7 +31,7 @@ public class MovieDetailsPresenterTest {
         Movie movie = new Movie(1, "example", new Date(), "example", 1.23, 4.56, "example", true);
         MoviesProviderService moviesProviderService = mock(MoviesProviderService.class);
         MovieDetailsView movieDetailsView = mock(MovieDetailsView.class);
-        when(moviesProviderService.containsMovieById(movie.idString())).thenReturn(true);
+        when(moviesProviderService.containsFavoriteMovieById(movie.idString())).thenReturn(true);
         MovieDetailsPresenter movieDetailsPresenter = new MovieDetailsPresenter(movieDetailsView, moviesProviderService);
 
         movieDetailsPresenter.toggleFavorite(movie);

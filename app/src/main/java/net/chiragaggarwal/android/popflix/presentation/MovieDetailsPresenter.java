@@ -14,7 +14,7 @@ public class MovieDetailsPresenter {
 
     public void toggleFavorite(Movie movie) {
         String movieIdString = movie.idString();
-        if (this.moviesProviderService.containsMovieById(movieIdString)) {
+        if (this.moviesProviderService.containsFavoriteMovieById(movieIdString)) {
             this.moviesProviderService.deleteFavoritedMovie(movieIdString);
             this.movieDetailsView.onDeleteFavoriteMovie();
         } else {
