@@ -47,12 +47,6 @@ public class MoviesFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,7 +54,6 @@ public class MoviesFragment extends Fragment {
         onMovieSelectedListener = ((OnMovieSelectedListener) getActivity());
         setHasOptionsMenu(true);
         initializeViews(view);
-        setOnItemClickListenerForMovieGrid();
         fetchMovies();
         return view;
     }
@@ -106,6 +99,7 @@ public class MoviesFragment extends Fragment {
                     public void onSuccess(Movies movies) {
                         moviesAdapter = new MoviesAdapter(getContext(), movies);
                         moviesGrid.setAdapter(moviesAdapter);
+                        setOnItemClickListenerForMovieGrid();
                     }
 
                     @Override
@@ -127,7 +121,8 @@ public class MoviesFragment extends Fragment {
 
     private String sortOrder() {
         String sortOrderPreferenceKey = getString(R.string.preference_sort_order_key);
-        return this.sharedPreferences.getString(sortOrderPreferenceKey, "");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        return sharedPreferences.getString(sortOrderPreferenceKey, "");
     }
 
     private void showErrorDialog(Error error) {
