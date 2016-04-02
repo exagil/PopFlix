@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,13 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import net.chiragaggarwal.android.popflix.NetworkUtilities;
 import net.chiragaggarwal.android.popflix.R;
-import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movie;
-import net.chiragaggarwal.android.popflix.models.Movies;
-import net.chiragaggarwal.android.popflix.network.FetchMoviesTask;
 
 public class MoviesFragment extends Fragment {
     private static final String LOG_TAG = "popflix.movies_fragment";
@@ -54,7 +49,6 @@ public class MoviesFragment extends Fragment {
         onMovieSelectedListener = ((OnMovieSelectedListener) getActivity());
         setHasOptionsMenu(true);
         initializeViews(view);
-        fetchMovies();
         return view;
     }
 
@@ -87,31 +81,6 @@ public class MoviesFragment extends Fragment {
                 onMovieSelectedListener.onMovieSelected(movie);
             }
         });
-    }
-
-    private void fetchMovies() {
-        new FetchMoviesTask(
-                sortOrder(),
-                getContext(),
-                new NetworkUtilities(getContext()),
-                new Callback<Movies, Error>() {
-                    @Override
-                    public void onSuccess(Movies movies) {
-                        moviesAdapter = new MoviesAdapter(getContext(), movies);
-                        moviesGrid.setAdapter(moviesAdapter);
-                        setOnItemClickListenerForMovieGrid();
-                    }
-
-                    @Override
-                    public void onFailure(Error error) {
-                        showErrorDialog(error);
-                    }
-
-                    @Override
-                    public void onUnexpectedFailure() {
-                        Log.e(LOG_TAG, "Fetching Movies - Unexpected Failure");
-                    }
-                }).execute();
     }
 
     private void launchSettings() {
