@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import static net.chiragaggarwal.android.popflix.data.PopFlixContract.MoviesEntry;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String INTEGER = " INTEGER ";
@@ -19,9 +21,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TEXT = " TEXT ";
     private static final String BOOLEAN = " BOOLEAN ";
     private static final String UNIQUE = " UNIQUE ";
+    private static final String DROP_TABLE = "DROP TABLE ";
     private static DatabaseHelper databaseHelper;
 
-    public static SQLiteOpenHelper getInstance(Context context) {
+    public static DatabaseHelper getInstance(Context context) {
         if (databaseHelper == null) {
             String databaseName = PopFlixContract.getInstance(context).getDatabaseName();
             databaseHelper = new DatabaseHelper(context, databaseName, null, DATABASE_VERSION);
@@ -40,7 +43,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        System.out.println();
         db.beginTransaction();
         db.execSQL(buildCreateMoviesTableSqlStatement());
         db.execSQL(buildCreateVideosTableSqlStatement());
@@ -56,17 +58,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @NonNull
     private String buildCreateMoviesTableSqlStatement() {
-        return "CREATE TABLE " + PopFlixContract.MoviesEntry.TABLE_NAME +
+        return "CREATE TABLE " + MoviesEntry.TABLE_NAME +
                 START_BRACKET +
-                PopFlixContract.MoviesEntry._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
-                PopFlixContract.MoviesEntry.MOVIE_ID + NUMERIC + NOT_NULL + UNIQUE + COMMA +
-                PopFlixContract.MoviesEntry.ORIGINAL_TITLE + STRING + NOT_NULL + COMMA +
-                PopFlixContract.MoviesEntry.POSTER_PATH + STRING + COMMA +
-                PopFlixContract.MoviesEntry.RELEASE_DATE + STRING + COMMA +
-                PopFlixContract.MoviesEntry.POPULARITY + NUMERIC + COMMA +
-                PopFlixContract.MoviesEntry.VOTE_AVERAGE + NUMERIC + COMMA +
-                PopFlixContract.MoviesEntry.OVERVIEW + TEXT + COMMA +
-                PopFlixContract.MoviesEntry.IS_FAVORITE + BOOLEAN +
+                MoviesEntry._ID + INTEGER + PRIMARY_KEY + AUTOINCREMENT + COMMA +
+                MoviesEntry.MOVIE_ID + NUMERIC + NOT_NULL + UNIQUE + COMMA +
+                MoviesEntry.ORIGINAL_TITLE + STRING + NOT_NULL + COMMA +
+                MoviesEntry.POSTER_PATH + STRING + COMMA +
+                MoviesEntry.RELEASE_DATE + STRING + COMMA +
+                MoviesEntry.POPULARITY + NUMERIC + COMMA +
+                MoviesEntry.VOTE_AVERAGE + NUMERIC + COMMA +
+                MoviesEntry.OVERVIEW + TEXT + COMMA +
+                MoviesEntry.IS_FAVORITE + BOOLEAN +
                 END_BRACKET;
     }
 
@@ -95,5 +97,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 PopFlixContract.ReviewsEntry.CONTENT + TEXT + NOT_NULL + COMMA +
                 PopFlixContract.ReviewsEntry.URL_STRING + STRING +
                 END_BRACKET;
+    }
+
+    public void reset() {
+        SQLiteDatabase writableDatabase = this.getWritableDatabase();
+        writableDatabase.execSQL(DROP_TABLE + PopFlixContract.ReviewsEntry.TABLE_NAME);
+        writableDatabase.execSQL(DROP_TABLE + PopFlixContract.VideosEntry.TABLE_NAME);
+        writableDatabase.execSQL(DROP_TABLE + PopFlixContract.MoviesEntry.TABLE_NAME);
+        onCreate(writableDatabase);
     }
 }
