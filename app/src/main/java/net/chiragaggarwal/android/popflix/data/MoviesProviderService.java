@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 
 import net.chiragaggarwal.android.popflix.models.Movie;
+import net.chiragaggarwal.android.popflix.models.Movies;
+
+import java.text.ParseException;
 
 public class MoviesProviderService {
     private Context context;
@@ -33,6 +36,17 @@ public class MoviesProviderService {
         return this.context.getContentResolver().delete(
                 PopFlixContract.MoviesEntry.buildMovieUri(movieIdString),
                 null, null);
+    }
+
+    public Movies loadFavoriteMovies() throws ParseException {
+        Cursor moviesCursor = this.context.getContentResolver().query(
+                PopFlixContract.MoviesEntry.buildMoviesUri(),
+                null,
+                PopFlixContract.MoviesEntry.FAVORITE_SELECTION,
+                new String[]{Movie.FAVORITE_SELECTION_ARGS},
+                null
+        );
+        return Movies.fromCursor(moviesCursor);
     }
 
     private boolean isNotNull(Cursor moviesCursor) {
