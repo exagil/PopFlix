@@ -35,6 +35,11 @@ public class MoviesFragment extends Fragment implements MoviesView {
     private GridView moviesGrid;
     private MoviesAdapter moviesAdapter;
     private OnMovieSelectedListener onMovieSelectedListener;
+    private MoviesPresenter moviesPresenter;
+
+    public void onSortOrderChanged() {
+        fetchMovies(this.moviesPresenter);
+    }
 
     public interface OnMovieSelectedListener {
         void onMovieSelected(Movie movie);
@@ -61,12 +66,8 @@ public class MoviesFragment extends Fragment implements MoviesView {
         NetworkUtilities networkUtilities = new NetworkUtilities(getContext());
         MoviesService moviesService = new MoviesService(getContext(), networkUtilities);
         MoviesProviderService moviesProviderService = new MoviesProviderService(getContext());
-        MoviesPresenter moviesPresenter = new MoviesPresenter(this, moviesService, moviesProviderService);
-        try {
-            moviesPresenter.fetchMovies(sortOrder());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        this.moviesPresenter = new MoviesPresenter(this, moviesService, moviesProviderService);
+        fetchMovies(moviesPresenter);
         return view;
     }
 
@@ -107,6 +108,14 @@ public class MoviesFragment extends Fragment implements MoviesView {
         this.moviesGrid = ((GridView) view.findViewById(R.id.movies_grid));
         this.moviesAdapter = new MoviesAdapter(getContext(), new Movies());
         this.moviesGrid.setAdapter(this.moviesAdapter);
+    }
+
+    private void fetchMovies(MoviesPresenter moviesPresenter) {
+        try {
+            moviesPresenter.fetchMovies(sortOrder());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setOnItemClickListenerForMovieGrid() {

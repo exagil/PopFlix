@@ -9,10 +9,19 @@ import android.view.View;
 
 import net.chiragaggarwal.android.popflix.R;
 import net.chiragaggarwal.android.popflix.models.Movie;
+import net.chiragaggarwal.android.popflix.models.MoviesPreference;
 
 public class MoviesActivity extends AppCompatActivity implements MoviesFragment.OnMovieSelectedListener {
 
     private static final String POP_FLIX = "PopFlix";
+
+    @Override
+    public void onMovieSelected(Movie movie) {
+        if (isTabletWithLandscapeOrientation())
+            showMovieOnRightPane(movie);
+        else
+            showMovieOnCompleteScreen(movie);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +31,12 @@ public class MoviesActivity extends AppCompatActivity implements MoviesFragment.
         initializePreferences();
 
         showMovies();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateMoviesIfSortOrderChanged();
     }
 
     private void initializeToolbar() {
@@ -40,12 +55,16 @@ public class MoviesActivity extends AppCompatActivity implements MoviesFragment.
                 .commit();
     }
 
-    @Override
-    public void onMovieSelected(Movie movie) {
-        if (isTabletWithLandscapeOrientation())
-            showMovieOnRightPane(movie);
-        else
-            showMovieOnCompleteScreen(movie);
+    private void updateMoviesIfSortOrderChanged() {
+        if (hasSortOrderChanged()) {
+            MoviesFragment moviesFragment = (MoviesFragment) this.getSupportFragmentManager()
+                    .findFragmentById(R.id.movies_placeholder);
+            moviesFragment.onSortOrderChanged();
+        }
+    }
+
+    private boolean hasSortOrderChanged() {
+        return MoviesPreference.getInstance(this).hasSortOrderChanged();
     }
 
     private void showMovieOnCompleteScreen(Movie movie) {

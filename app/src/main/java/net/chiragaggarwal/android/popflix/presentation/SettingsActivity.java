@@ -7,6 +7,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 import net.chiragaggarwal.android.popflix.R;
+import net.chiragaggarwal.android.popflix.models.MoviesPreference;
 
 public class SettingsActivity extends PreferenceActivity implements
         Preference.OnPreferenceChangeListener {
@@ -23,6 +24,7 @@ public class SettingsActivity extends PreferenceActivity implements
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String selectedEntry = getSelectedEntryCorrespondingToEntryValue(preference, (String) newValue);
         preference.setSummary(selectedEntry);
+        MoviesPreference.getInstance(getApplicationContext()).setSortOrderAsChanged();
         return true;
     }
 
