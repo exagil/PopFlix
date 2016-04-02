@@ -10,6 +10,7 @@ import net.chiragaggarwal.android.popflix.R;
 
 public class SettingsActivity extends PreferenceActivity implements
         Preference.OnPreferenceChangeListener {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

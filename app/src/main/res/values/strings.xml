@@ -22,6 +22,8 @@
     <string name="preference_sort_order_highest_rated_entry">Highest Rated</string>
     <string name="preference_sort_order_highest_rated_entry_value">vote_average.desc</string>
     <string name="preference_sort_order_title">Sort Order</string>
+    <string name="preference_sort_order_favorites_entry">Favorites</string>
+    <string name="preference_sort_order_favorites_entry_value">favorites</string>
     <string name="preference_sort_order_key">preference_sort_order</string>
     <string name="sort_by">sort_by</string>
     <string name="error_no_internet_connection">No Internet Connection Present</string>
