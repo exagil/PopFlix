@@ -118,7 +118,9 @@ public class Movie implements Parcelable {
             return false;
         if (posterPath != null ? !posterPath.equals(movie.posterPath) : movie.posterPath != null)
             return false;
-        if (releaseDate != null ? !releaseDate.equals(movie.releaseDate) : movie.releaseDate != null)
+        String thisMoviesSerializedReleasedDate = serializeReleaseDate(this.releaseDate);
+        String thatMoviesSerializedReleaseDate = movie.serializeReleaseDate(movie.releaseDate);
+        if (thisMoviesSerializedReleasedDate != null ? !thisMoviesSerializedReleasedDate.equals(thatMoviesSerializedReleaseDate) : thatMoviesSerializedReleaseDate != null)
             return false;
         if (overview != null ? !overview.equals(movie.overview) : movie.overview != null)
             return false;

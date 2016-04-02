@@ -70,6 +70,13 @@ public class MovieTest {
     }
 
     @Test
+    public void shouldBeEqualToAnotherMovieWithSameReleaseDateButDifferentTime() {
+        Movie firstMovie = new Movie(1, "first_movie", new Date(Long.valueOf(1451606400)), "first_poster_path", 1.23, 4.56, "first_overview", true);
+        Movie firstMovieWithSameDateButDifferentTime = new Movie(1, "first_movie", new Date(Long.valueOf(1451613784)), "first_poster_path", 1.23, 4.56, "first_overview", true);
+        assertEquals(firstMovie, firstMovieWithSameDateButDifferentTime);
+    }
+
+    @Test
     public void shouldHaveHashcodeSameAsThatOfOtherMovieIfBothAreEqual() {
         Movie thisMovie = new Movie(1, "example_title", new Date(), "example_poster_path", 10.10, 10.10, "example_overview", false);
         Movie thatMovie = new Movie(1, "example_title", new Date(), "example_poster_path", 10.10, 10.10, "example_overview", false);
