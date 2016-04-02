@@ -15,11 +15,16 @@ import net.chiragaggarwal.android.popflix.models.Movies;
 
 public class MoviesAdapter extends BaseAdapter {
     private final Context context;
-    private final Movies movies;
+    private Movies movies;
 
     public MoviesAdapter(Context context, Movies movies) {
         this.context = context;
         this.movies = movies;
+    }
+
+    public void populateMovies(Movies movies) {
+        this.movies = movies;
+        notifyDataSetChanged();
     }
 
     @Override

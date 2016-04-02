@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,15 +18,22 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import net.chiragaggarwal.android.popflix.NetworkUtilities;
 import net.chiragaggarwal.android.popflix.R;
+import net.chiragaggarwal.android.popflix.data.MoviesProviderService;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.Movie;
+import net.chiragaggarwal.android.popflix.models.Movies;
+import net.chiragaggarwal.android.popflix.network.MoviesService;
+import net.chiragaggarwal.android.popflix.presentation.common.MoviesPresenter;
+import net.chiragaggarwal.android.popflix.presentation.common.MoviesView;
 
-public class MoviesFragment extends Fragment {
+import java.text.ParseException;
+
+public class MoviesFragment extends Fragment implements MoviesView {
     private static final String LOG_TAG = "popflix.movies_fragment";
     private GridView moviesGrid;
     private MoviesAdapter moviesAdapter;
-    private SharedPreferences sharedPreferences;
     private OnMovieSelectedListener onMovieSelectedListener;
 
     public interface OnMovieSelectedListener {
@@ -49,7 +57,33 @@ public class MoviesFragment extends Fragment {
         onMovieSelectedListener = ((OnMovieSelectedListener) getActivity());
         setHasOptionsMenu(true);
         initializeViews(view);
+
+        NetworkUtilities networkUtilities = new NetworkUtilities(getContext());
+        MoviesService moviesService = new MoviesService(getContext(), networkUtilities);
+        MoviesProviderService moviesProviderService = new MoviesProviderService(getContext());
+        MoviesPresenter moviesPresenter = new MoviesPresenter(this, moviesService, moviesProviderService);
+        try {
+            moviesPresenter.fetchMovies(sortOrder());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return view;
+    }
+
+    @Override
+    public void onMoviesLoaded(Movies movies) {
+        this.moviesAdapter.populateMovies(movies);
+        setOnItemClickListenerForMovieGrid();
+    }
+
+    @Override
+    public void onError(Error error) {
+        showErrorDialog(error);
+    }
+
+    @Override
+    public void onUnexpectedError() {
+        Log.e(LOG_TAG, "Oops! Something went wrong!");
     }
 
     @Override
@@ -71,6 +105,8 @@ public class MoviesFragment extends Fragment {
 
     private void initializeViews(View view) {
         this.moviesGrid = ((GridView) view.findViewById(R.id.movies_grid));
+        this.moviesAdapter = new MoviesAdapter(getContext(), new Movies());
+        this.moviesGrid.setAdapter(this.moviesAdapter);
     }
 
     private void setOnItemClickListenerForMovieGrid() {

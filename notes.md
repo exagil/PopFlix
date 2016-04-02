@@ -22,4 +22,8 @@ Problem Snippet A
           has the right values
 
 ToDo:
-  - Add default of isFavorite value to false
+- Inject NetworkUtilities, MoviesService, MoviesProviderService, MoviesPresenter using dagger in
+  net.chiragaggarwal.android.popflix.presentation.common.MoviesPresenter
+
+Done:
+- Add default of isFavorite value to false
