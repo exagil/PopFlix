@@ -35,7 +35,8 @@ public class MoviesPresenter {
         this.moviesService.loadMovies(sortOrder, new MoviesService.MoviesCallback() {
             @Override
             public void onSuccess(Movies movies) {
-                moviesView.onMoviesLoaded(movies);
+                Movies moviesWithFavoritedMarked = moviesProviderService.markFavoritedMoviesAsFavorite(movies);
+                moviesView.onMoviesLoaded(moviesWithFavoritedMarked);
             }
 
             @Override
