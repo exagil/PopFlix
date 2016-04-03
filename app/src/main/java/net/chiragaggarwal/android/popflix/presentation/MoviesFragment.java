@@ -68,7 +68,7 @@ public class MoviesFragment extends Fragment implements MoviesView {
         MoviesService moviesService = new MoviesService(getContext(), networkUtilities);
         MoviesProviderService moviesProviderService = new MoviesProviderService(getContext());
         this.moviesPresenter = new MoviesPresenter(this, moviesService, moviesProviderService);
-        fetchMovies(moviesPresenter);
+
         return view;
     }
 
@@ -103,6 +103,24 @@ public class MoviesFragment extends Fragment implements MoviesView {
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Movies movies = this.moviesAdapter.getMovies();
+        outState.putParcelable(Movies.TAG, movies);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState == null) {
+            fetchMovies(moviesPresenter);
+            return;
+        }
+        Movies movies = (Movies) savedInstanceState.get(Movies.TAG);
+        onMoviesLoaded(movies);
     }
 
     private void initializeViews(View view) {

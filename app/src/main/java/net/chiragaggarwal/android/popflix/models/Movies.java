@@ -1,6 +1,8 @@
 package net.chiragaggarwal.android.popflix.models;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,10 +12,10 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Movies implements Iterable<Movie> {
+public class Movies implements Iterable<Movie>, Parcelable {
+    public static final String TAG = "popflix.movies";
     private ArrayList<Movie> movies;
     private static final String RESULTS = "results";
-    private int iteratorIndex = -1;
 
     public Movies(Movie... movies) {
         initializeMovies(movies);
@@ -97,4 +99,28 @@ public class Movies implements Iterable<Movie> {
     public Iterator<Movie> iterator() {
         return this.movies.iterator();
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(movies);
+    }
+
+    protected Movies(Parcel in) {
+        this.movies = in.createTypedArrayList(Movie.CREATOR);
+    }
+
+    public static final Creator<Movies> CREATOR = new Creator<Movies>() {
+        public Movies createFromParcel(Parcel source) {
+            return new Movies(source);
+        }
+
+        public Movies[] newArray(int size) {
+            return new Movies[size];
+        }
+    };
 }
