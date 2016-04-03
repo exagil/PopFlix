@@ -243,6 +243,7 @@ public class DetailsFragment extends Fragment implements MovieDetailsView {
     private void showPoster(Movie movie) {
         Picasso.with(getContext()).
                 load(movie.imageUrlString(getContext(), ImageSize.MEDIUM))
+                .placeholder(R.drawable.popflix_placeholder_medium)
                 .into(this.moviePoster);
     }
 

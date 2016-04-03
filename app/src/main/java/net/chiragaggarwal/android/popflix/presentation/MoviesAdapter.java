@@ -68,6 +68,7 @@ public class MoviesAdapter extends BaseAdapter {
     private void setImageOnMoviePoster(Movie movie, ImageView moviePoster) {
         Picasso.with(this.context)
                 .load(movie.imageUrlString(this.context))
+                .placeholder(R.drawable.popflix_placeholder_small)
                 .into(moviePoster);
         moviePoster.setAdjustViewBounds(true);
     }
