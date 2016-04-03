@@ -30,13 +30,13 @@ public class MoviesActivity extends AppCompatActivity implements MoviesFragment.
         initializeToolbar();
         initializePreferences();
 
-        showMovies();
+        showMovies(savedInstanceState);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateMoviesIfSortOrderChanged();
+        updateMoviesIfRequired();
     }
 
     private void initializeToolbar() {
@@ -49,22 +49,23 @@ public class MoviesActivity extends AppCompatActivity implements MoviesFragment.
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
     }
 
-    private void showMovies() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.movies_placeholder, new MoviesFragment())
-                .commit();
+    private void showMovies(Bundle savedInstanceState) {
+        if (savedInstanceState == null)
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.movies_placeholder, new MoviesFragment())
+                    .commit();
     }
 
-    private void updateMoviesIfSortOrderChanged() {
-        if (hasSortOrderChanged()) {
+    private void updateMoviesIfRequired() {
+        if (isRefreshRequired()) {
             MoviesFragment moviesFragment = (MoviesFragment) this.getSupportFragmentManager()
                     .findFragmentById(R.id.movies_placeholder);
-            moviesFragment.onSortOrderChanged();
+            moviesFragment.refresh();
         }
     }
 
-    private boolean hasSortOrderChanged() {
-        return MoviesPreference.getInstance(this).hasSortOrderChanged();
+    private boolean isRefreshRequired() {
+        return MoviesPreference.getInstance(this).isRefreshRequired();
     }
 
     private void showMovieOnCompleteScreen(Movie movie) {

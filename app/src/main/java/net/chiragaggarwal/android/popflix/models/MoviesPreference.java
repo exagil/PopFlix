@@ -21,33 +21,34 @@ public class MoviesPreference {
         this.applicationContext = applicationContext;
     }
 
-    public boolean hasSortOrderChanged() {
+    public boolean isRefreshRequired() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        boolean hasSortOrderChangedCurrently = sharedPreferences.getBoolean(sortOrderChangedKey(), false);
-        if (hasSortOrderChangedCurrently) {
-            setSortOrderAsUnchanged();
+        boolean isRefreshRequiredCurrently = sharedPreferences.getBoolean(isRefreshRequiredKey(), false);
+        if (isRefreshRequiredCurrently) {
+            setRefreshNotRequired();
             return true;
         } else {
             return false;
         }
     }
 
-    public boolean setSortOrderAsChanged() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(sortOrderChangedKey(), true);
-        return sharedPreferencesEditor.commit();
+    public boolean setRefreshRequired() {
+        return refreshRequired(applicationContext, true);
     }
 
     @NonNull
-    private String sortOrderChangedKey() {
-        return applicationContext.getString(R.string.has_sort_order_changed);
+    private String isRefreshRequiredKey() {
+        return applicationContext.getString(R.string.is_refresh_required_key);
     }
 
-    private boolean setSortOrderAsUnchanged() {
+    private boolean setRefreshNotRequired() {
+        return refreshRequired(applicationContext, false);
+    }
+
+    private boolean refreshRequired(Context applicationContext, boolean value) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(sortOrderChangedKey(), false);
+        sharedPreferencesEditor.putBoolean(isRefreshRequiredKey(), value);
         return sharedPreferencesEditor.commit();
     }
 }

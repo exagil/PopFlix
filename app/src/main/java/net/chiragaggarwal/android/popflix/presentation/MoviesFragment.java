@@ -37,7 +37,7 @@ public class MoviesFragment extends Fragment implements MoviesView {
     private OnMovieSelectedListener onMovieSelectedListener;
     private MoviesPresenter moviesPresenter;
 
-    public void onSortOrderChanged() {
+    public void refresh() {
         this.moviesAdapter.clear();
         fetchMovies(this.moviesPresenter);
     }
@@ -68,13 +68,8 @@ public class MoviesFragment extends Fragment implements MoviesView {
         MoviesService moviesService = new MoviesService(getContext(), networkUtilities);
         MoviesProviderService moviesProviderService = new MoviesProviderService(getContext());
         this.moviesPresenter = new MoviesPresenter(this, moviesService, moviesProviderService);
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         fetchMovies(moviesPresenter);
+        return view;
     }
 
     @Override

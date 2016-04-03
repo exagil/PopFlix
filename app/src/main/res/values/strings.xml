@@ -50,5 +50,5 @@
     <string name="error_reviews_not_available">No reviews available</string>
     <string name="share">Share</string>
     <string name="mark_as_favorite">Mark as\nfavorite</string>
-    <string name="has_sort_order_changed">has_sort_order_changed</string>
+    <string name="is_refresh_required_key">is_refresh_required</string>
 </resources>

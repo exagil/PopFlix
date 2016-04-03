@@ -32,6 +32,7 @@ import net.chiragaggarwal.android.popflix.models.Callback;
 import net.chiragaggarwal.android.popflix.models.Error;
 import net.chiragaggarwal.android.popflix.models.ImageSize;
 import net.chiragaggarwal.android.popflix.models.Movie;
+import net.chiragaggarwal.android.popflix.models.MoviesPreference;
 import net.chiragaggarwal.android.popflix.models.Reviews;
 import net.chiragaggarwal.android.popflix.models.Video;
 import net.chiragaggarwal.android.popflix.models.Videos;
@@ -223,6 +224,7 @@ public class DetailsFragment extends Fragment implements MovieDetailsView {
     private void toggleFavorite() {
         movieDetailViewModel.toggleFavorite();
         movieDetailsPresenter.toggleFavorite(movie);
+        MoviesPreference.getInstance(getContext()).setRefreshRequired();
     }
 
     private void setDefaultShareAction() {

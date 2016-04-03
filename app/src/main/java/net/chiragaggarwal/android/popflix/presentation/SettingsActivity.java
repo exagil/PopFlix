@@ -24,7 +24,7 @@ public class SettingsActivity extends PreferenceActivity implements
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String selectedEntry = getSelectedEntryCorrespondingToEntryValue(preference, (String) newValue);
         preference.setSummary(selectedEntry);
-        MoviesPreference.getInstance(getApplicationContext()).setSortOrderAsChanged();
+        MoviesPreference.getInstance(getApplicationContext()).setRefreshRequired();
         return true;
     }
 
