@@ -68,8 +68,13 @@ public class MoviesFragment extends Fragment implements MoviesView {
         MoviesService moviesService = new MoviesService(getContext(), networkUtilities);
         MoviesProviderService moviesProviderService = new MoviesProviderService(getContext());
         this.moviesPresenter = new MoviesPresenter(this, moviesService, moviesProviderService);
-        fetchMovies(moviesPresenter);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        fetchMovies(moviesPresenter);
     }
 
     @Override
