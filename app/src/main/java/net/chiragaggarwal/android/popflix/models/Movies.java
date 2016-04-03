@@ -8,10 +8,12 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class Movies {
+public class Movies implements Iterable<Movie> {
     private ArrayList<Movie> movies;
     private static final String RESULTS = "results";
+    private int iteratorIndex = -1;
 
     public Movies(Movie... movies) {
         initializeMovies(movies);
@@ -89,5 +91,10 @@ public class Movies {
 
     private boolean isMovieIndexNegative(Integer movieIndex) {
         return movieIndex < 0;
+    }
+
+    @Override
+    public Iterator<Movie> iterator() {
+        return this.movies.iterator();
     }
 }

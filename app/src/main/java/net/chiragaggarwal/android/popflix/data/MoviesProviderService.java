@@ -49,6 +49,14 @@ public class MoviesProviderService {
         return Movies.fromCursor(moviesCursor);
     }
 
+    public Movies markFavoritedMoviesAsFavorite(Movies movies) {
+        for (Movie movie : movies) {
+            if (this.containsFavoriteMovieById(movie.idString()))
+                movie.toggleFavorite();
+        }
+        return movies;
+    }
+
     private boolean isNotNull(Cursor moviesCursor) {
         return moviesCursor != null;
     }

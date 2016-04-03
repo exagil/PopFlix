@@ -134,4 +134,50 @@ public class MoviesProviderServiceTest extends AndroidTestCase {
 
         assertEquals(expectedMovies, actualMovies);
     }
+
+    @Test
+    public void shouldBeAbleToMarkFavoritedMoviesFavoriteFromACollectionOfMoviesFromWebService() {
+        Movie firstMovie = new Movie(1, "first_original_title", new Date(), "example://path/first.jpg", 1.23, 4.56, "example", false);
+        Movie secondMovie = new Movie(2, "second_original_title", new Date(), "example://path/second.jpg", 1.23, 4.56, "second_example", false);
+        Movie thirdMovie = new Movie(3, "third_original_title", new Date(), "example://path/third.jpg", 1.23, 4.56, "third_example", false);
+        final Movies moviesFetchedFromMoviesService = new Movies(firstMovie, secondMovie, thirdMovie);
+
+        Movie firstFavoritedMovie = new Movie(1, "first_original_title", new Date(), "example://path/first.jpg", 1.23, 4.56, "example", true);
+        Movie secondUnfavoritedMovie = new Movie(2, "second_original_title", new Date(), "example://path/second.jpg", 1.23, 4.56, "second_example", false);
+        Movie thirdFavoritedMovie = new Movie(3, "third_original_title", new Date(), "example://path/third.jpg", 1.23, 4.56, "third_example", true);
+        Movies expectedMovies = new Movies(firstFavoritedMovie, secondUnfavoritedMovie, thirdFavoritedMovie);
+
+        this.database.insert(MoviesEntry.TABLE_NAME, null, firstFavoritedMovie.toContentValues());
+        this.database.insert(MoviesEntry.TABLE_NAME, null, thirdFavoritedMovie.toContentValues());
+
+        assertEquals(expectedMovies, this.moviesProviderService.markFavoritedMoviesAsFavorite(moviesFetchedFromMoviesService));
+    }
+
+    @Test
+    public void shouldNotMarkAnyMovieAsFavoriteIfNoFavoriteMoviePresent() {
+        Movie firstMovie = new Movie(1, "first_original_title", new Date(), "example://path/first.jpg", 1.23, 4.56, "example", false);
+        Movie secondMovie = new Movie(2, "second_original_title", new Date(), "example://path/second.jpg", 1.23, 4.56, "second_example", false);
+        Movie thirdMovie = new Movie(3, "third_original_title", new Date(), "example://path/third.jpg", 1.23, 4.56, "third_example", false);
+        Movies moviesFetchedFromMoviesService = new Movies(firstMovie, secondMovie, thirdMovie);
+        Movies expectedMovies = new Movies(firstMovie, secondMovie, thirdMovie);
+
+        assertEquals(expectedMovies, this.moviesProviderService.markFavoritedMoviesAsFavorite(moviesFetchedFromMoviesService));
+    }
+
+    @Test
+    public void shouldNotMarkPersistentUnfavoritedMoviesAsFavoriteFromACollectionOfMoviesFromMoviesService() {
+        Movie firstMovie = new Movie(1, "first_original_title", new Date(), "example://path/first.jpg", 1.23, 4.56, "example", false);
+        Movie secondMovie = new Movie(2, "second_original_title", new Date(), "example://path/second.jpg", 1.23, 4.56, "second_example", false);
+        Movie thirdMovie = new Movie(3, "third_original_title", new Date(), "example://path/third.jpg", 1.23, 4.56, "third_example", false);
+        final Movies moviesFetchedFromMoviesService = new Movies(firstMovie, secondMovie, thirdMovie);
+
+        Movie firstUnfavoritedMovie = new Movie(1, "first_original_title", new Date(), "example://path/first.jpg", 1.23, 4.56, "example", false);
+        Movie secondUnfavoritedMovie = new Movie(2, "second_original_title", new Date(), "example://path/second.jpg", 1.23, 4.56, "second_example", false);
+        Movie thirdFavoritedMovie = new Movie(3, "third_original_title", new Date(), "example://path/third.jpg", 1.23, 4.56, "third_example", true);
+        Movies expectedMovies = new Movies(firstUnfavoritedMovie, secondUnfavoritedMovie, thirdFavoritedMovie);
+
+        this.database.insert(MoviesEntry.TABLE_NAME, null, firstUnfavoritedMovie.toContentValues());
+
+        assertEquals(expectedMovies, this.moviesProviderService.markFavoritedMoviesAsFavorite(moviesFetchedFromMoviesService));
+    }
 }
