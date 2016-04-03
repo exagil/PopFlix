@@ -3,6 +3,8 @@ PopFlix
 
 PopFlix lets you discover the most popular movies playing
 
+![Master View](http://res.cloudinary.com/chi6rag/image/upload/c_scale,w_350/v1459665019/pop_flix/Screen_Shot_2016-04-03_at_11.59.05_AM.png)  ![Detail View](http://res.cloudinary.com/chi6rag/image/upload/c_scale,w_350/v1459665019/pop_flix/Screen_Shot_2016-04-03_at_11.59.34_AM.png)
+
 Build Instructions (Mac OS X)
 -----------------------------
 
