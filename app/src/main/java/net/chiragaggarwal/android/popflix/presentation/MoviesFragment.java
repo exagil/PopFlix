@@ -38,6 +38,7 @@ public class MoviesFragment extends Fragment implements MoviesView {
     private MoviesPresenter moviesPresenter;
 
     public void onSortOrderChanged() {
+        this.moviesAdapter.clear();
         fetchMovies(this.moviesPresenter);
     }
 

@@ -56,6 +56,11 @@ public class MoviesAdapter extends BaseAdapter {
         return view;
     }
 
+    public void clear() {
+        this.movies = new Movies();
+        notifyDataSetChanged();
+    }
+
     private void setImageOnMoviePoster(Movie movie, ImageView moviePoster) {
         Picasso.with(this.context)
                 .load(movie.imageUrlString(this.context))
